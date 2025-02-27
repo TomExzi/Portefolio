@@ -7,7 +7,7 @@ const scrollToContact = () => {
 <template>
   <section class="py-32 md:py-48">
     <h1 class="text-4xl md:text-6xl font-bold mb-6 dark:text-white">
-      Hi, I'm John Doe
+      Hi, I'm Tom Rogiers
     </h1>
     <h2
       class="text-2xl md:text-4xl font-semibold mb-8 text-gray-700 dark:text-gray-300"

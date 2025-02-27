@@ -1,6 +1,6 @@
 <script setup lang="ts">
-const email = "john.doe@example.com";
-const github = "https://github.com/johndoe";
+const email = "Tom.rogiers@gmail.com";
+const github = "https://github.com/ExiSoftware";
 const linkedin = "https://linkedin.com/in/johndoe";
 </script>
 
@@ -16,33 +16,34 @@ const linkedin = "https://linkedin.com/in/johndoe";
       </p>
 
       <div class="space-y-4">
-        <a
-          :href="`mailto:${email}`"
+        <NuxtLink
+          :to="`mailto:${email}`"
+          external
           class="flex items-center gap-2 text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400"
         >
           <div class="i-heroicons-envelope-20-solid w-5 h-5" />
           {{ email }}
-        </a>
+        </NuxtLink>
 
-        <a
-          :href="github"
+        <NuxtLink
+          :to="github"
           target="_blank"
-          rel="noopener noreferrer"
+          external
           class="flex items-center gap-2 text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400"
         >
           <div class="i-heroicons-code-bracket-20-solid w-5 h-5" />
           GitHub
-        </a>
+        </NuxtLink>
 
-        <a
-          :href="linkedin"
+        <NuxtLink
+          :to="linkedin"
           target="_blank"
-          rel="noopener noreferrer"
+          external
           class="flex items-center gap-2 text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400"
         >
           <div class="i-heroicons-link-20-solid w-5 h-5" />
           LinkedIn
-        </a>
+        </NuxtLink>
       </div>
     </div>
   </SectionCard>

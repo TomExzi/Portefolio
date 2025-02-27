@@ -3,21 +3,21 @@
     <div class="container mx-auto px-4">
       <div class="flex justify-between items-center">
         <p class="text-gray-600 dark:text-gray-400">
-          © {{ new Date().getFullYear() }} John Doe. All rights reserved.
+          © {{ new Date().getFullYear() }} Tom Rogiers. All rights reserved.
         </p>
         <div class="flex items-center space-x-4">
-          <a
-            href="#"
+          <NuxtLink
+            to="/privacy"
             class="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
           >
             Privacy
-          </a>
-          <a
-            href="#"
+          </NuxtLink>
+          <NuxtLink
+            to="/terms"
             class="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
           >
             Terms
-          </a>
+          </NuxtLink>
         </div>
       </div>
     </div>
