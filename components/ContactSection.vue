@@ -1,7 +1,28 @@
 <script setup lang="ts">
-const email = "Tom.rogiers@gmail.com";
-const github = "https://github.com/ExiSoftware";
-const linkedin = "https://linkedin.com/in/johndoe";
+import { portfolioConfig } from "~/config/portfolio.config";
+
+const { contact } = portfolioConfig;
+
+const contactItems = [
+  {
+    icon: "heroicons:envelope",
+    text: contact.email,
+    link: `mailto:${contact.email}`,
+    external: true,
+  },
+  {
+    icon: "mdi:github",
+    text: "GitHub",
+    link: contact.github,
+    external: true,
+  },
+  {
+    icon: "mdi:linkedin",
+    text: "LinkedIn",
+    link: contact.linkedin,
+    external: true,
+  },
+];
 </script>
 
 <template>
@@ -17,32 +38,18 @@ const linkedin = "https://linkedin.com/in/johndoe";
 
       <div class="space-y-4">
         <NuxtLink
-          :to="`mailto:${email}`"
-          external
-          class="flex items-center gap-2 text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400"
-        >
-          <div class="i-heroicons-envelope-20-solid w-5 h-5" />
-          {{ email }}
-        </NuxtLink>
-
-        <NuxtLink
-          :to="github"
+          v-for="item in contactItems"
+          :key="item.link"
+          :to="item.link"
+          :external="item.external"
           target="_blank"
-          external
-          class="flex items-center gap-2 text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400"
+          class="flex items-center gap-3 text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 group"
         >
-          <div class="i-heroicons-code-bracket-20-solid w-5 h-5" />
-          GitHub
-        </NuxtLink>
-
-        <NuxtLink
-          :to="linkedin"
-          target="_blank"
-          external
-          class="flex items-center gap-2 text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400"
-        >
-          <div class="i-heroicons-link-20-solid w-5 h-5" />
-          LinkedIn
+          <Icon
+            :name="item.icon"
+            class="w-6 h-6 transition-transform group-hover:scale-110"
+          />
+          <span class="text-lg">{{ item.text }}</span>
         </NuxtLink>
       </div>
     </div>

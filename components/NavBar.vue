@@ -10,6 +10,12 @@ const navigation = [
 </script>
 
 <template>
+  <div class="fixed top-0 left-0 w-full z-50">
+    <div class="container mx-auto px-4 py-4">
+      <Logo />
+    </div>
+  </div>
+
   <nav
     class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 py-2 px-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur rounded-full shadow-lg border border-gray-200 dark:border-gray-700"
   >

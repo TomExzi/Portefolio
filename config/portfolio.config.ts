@@ -1,0 +1,102 @@
+export const portfolioConfig = {
+  hero: {
+    name: "Tom Rogiers",
+    title: "Building the future and the present of the web",
+    description:
+      "Passionate Full Stack Developer focused on performance, SEO, and scalable architecture, crafting efficient and user-friendly web experiences.",
+    ctaText: "Get in touch",
+  },
+  projects: [
+    {
+      id: "1",
+      title: "AI-Powered Analytics Platform",
+      description:
+        "Enterprise-grade analytics platform leveraging machine learning for real-time business insights and predictive modeling.",
+      technologies: ["Vue 3", "TypeScript", "Python", "TensorFlow", "AWS"],
+      links: {
+        github: "https://github.com/ExiSoftware/analytics-platform",
+        website: "https://analytics-platform.demo",
+      },
+      type: "Client",
+      imageUrl: "/projects/analytics.jpg",
+    },
+    {
+      id: "2",
+      title: "E-commerce Solution",
+      description:
+        "High-performance e-commerce platform with advanced inventory management and real-time order processing.",
+      technologies: ["Nuxt 3", "Node.js", "MongoDB", "Redis", "Docker"],
+      links: {
+        github: "https://github.com/ExiSoftware/ecommerce",
+        website: "https://ecommerce.demo",
+      },
+      type: "Open Source",
+      imageUrl: "/projects/ecommerce.jpg",
+    },
+  ],
+  process: [
+    {
+      id: "1",
+      title: "Architecture Design",
+      description:
+        "Creating scalable and maintainable system architectures with focus on performance and security",
+      icon: "i-heroicons-cube-transparent-20-solid",
+    },
+    {
+      id: "2",
+      title: "Development",
+      description:
+        "Building robust applications using modern technologies and best practices",
+      icon: "i-heroicons-code-bracket-20-solid",
+    },
+    {
+      id: "3",
+      title: "Optimization",
+      description:
+        "Enhancing performance, SEO, and user experience through continuous improvement",
+      icon: "i-heroicons-arrow-trending-up-20-solid",
+    },
+  ],
+  about: {
+    experiences: [
+      {
+        company: "Moody's",
+        position: "Full Stack Software Engineer",
+        period: "2021 - Present",
+        description: [
+          "Developed and maintained a web application for infrastructure automation, streamlining DevOps workflows.",
+          "Designed and built the backend, ensuring seamless integration with infrastructure services.",
+          "Transitioned from DevOps to Frontend Engineering, leveraging both backend and infrastructure knowledge for full-stack development.",
+          "Optimized system performance and enhanced automation processes for better scalability.",
+          "Worked with modern frontend frameworks to create dynamic and responsive applications.",
+          "Collaborated with cross-functional teams to implement new features and improve existing systems.",
+          "Developed and implemented recovery strategies, ensuring minimal downtime and data integrity.",
+        ],
+      },
+    ],
+    skills: [
+      "Vue.js & Nuxt.js",
+      "Pinia, Vite, TailwindCSS, Headless UI",
+      "Angular, Angular Material, RxJS, NgRx",
+      "C# & .NET",
+      "TypeScript & JavaScript",
+      "Node.js & Express",
+      "MongoDB & PostgreSQL",
+      "AWS",
+      "CI/CD & DevOps",
+      "Performance Optimization",
+      "SEO & Accessibility",
+    ],
+  },
+  contact: {
+    email: "Tom.rogiers@gmail.com",
+    github: "https://github.com/ExiSoftware",
+    linkedin: "https://www.linkedin.com/in/tom-rogiers-290655221/",
+  },
+  seo: {
+    title: "Tom Rogiers - Full Stack Development at ExiTech",
+    description:
+      "Full Stack Developer at ExiTech specializing in Vue.js, Nuxt, Node.js, and cloud architecture",
+    ogImage: "/og-image.webp",
+  },
+};

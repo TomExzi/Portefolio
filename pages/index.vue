@@ -14,18 +14,21 @@
 
 <script setup lang="ts">
 useHead({
-  title: "John Doe - Frontend Developer",
+  title: "Tom Rogiers - Full Stack Development at ExiSoftware",
   meta: [
     {
       name: "description",
       content:
-        "Frontend developer specializing in Vue.js, Nuxt, and TypeScript",
+        "Full Stack Developer at ExiSoftware specializing in Vue.js, Nuxt, and TypeScript",
     },
-    { property: "og:title", content: "John Doe - Frontend Developer" },
+    {
+      property: "og:title",
+      content: "Tom Rogiers - Full Stack Development at ExiSoftware",
+    },
     {
       property: "og:description",
       content:
-        "Frontend developer specializing in Vue.js, Nuxt, and TypeScript",
+        "Full Stack Developer at ExiSoftware specializing in Vue.js, Nuxt, and TypeScript",
     },
     { property: "og:image", content: "/og-image.webp" },
     { name: "twitter:card", content: "summary_large_image" },
