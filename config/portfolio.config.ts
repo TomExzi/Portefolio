@@ -14,7 +14,7 @@ export const portfolioConfig = {
         "Enterprise-grade analytics platform leveraging machine learning for real-time business insights and predictive modeling.",
       technologies: ["Vue 3", "TypeScript", "Python", "TensorFlow", "AWS"],
       links: {
-        github: "https://github.com/ExiSoftware/analytics-platform",
+        github: "https://github.com/TomExzi/analytics-platform",
         website: "https://analytics-platform.demo",
       },
       type: "Client",
@@ -27,7 +27,7 @@ export const portfolioConfig = {
         "High-performance e-commerce platform with advanced inventory management and real-time order processing.",
       technologies: ["Nuxt 3", "Node.js", "MongoDB", "Redis", "Docker"],
       links: {
-        github: "https://github.com/ExiSoftware/ecommerce",
+        github: "https://github.com/TomExzi/ecommerce",
         website: "https://ecommerce.demo",
       },
       type: "Open Source",
@@ -90,13 +90,13 @@ export const portfolioConfig = {
   },
   contact: {
     email: "Tom.rogiers@gmail.com",
-    github: "https://github.com/ExiSoftware",
+    github: "https://github.com/TomExzi",
     linkedin: "https://www.linkedin.com/in/tom-rogiers-290655221/",
   },
   seo: {
-    title: "Tom Rogiers - Full Stack Development at ExiTech",
+    title: "Tom Rogiers - Full Stack Development at ExziSoft",
     description:
-      "Full Stack Developer at ExiTech specializing in Vue.js, Nuxt, Node.js, and cloud architecture",
+      "Full Stack Developer at ExziSoft specializing in Vue.js, Nuxt, Node.js, and cloud architecture",
     ogImage: "/og-image.webp",
   },
 };

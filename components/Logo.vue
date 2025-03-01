@@ -10,6 +10,6 @@ const scrollToContact = () => {
     @click="scrollToContact"
     class="text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent"
   >
-    ExiTech
+    ExziSoft
   </button>
 </template>

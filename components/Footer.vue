@@ -3,7 +3,7 @@
     <div class="container mx-auto px-4">
       <div class="flex justify-between items-center">
         <p class="text-gray-600 dark:text-gray-400">
-          © {{ new Date().getFullYear() }} ExiSoftware. All rights reserved.
+          © {{ new Date().getFullYear() }} ExziSoft. All rights reserved.
         </p>
         <div class="flex items-center space-x-4">
           <NuxtLink

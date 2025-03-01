@@ -4,10 +4,10 @@
   "type": "module",
   "version": "1.0.0",
   "description": "Personal portfolio website built with Nuxt 3",
-  "author": "ExiSoftware",
+  "author": "ExziSoft",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ExiSoftware/Portefolio.git"
+    "url": "git+https://github.com/TomExzi/Portefolio.git"
   },
   "scripts": {
     "build": "nuxt build",
