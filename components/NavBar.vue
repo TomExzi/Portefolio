@@ -37,7 +37,7 @@ const navigation = [
         <Icon
           v-if="isDark"
           name="heroicons:sun-20-solid"
-          class="w-5 h-5 text-yellow-500"
+          class="w-5 h-5 text-yellow-100"
         />
         <Icon
           v-else

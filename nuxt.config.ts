@@ -39,4 +39,16 @@ export default defineNuxtConfig({
     cssPath: "~/assets/css/main.css",
     configPath: "tailwind.config.ts",
   },
+  image: {
+    quality: 100,
+    format: ["png", "webp", "jpg"],
+    screens: {
+      xs: 320,
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
+      xxl: 1536,
+    },
+  },
 });

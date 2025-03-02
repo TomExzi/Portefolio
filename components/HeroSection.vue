@@ -10,7 +10,7 @@ const scrollToContact = () => {
 </script>
 
 <template>
-  <section class="py-32 md:py-48">
+  <section class="py-16 md:py-24">
     <h1 class="text-4xl md:text-6xl font-bold mb-6 dark:text-white">
       Hi, I'm {{ hero.name }}
     </h1>
