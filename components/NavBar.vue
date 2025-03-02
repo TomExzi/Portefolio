@@ -40,7 +40,7 @@ const navigation = [
           class="w-5 h-5 text-yellow-100"
         />
         <Icon
-          v-else
+          v-if="!isDark"
           name="heroicons:moon-20-solid"
           class="w-5 h-5 text-gray-700"
         />

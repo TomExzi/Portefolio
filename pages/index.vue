@@ -28,10 +28,10 @@ useHead({
     {
       property: "og:description",
       content:
-        "Full Stack Developer at ExiSoftware specializing in Vue.js, Nuxt, and TypeScript",
+        "Full Stack Developer at ExiSoft specializing in Vue.js, Nuxt, and TypeScript",
     },
-    { property: "og:image", content: "/og-image.webp" },
-    { name: "twitter:card", content: "summary_large_image" },
+    //{ property: "og:image", content: "/og-image.webp" },
+    //{ name: "twitter:card", content: "summary_large_image" },
   ],
 });
 </script>

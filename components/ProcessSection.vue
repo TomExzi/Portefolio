@@ -15,7 +15,7 @@ const { process } = portfolioConfig;
         class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg"
       >
         <div class="mb-4">
-          <div :class="[item.icon, 'w-8 h-8 text-blue-600']" />
+          <Icon :name="item.icon" class="w-8 h-8 text-blue-600" />
         </div>
         <h3 class="text-xl font-semibold mb-3 dark:text-white">
           {{ item.title }}
