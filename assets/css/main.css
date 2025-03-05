@@ -1,3 +1,131 @@
+@import './theme.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    /* Primary colors */
+    --color-primary-50: 239 246 255;  /* blue-50 */
+    --color-primary-100: 219 234 254; /* blue-100 */
+    --color-primary-200: 191 219 254; /* blue-200 */
+    --color-primary-300: 147 197 253; /* blue-300 */
+    --color-primary-400: 96 165 250;  /* blue-400 */
+    --color-primary-500: 59 130 246;  /* blue-500 */
+    --color-primary-600: 37 99 235;   /* blue-600 */
+    --color-primary-700: 29 78 216;   /* blue-700 */
+    --color-primary-800: 30 64 175;   /* blue-800 */
+    --color-primary-900: 30 58 138;   /* blue-900 */
+    --color-primary-950: 23 37 84;    /* blue-950 */
+    
+    /* Gray colors */
+    --color-gray-50: 249 250 251;     /* gray-50 */
+    --color-gray-100: 243 244 246;    /* gray-100 */
+    --color-gray-200: 229 231 235;    /* gray-200 */
+    --color-gray-300: 209 213 219;    /* gray-300 */
+    --color-gray-400: 156 163 175;    /* gray-400 */
+    --color-gray-500: 107 114 128;    /* gray-500 */
+    --color-gray-600: 75 85 99;       /* gray-600 */
+    --color-gray-700: 55 65 81;       /* gray-700 */
+    --color-gray-800: 31 41 55;       /* gray-800 */
+    --color-gray-900: 17 24 39;       /* gray-900 */
+    --color-gray-950: 3 7 18;         /* gray-950 */
+    
+    /* Light mode specific */
+    --color-light-primary: 26 32 44;    /* gray-900 */
+    --color-light-secondary: 74 85 104; /* gray-600 */
+    --color-card-light: 255 255 255;    /* white */
+    
+    /* Shadow for light mode */
+    --shadow-light-card: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  .dark {
+    /* Dark mode specific */
+    --color-dark-primary: 247 250 252;  /* gray-50 */
+    --color-dark-secondary: 203 213 224; /* gray-300 */
+    --color-card-dark: 45 55 72;        /* gray-800 */
+    
+    /* Shadow for dark mode */
+    --shadow-dark-card: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+  }
+}
+
+@layer components {
+  /* Card shadows */
+  .shadow-light-card {
+    box-shadow: var(--shadow-light-card);
+  }
+  
+  .shadow-dark-card {
+    box-shadow: var(--shadow-dark-card);
+  }
+  
+  /* Text colors */
+  .text-light-primary {
+    color: rgb(var(--color-light-primary) / 1);
+  }
+  
+  .text-light-secondary {
+    color: rgb(var(--color-light-secondary) / 1);
+  }
+  
+  .text-dark-primary {
+    color: rgb(var(--color-dark-primary) / 1);
+  }
+  
+  .text-dark-secondary {
+    color: rgb(var(--color-dark-secondary) / 1);
+  }
+  
+  /* Background colors */
+  .bg-card-light {
+    background-color: rgb(var(--color-card-light) / 1);
+  }
+  
+  .bg-card-dark {
+    background-color: rgb(var(--color-card-dark) / 1);
+  }
+  
+  /* Primary colors utility classes */
+  .text-primary-400 {
+    color: rgb(var(--color-primary-400) / 1);
+  }
+  
+  .text-primary-600 {
+    color: rgb(var(--color-primary-600) / 1);
+  }
+  
+  .bg-primary-400 {
+    background-color: rgb(var(--color-primary-400) / 1);
+  }
+  
+  .bg-primary-600 {
+    background-color: rgb(var(--color-primary-600) / 1);
+  }
+  
+  /* Glassmorphism utilities */
+  .glass-light {
+    background-color: rgb(var(--color-card-light) / var(--glass-opacity-light));
+    backdrop-filter: blur(var(--glass-blur-light));
+  }
+  
+  .glass-dark {
+    background-color: rgb(var(--color-card-dark) / var(--glass-opacity-dark));
+    backdrop-filter: blur(var(--glass-blur-dark));
+  }
+  
+  /* Transition utilities */
+  .transition-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  }
+}
+
+/* Font families */
+.font-serif {
+  font-family: 'Playfair Display', serif;
+}
+
+.font-display {
+  font-family: 'Montserrat', sans-serif;
+}

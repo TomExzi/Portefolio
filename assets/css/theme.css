@@ -1,0 +1,89 @@
+/**
+ * Portfolio Theme Configuration
+ * 
+ * This file contains all the color variables and theme settings for the portfolio.
+ * To change the entire color scheme, simply modify the values here.
+ */
+
+:root {
+  /* 
+   * PRIMARY COLOR
+   * Default: Blue
+   * To change, replace these RGB values with your preferred color
+   */
+  --color-primary-50: 239 246 255;  /* blue-50 */
+  --color-primary-100: 219 234 254; /* blue-100 */
+  --color-primary-200: 191 219 254; /* blue-200 */
+  --color-primary-300: 147 197 253; /* blue-300 */
+  --color-primary-400: 96 165 250;  /* blue-400 */
+  --color-primary-500: 59 130 246;  /* blue-500 */
+  --color-primary-600: 37 99 235;   /* blue-600 */
+  --color-primary-700: 29 78 216;   /* blue-700 */
+  --color-primary-800: 30 64 175;   /* blue-800 */
+  --color-primary-900: 30 58 138;   /* blue-900 */
+  --color-primary-950: 23 37 84;    /* blue-950 */
+  
+  /* 
+   * GRAY SCALE
+   * Used for text, backgrounds, and UI elements
+   */
+  --color-gray-50: 249 250 251;     /* gray-50 */
+  --color-gray-100: 243 244 246;    /* gray-100 */
+  --color-gray-200: 229 231 235;    /* gray-200 */
+  --color-gray-300: 209 213 219;    /* gray-300 */
+  --color-gray-400: 156 163 175;    /* gray-400 */
+  --color-gray-500: 107 114 128;    /* gray-500 */
+  --color-gray-600: 75 85 99;       /* gray-600 */
+  --color-gray-700: 55 65 81;       /* gray-700 */
+  --color-gray-800: 31 41 55;       /* gray-800 */
+  --color-gray-900: 17 24 39;       /* gray-900 */
+  --color-gray-950: 3 7 18;         /* gray-950 */
+  
+  /* 
+   * LIGHT MODE SPECIFIC
+   * Text and background colors for light mode
+   */
+  --color-light-primary: 26 32 44;    /* Text color for headings */
+  --color-light-secondary: 74 85 104; /* Text color for paragraphs */
+  --color-card-light: 255 255 255;    /* Card background color */
+  
+  /* 
+   * SHADOWS
+   * Box shadows for cards and UI elements
+   */
+  --shadow-light-card: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  
+  /* 
+   * GLASSMORPHISM EFFECT
+   * Opacity values for the glassmorphism effect
+   */
+  --glass-opacity-light: 0.9;
+  --glass-blur-light: 8px;
+}
+
+/* 
+ * DARK MODE SETTINGS
+ * Applied when dark mode is active
+ */
+.dark {
+  /* 
+   * DARK MODE SPECIFIC
+   * Text and background colors for dark mode
+   */
+  --color-dark-primary: 247 250 252;   /* Text color for headings */
+  --color-dark-secondary: 203 213 224; /* Text color for paragraphs */
+  --color-card-dark: 45 55 72;         /* Card background color */
+  
+  /* 
+   * SHADOWS
+   * Box shadows for cards and UI elements in dark mode
+   */
+  --shadow-dark-card: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+  
+  /* 
+   * GLASSMORPHISM EFFECT
+   * Opacity values for the glassmorphism effect in dark mode
+   */
+  --glass-opacity-dark: 0.8;
+  --glass-blur-dark: 12px;
+} 
