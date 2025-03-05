@@ -62,7 +62,7 @@ export const portfolioConfig = {
       {
         company: "Moody's",
         position: "Full Stack Software Engineer",
-        period: "2021 - Present",
+        period: "2022 - Present",
         description: [
           "Developed and maintained a web application for infrastructure automation, streamlining DevOps workflows.",
           "Designed and built the backend, ensuring seamless integration with infrastructure services.",
@@ -76,7 +76,8 @@ export const portfolioConfig = {
     ],
     skills: [
       "Vue.js & Nuxt.js",
-      "Pinia, Vite, TailwindCSS, Headless UI",
+      "Pinia, Vite", 
+      "TailwindCSS, Headless UI",
       "Angular, Angular Material, RxJS, NgRx",
       "C# & .NET",
       "TypeScript & JavaScript",
@@ -86,6 +87,7 @@ export const portfolioConfig = {
       "CI/CD & DevOps",
       "Performance Optimization",
       "SEO & Accessibility",
+      "Retool"
     ],
   },
   contact: {
@@ -98,5 +100,25 @@ export const portfolioConfig = {
     description:
       "Full Stack Developer at ExziSoft specializing in Vue.js, Nuxt, Node.js, and cloud architecture",
     ogImage: "/og-image.webp",
+  },
+  projectCategories: {
+    DataRemediation: {
+      title: "Data Remediation",
+      description: "Advanced data cleansing and transformation solutions that ensure data quality and compliance across enterprise systems.",
+      icon: "heroicons:document-chart-bar",
+      technologies: ["Javascript", "Retool","AWS", "MongoDB"]
+    },
+    InfrastructurePortal: {
+      title: "Infrastructure Portal",
+      description: "Centralized platform for managing cloud infrastructure, automating deployments, and monitoring system performance.",
+      icon: "heroicons:server",
+      technologies: ["Angular", "Node.js", "AWS", "C#", ".NET", "TypeScript"]
+    },
+    InformationProvider: {
+      title: "Information Provider",
+      description: "Real-time data aggregation and distribution systems that deliver critical business intelligence to stakeholders.",
+      icon: "heroicons:chart-bar",
+      technologies: ["Javascript", "Retool","AWS", "MongoDB"]
+    }
   },
 };

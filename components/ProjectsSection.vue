@@ -1,23 +1,28 @@
 <script setup lang="ts">
+import { portfolioConfig } from '~/config/portfolio.config';
+
+type ProjectCategory = "DataRemediation" | "InfrastructurePortal" | "InformationProvider";
+type TabType = ProjectCategory | "all";
+
 const currentIndex = ref(0);
-const currentTab = ref("all"); // 'all', 'personal', 'client'
+const currentTab = ref<TabType>("all");
 
 interface Project {
   id: string;
   title: string;
   type: string;
   imageUrl: string;
-  category: "DataRemediation" | "InfrastructurePortal" | "InformationProvider";
+  category: ProjectCategory;
   // For future use:
   // description?: string;
   // technologies?: string[];
 }
 
 const tabs = [
-  { id: "all", label: "All Projects" },
-  { id: "DataRemediation", label: "Data Remediation" },
-  { id: "InfrastructurePortal", label: "Infrastructure Portal" },
-  { id: "InformationProvider", label: "Information Provider" },
+  { id: "all" as const, label: "All Projects" },
+  { id: "DataRemediation" as const, label: "Data Remediation" },
+  { id: "InfrastructurePortal" as const, label: "Infrastructure Portal" },
+  { id: "InformationProvider" as const, label: "Information Provider" },
 ];
 
 const allProjects = ref<Project[]>([]);
@@ -119,11 +124,20 @@ const prev = () => {
 const goToSlide = (index: number) => {
   currentIndex.value = index;
 };
+
+// Safely access project category data with type checking
+const currentCategoryData = computed(() => {
+  if (currentTab.value === 'all') return null;
+  return portfolioConfig.projectCategories[currentTab.value as ProjectCategory];
+});
 </script>
 
 <template>
   <SectionCard id="projects">
-    <h2 class="text-2xl font-bold mb-6 dark:text-white">Featured Projects</h2>
+    <div class="flex items-center gap-3 mb-6">
+      <Icon name="heroicons:rectangle-stack" class="w-6 h-6 text-blue-600 dark:text-blue-400" />
+      <h2 class="text-2xl font-bold dark:text-white">Featured Projects</h2>
+    </div>
 
     <!-- Tabs -->
     <div class="flex justify-center mb-8 px-4 overflow-x-auto">
@@ -135,13 +149,19 @@ const goToSlide = (index: number) => {
           :key="tab.id"
           @click="currentTab = tab.id"
           tabindex="-1"
-          class="px-3 py-2 text-sm rounded-lg transition-colors whitespace-nowrap flex-shrink-0"
+          class="px-3 py-2 text-sm rounded-lg transition-colors whitespace-nowrap flex-shrink-0 flex items-center gap-1.5"
           :class="[
             currentTab === tab.id
               ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm'
               : 'text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400',
           ]"
         >
+          <Icon 
+            v-if="tab.id !== 'all'" 
+            :name="portfolioConfig.projectCategories[tab.id as ProjectCategory].icon" 
+            class="w-4 h-4" 
+          />
+          <Icon v-else name="heroicons:squares-2x2" class="w-4 h-4" />
           {{ tab.label }}
         </button>
       </div>
@@ -168,22 +188,35 @@ const goToSlide = (index: number) => {
                 <button
                   @click="currentTab = project.category"
                   tabindex="-1"
-                  class="text-xl md:text-2xl font-semibold dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-left"
+                  class="text-xl md:text-2xl font-semibold dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-left flex items-center gap-2"
                 >
+                  <Icon 
+                    :name="portfolioConfig.projectCategories[project.category].icon" 
+                    class="w-6 h-6 text-blue-600 dark:text-blue-400" 
+                  />
                   {{ project.title }}
                 </button>
-                <span class="text-sm text-gray-500 dark:text-gray-400">
+                <span class="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
+                  <Icon name="heroicons:folder" class="w-4 h-4" />
                   {{ project.type }}
                 </span>
               </div>
             </div>
 
             <!-- Project Image -->
-            <img
-              :src="project.imageUrl"
-              :alt="project.title"
-              class="w-full h-[300px] md:h-[500px] object-contain bg-gray-100 dark:bg-gray-900"
-            />
+            <div class="relative">
+              <img
+                :src="project.imageUrl"
+                :alt="project.title"
+                class="w-full h-[300px] md:h-[500px] object-contain bg-gray-100 dark:bg-gray-900"
+              />
+              <div class="absolute bottom-3 right-3 bg-white/90 dark:bg-gray-800/90 rounded-full p-2 shadow-md">
+                <Icon 
+                  :name="portfolioConfig.projectCategories[project.category].icon" 
+                  class="w-5 h-5 text-blue-600 dark:text-blue-400" 
+                />
+              </div>
+            </div>
           </article>
         </NuxtTransitionGroup>
 
@@ -236,29 +269,79 @@ const goToSlide = (index: number) => {
         />
       </div>
 
-      <!-- Project Info - Commented out for future use -->
-      <!--
-      <div
-        v-for="(project, index) in projects"
-        :key="`info-${project.id}`"
-        v-show="index === currentIndex"
-        class="max-w-3xl mx-auto space-y-6"
-      >
-        <div class="flex flex-wrap justify-center gap-2">
-          <span
-            v-for="tech in project.technologies"
-            :key="tech"
-            class="px-3 py-1.5 text-sm bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full shadow-sm"
-          >
-            {{ tech }}
-          </span>
+      <!-- Project Category Info -->
+      <div v-if="currentTab !== 'all' && currentCategoryData" class="max-w-3xl mx-auto space-y-6 px-4">
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="p-3 bg-blue-100 dark:bg-blue-900 rounded-lg">
+              <Icon 
+                :name="currentCategoryData.icon" 
+                class="w-8 h-8 text-blue-600 dark:text-blue-400"
+              />
+            </div>
+            <h3 class="text-xl font-semibold dark:text-white">
+              {{ currentCategoryData.title }}
+            </h3>
+          </div>
+          
+          <p class="text-gray-600 dark:text-gray-300 mb-5 flex items-start gap-2">
+            <Icon name="heroicons:information-circle" class="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+            <span>{{ currentCategoryData.description }}</span>
+          </p>
+          
+          <div class="flex flex-wrap gap-2">
+            <div class="w-full flex items-center gap-2 mb-2">
+              <Icon name="heroicons:code-bracket" class="w-5 h-5 text-blue-600 dark:text-blue-400" />
+              <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300">Technologies</h4>
+            </div>
+            <span 
+              v-for="tech in currentCategoryData.technologies" 
+              :key="tech"
+              class="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full flex items-center gap-1"
+            >
+              <Icon name="heroicons:check-circle" class="w-3.5 h-3.5 text-green-500" />
+              {{ tech }}
+            </span>
+          </div>
         </div>
-
-        <p class="text-base md:text-lg text-gray-600 dark:text-gray-300 text-center">
-          {{ project.description }}
-        </p>
       </div>
-      -->
+
+      <!-- All Projects Category Icons -->
+      <div v-if="currentTab === 'all'" class="max-w-3xl mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div 
+            v-for="(category, key) in portfolioConfig.projectCategories" 
+            :key="key"
+            class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-lg transition-all cursor-pointer hover:translate-y-[-4px]"
+            @click="currentTab = key as ProjectCategory"
+          >
+            <div class="flex flex-col items-center text-center">
+              <div class="p-4 bg-blue-100 dark:bg-blue-900 rounded-full mb-4 relative">
+                <Icon 
+                  :name="category.icon" 
+                  class="w-10 h-10 text-blue-600 dark:text-blue-400"
+                />
+                <span class="absolute -top-1 -right-1 bg-blue-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold">
+                  {{ allProjects.filter((p: Project) => p.category === key).length }}
+                </span>
+              </div>
+              <h3 class="text-lg font-semibold mb-2 dark:text-white flex items-center gap-1.5">
+                {{ category.title }}
+              </h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-3">
+                {{ category.description }}
+              </p>
+              <button 
+                class="mt-4 text-blue-600 dark:text-blue-400 text-sm font-medium flex items-center gap-1 hover:underline"
+                @click.stop="currentTab = key as ProjectCategory"
+              >
+                View Projects
+                <Icon name="heroicons:arrow-right" class="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </SectionCard>
 </template>

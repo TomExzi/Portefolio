@@ -2,10 +2,10 @@
 const { isDark } = useTheme();
 
 const navigation = [
-  { name: "Projects", href: "#projects" },
-  { name: "Process", href: "#process" },
-  { name: "About", href: "#about" },
-  { name: "Contact", href: "#contact" },
+  { name: "Projects", href: "#projects", icon: "heroicons:rectangle-stack" },
+  { name: "Process", href: "#process", icon: "heroicons:arrow-path" },
+  { name: "About", href: "#about", icon: "heroicons:user" },
+  { name: "Contact", href: "#contact", icon: "heroicons:envelope" },
 ];
 </script>
 
@@ -24,8 +24,9 @@ const navigation = [
         v-for="item in navigation"
         :key="item.name"
         :to="item.href"
-        class="px-3 py-2 text-sm rounded-full text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-blue-400 dark:hover:bg-gray-800/50 transition-colors"
+        class="px-3 py-2 text-sm rounded-full text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-blue-400 dark:hover:bg-gray-800/50 transition-colors flex items-center gap-1.5"
       >
+        <Icon :name="item.icon" class="w-4 h-4" />
         {{ item.name }}
       </NuxtLink>
 
