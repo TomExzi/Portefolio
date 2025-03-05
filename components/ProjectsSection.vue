@@ -135,12 +135,16 @@ const currentCategoryData = computed(() => {
 <template>
   <SectionCard id="projects">
     <div class="flex items-center gap-3 mb-6">
-      <Icon name="heroicons:rectangle-stack" class="w-6 h-6 text-blue-600 dark:text-blue-400" />
+      <Icon 
+        name="heroicons:rectangle-stack" 
+        class="w-6 h-6 text-blue-600 dark:text-blue-400" 
+        aria-hidden="true"
+      />
       <h2 class="text-2xl font-bold dark:text-white">Featured Projects</h2>
     </div>
 
     <!-- Tabs -->
-    <div class="flex justify-center mb-8 px-4 overflow-x-auto">
+    <div class="flex justify-center mb-8 overflow-x-auto">
       <div
         class="inline-flex p-1 space-x-1 bg-gray-100 dark:bg-gray-800 rounded-xl"
       >
@@ -159,9 +163,10 @@ const currentCategoryData = computed(() => {
           <Icon 
             v-if="tab.id !== 'all'" 
             :name="portfolioConfig.projectCategories[tab.id as ProjectCategory].icon" 
-            class="w-4 h-4" 
+            class="w-4 h-4"
+            aria-hidden="true"
           />
-          <Icon v-else name="heroicons:squares-2x2" class="w-4 h-4" />
+          <Icon v-else name="heroicons:squares-2x2" class="w-4 h-4" aria-hidden="true" />
           {{ tab.label }}
         </button>
       </div>
@@ -184,7 +189,7 @@ const currentCategoryData = computed(() => {
           >
             <!-- Project Title -->
             <div class="p-6 border-b border-gray-100 dark:border-gray-700">
-              <div class="flex items-center justify-between">
+              <div class="flex items-center justify-between select-none">
                 <button
                   @click="currentTab = project.category"
                   tabindex="-1"
@@ -192,28 +197,26 @@ const currentCategoryData = computed(() => {
                 >
                   <Icon 
                     :name="portfolioConfig.projectCategories[project.category].icon" 
-                    class="w-6 h-6 text-blue-600 dark:text-blue-400" 
+                    class="w-6 h-6 text-blue-600 dark:text-blue-400 pointer-events-none" 
+                    aria-hidden="true"
                   />
-                  {{ project.title }}
+                  <span class="pointer-events-none">{{ project.title }}</span>
                 </button>
-                <span class="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
-                  <Icon name="heroicons:folder" class="w-4 h-4" />
-                  {{ project.type }}
-                </span>
               </div>
             </div>
 
             <!-- Project Image -->
-            <div class="relative">
+            <div class="relative select-none">
               <img
                 :src="project.imageUrl"
                 :alt="project.title"
-                class="w-full h-[300px] md:h-[500px] object-contain bg-gray-100 dark:bg-gray-900"
+                class="w-full h-[300px] md:h-[500px] object-contain bg-gray-100 dark:bg-gray-900 pointer-events-none"
               />
               <div class="absolute bottom-3 right-3 bg-white/90 dark:bg-gray-800/90 rounded-full p-2 shadow-md">
                 <Icon 
                   :name="portfolioConfig.projectCategories[project.category].icon" 
-                  class="w-5 h-5 text-blue-600 dark:text-blue-400" 
+                  class="w-5 h-5 text-blue-600 dark:text-blue-400 pointer-events-none" 
+                  aria-hidden="true"
                 />
               </div>
             </div>
@@ -231,7 +234,11 @@ const currentCategoryData = computed(() => {
             class="pointer-events-auto ml-2 md:ml-4 p-1.5 md:p-2 rounded-full bg-white/80 dark:bg-gray-800/80 shadow-lg hover:bg-white dark:hover:bg-gray-800 transition-colors transform hover:scale-110"
             aria-label="Previous project"
           >
-            <Icon name="heroicons:chevron-left" class="w-4 h-4 md:w-6 md:h-6" />
+            <Icon 
+              name="heroicons:chevron-left" 
+              class="w-4 h-4 md:w-6 md:h-6 pointer-events-none" 
+              aria-hidden="true"
+            />
           </button>
 
           <button
@@ -243,7 +250,8 @@ const currentCategoryData = computed(() => {
           >
             <Icon
               name="heroicons:chevron-right"
-              class="w-4 h-4 md:w-6 md:h-6"
+              class="w-4 h-4 md:w-6 md:h-6 pointer-events-none"
+              aria-hidden="true"
             />
           </button>
         </div>
@@ -252,7 +260,7 @@ const currentCategoryData = computed(() => {
       <!-- Dots Navigation -->
       <div
         v-if="filteredProjects.length > 1"
-        class="flex justify-center gap-1 md:gap-2 px-4"
+        class="flex justify-center gap-1 md:gap-2"
       >
         <button
           v-for="(_, index) in filteredProjects"
@@ -270,73 +278,87 @@ const currentCategoryData = computed(() => {
       </div>
 
       <!-- Project Category Info -->
-      <div v-if="currentTab !== 'all' && currentCategoryData" class="max-w-3xl mx-auto space-y-6 px-4">
-        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md">
+      <div v-if="currentTab !== 'all' && currentCategoryData" class="max-w-3xl mx-auto space-y-6 select-none">
+        <div class="">
           <div class="flex items-center gap-4 mb-4">
             <div class="p-3 bg-blue-100 dark:bg-blue-900 rounded-lg">
               <Icon 
                 :name="currentCategoryData.icon" 
-                class="w-8 h-8 text-blue-600 dark:text-blue-400"
+                class="w-8 h-8 text-blue-600 dark:text-blue-400 pointer-events-none"
+                aria-hidden="true"
               />
             </div>
-            <h3 class="text-xl font-semibold dark:text-white">
+            <h3 class="text-xl font-semibold dark:text-white pointer-events-none">
               {{ currentCategoryData.title }}
             </h3>
           </div>
           
-          <p class="text-gray-600 dark:text-gray-300 mb-5 flex items-start gap-2">
-            <Icon name="heroicons:information-circle" class="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
-            <span>{{ currentCategoryData.description }}</span>
-          </p>
+          <div class="text-gray-600 dark:text-gray-300 mb-5">
+            <div class="flex items-start gap-2">
+              
+              <p class="pointer-events-none">{{ currentCategoryData.description }}</p>
+            </div>
+          </div>
           
           <div class="flex flex-wrap gap-2">
             <div class="w-full flex items-center gap-2 mb-2">
-              <Icon name="heroicons:code-bracket" class="w-5 h-5 text-blue-600 dark:text-blue-400" />
-              <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300">Technologies</h4>
+              <Icon 
+                name="heroicons:code-bracket" 
+                class="w-5 h-5 text-blue-600 dark:text-blue-400 pointer-events-none" 
+                aria-hidden="true"
+              />
+              <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 pointer-events-none">Technologies</h4>
             </div>
-            <span 
+            <div 
               v-for="tech in currentCategoryData.technologies" 
               :key="tech"
               class="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full flex items-center gap-1"
             >
-              <Icon name="heroicons:check-circle" class="w-3.5 h-3.5 text-green-500" />
-              {{ tech }}
-            </span>
+              <span class="flex-shrink-0">
+               
+              </span>
+              <span class="pointer-events-none">{{ tech }}</span>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- All Projects Category Icons -->
-      <div v-if="currentTab === 'all'" class="max-w-3xl mx-auto px-4">
+      <div v-if="currentTab === 'all'" class="max-w-3xl mx-auto">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div 
             v-for="(category, key) in portfolioConfig.projectCategories" 
             :key="key"
-            class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-lg transition-all cursor-pointer hover:translate-y-[-4px]"
+            class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-lg transition-all cursor-pointer hover:translate-y-[-4px] select-none"
             @click="currentTab = key as ProjectCategory"
           >
             <div class="flex flex-col items-center text-center">
               <div class="p-4 bg-blue-100 dark:bg-blue-900 rounded-full mb-4 relative">
                 <Icon 
                   :name="category.icon" 
-                  class="w-10 h-10 text-blue-600 dark:text-blue-400"
+                  class="w-10 h-10 text-blue-600 dark:text-blue-400 pointer-events-none"
+                  aria-hidden="true"
                 />
-                <span class="absolute -top-1 -right-1 bg-blue-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold">
+                <span class="absolute -top-1 -right-1 bg-blue-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold pointer-events-none">
                   {{ allProjects.filter((p: Project) => p.category === key).length }}
                 </span>
               </div>
-              <h3 class="text-lg font-semibold mb-2 dark:text-white flex items-center gap-1.5">
+              <h3 class="text-lg font-semibold mb-2 dark:text-white pointer-events-none">
                 {{ category.title }}
               </h3>
-              <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-3">
+              <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-3 pointer-events-none">
                 {{ category.description }}
               </p>
               <button 
                 class="mt-4 text-blue-600 dark:text-blue-400 text-sm font-medium flex items-center gap-1 hover:underline"
                 @click.stop="currentTab = key as ProjectCategory"
               >
-                View Projects
-                <Icon name="heroicons:arrow-right" class="w-4 h-4" />
+                <span class="pointer-events-none">View Projects</span>
+                <Icon 
+                  name="heroicons:arrow-right" 
+                  class="w-4 h-4 pointer-events-none"
+                  aria-hidden="true"
+                />
               </button>
             </div>
           </div>
@@ -381,9 +403,56 @@ button:focus-visible {
   outline-offset: 2px;
 }
 
-/* Prevent text selection on buttons */
-button {
+/* Prevent text selection on buttons and icons */
+button, .icon, [class*="heroicons"], [class*="mdi"] {
   user-select: none;
   -webkit-user-select: none;
+}
+
+/* Fix for icon positioning */
+.flex.items-start {
+  align-items: flex-start;
+}
+
+/* Ensure proper text wrapping */
+p {
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+/* Prevent cursor issues */
+::selection {
+  background: transparent;
+}
+
+/* Fix icon display issues */
+.pointer-events-none {
+  pointer-events: none;
+}
+
+/* Ensure all icons are properly displayed */
+svg {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Hide icon names from screen readers and selection */
+[aria-hidden="true"] {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Prevent selection of icon elements */
+.select-none * {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Ensure icons don't show their names when selected */
+.icon, svg {
+  font-size: 0;
+  line-height: 0;
 }
 </style>
