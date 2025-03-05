@@ -7,7 +7,7 @@ interface Project {
   title: string;
   type: string;
   imageUrl: string;
-  category: "DataRemediation" | "InfrastructurePortal" | "Mastering";
+  category: "DataRemediation" | "InfrastructurePortal" | "InformationProvider";
   // For future use:
   // description?: string;
   // technologies?: string[];
@@ -17,7 +17,7 @@ const tabs = [
   { id: "all", label: "All Projects" },
   { id: "DataRemediation", label: "Data Remediation" },
   { id: "InfrastructurePortal", label: "Infrastructure Portal" },
-  { id: "Mastering", label: "Mastering" },
+  { id: "InformationProvider", label: "Information Provider" },
 ];
 
 const allProjects = ref<Project[]>([]);
@@ -29,8 +29,8 @@ function getProjectTitle(category: string) {
       return "Data Remediation";
     case "InfrastructurePortal":
       return "Infrastructure Portal";
-    case "Mastering":
-      return "Mastering";
+    case "InformationProvider":
+      return "Information Provider";
     default:
       return category;
   }
@@ -47,8 +47,8 @@ onMounted(async () => {
       "/public/projects/InfrastructurePortal/*.{jpg,jpeg,png,webp}",
       { eager: true }
     );
-    const masteringFiles = import.meta.glob(
-      "/public/projects/Mastering/*.{jpg,jpeg,png,webp}",
+    const informationProviderFiles = import.meta.glob(
+      "/public/projects/InformationProvider/*.{jpg,jpeg,png,webp}",
       { eager: true }
     );
 
@@ -72,20 +72,21 @@ onMounted(async () => {
       })
     );
 
-    const masteringProjects = Object.keys(masteringFiles).map(
-      (path, index) => ({
-        id: `master-${index + 1}`,
-        title: "Mastering",
-        type: "Project",
-        imageUrl: path.replace("/public", ""),
-        category: "Mastering" as const,
+    const informationProviderProjects = Object.keys(
+      informationProviderFiles
+    ).map((path, index) => ({
+      id: `info-${index + 1}`,
+      title: "Information Provider",
+      type: "Project",
+      imageUrl: path.replace("/public", ""),
+      category: "InformationProvider" as const,
       })
     );
 
     allProjects.value = [
       ...dataRemediationProjects,
       ...infrastructureProjects,
-      ...masteringProjects,
+      ...informationProviderProjects,
     ];
   } catch (error) {
     console.error("Error loading project images:", error);
@@ -133,6 +134,7 @@ const goToSlide = (index: number) => {
           v-for="tab in tabs"
           :key="tab.id"
           @click="currentTab = tab.id"
+          tabindex="-1"
           class="px-3 py-2 text-sm rounded-lg transition-colors whitespace-nowrap flex-shrink-0"
           :class="[
             currentTab === tab.id
@@ -165,6 +167,7 @@ const goToSlide = (index: number) => {
               <div class="flex items-center justify-between">
                 <button
                   @click="currentTab = project.category"
+                  tabindex="-1"
                   class="text-xl md:text-2xl font-semibold dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-left"
                 >
                   {{ project.title }}
@@ -191,6 +194,7 @@ const goToSlide = (index: number) => {
           <button
             v-if="filteredProjects.length > 1"
             @click="prev"
+            tabindex="-1"
             class="pointer-events-auto ml-2 md:ml-4 p-1.5 md:p-2 rounded-full bg-white/80 dark:bg-gray-800/80 shadow-lg hover:bg-white dark:hover:bg-gray-800 transition-colors transform hover:scale-110"
             aria-label="Previous project"
           >
@@ -200,6 +204,7 @@ const goToSlide = (index: number) => {
           <button
             v-if="filteredProjects.length > 1"
             @click="next"
+            tabindex="-1"
             class="pointer-events-auto mr-2 md:mr-4 p-1.5 md:p-2 rounded-full bg-white/80 dark:bg-gray-800/80 shadow-lg hover:bg-white dark:hover:bg-gray-800 transition-colors transform hover:scale-110"
             aria-label="Next project"
           >
@@ -220,6 +225,7 @@ const goToSlide = (index: number) => {
           v-for="(_, index) in filteredProjects"
           :key="index"
           @click="goToSlide(index)"
+          tabindex="-1"
           class="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full transition-all duration-300"
           :class="[
             index === currentIndex
@@ -258,6 +264,7 @@ const goToSlide = (index: number) => {
 </template>
 
 <style scoped>
+/* Slide transition animations */
 .slide-enter-active,
 .slide-leave-active {
   transition: all 0.3s ease;
@@ -265,18 +272,12 @@ const goToSlide = (index: number) => {
 
 .slide-enter-from {
   opacity: 0;
-  transform: translateX(100%);
+  transform: translateX(30px);
 }
 
 .slide-leave-to {
   opacity: 0;
-  transform: translateX(-100%);
-}
-
-.slide-enter-to,
-.slide-leave-from {
-  opacity: 1;
-  transform: translateX(0);
+  transform: translateX(-30px);
 }
 
 /* Add responsive styles for navigation */
@@ -285,5 +286,21 @@ const goToSlide = (index: number) => {
   .slide-leave-active {
     transition: all 0.2s ease;
   }
+}
+
+/* Remove focus outline for mouse users but keep it for keyboard navigation */
+button:focus {
+  outline: none;
+}
+
+button:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Prevent text selection on buttons */
+button {
+  user-select: none;
+  -webkit-user-select: none;
 }
 </style>

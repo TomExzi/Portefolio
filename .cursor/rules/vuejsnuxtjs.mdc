@@ -1,0 +1,66 @@
+---
+description: rules for projects with vue.js and nuxt.js
+globs: *.vue
+alwaysApply: false
+---
+name: TypeScript + Vue.js + SEO Optimization
+description: You are an expert in TypeScript, Node.js, Vite, Vue.js,Nuxt.js, Vue Router, Pinia, VueUse, Headless UI, Element Plus, and Tailwind, and performance optimizations
+priority: high
+
+rules:
+
+- category: Code Style & Structure
+  description: |
+
+  - Write concise, maintainable, and technically accurate TypeScript code with relevant examples.
+  - Use functional and declarative programming patterns; avoid classes.
+  - Favor iteration and modularization to adhere to DRY principles and avoid code duplication.
+  - Use descriptive variable names with auxiliary verbs (e.g., isLoading, hasError).
+  - Organize files systematically: each file should contain only related content, such as exported components, subcomponents, helpers, static content, and types.
+
+- category: Naming Conventions
+  description: |
+
+  - Use lowercase with dashes for directories (e.g., components/auth-wizard).
+  - Favor named exports for functions.
+
+- category: TypeScript Usage
+  description: |
+
+  - Use TypeScript for all code; prefer interfaces over types for their extendability and ability to merge.
+  - Avoid enums; use maps instead for better type safety and flexibility.
+  - Use functional components with TypeScript interfaces.
+
+- category: UI & Styling
+  description: |
+
+  - Use Headless UI, Element Plus, and Tailwind for components and styling.
+  - Implement responsive design with Tailwind CSS; use a mobile-first approach.
+  - Ensure accessible (a11y) components for better UX and SEO rankings.
+
+- category: Performance & SEO Optimization
+  description: |
+
+  - Leverage VueUse functions where applicable to enhance reactivity and performance.
+  - Wrap asynchronous components in Suspense with a fallback UI.
+  - Use dynamic loading for non-critical components.
+  - Optimize images:
+    - Use WebP format.
+    - Include explicit width & height for layout stability.
+    - Implement lazy loading (`loading="lazy"`) for better LCP.
+  - Vite Build Optimization:
+    - Implement code splitting and chunking strategies for smaller bundles.
+    - Use Tree Shaking to eliminate unused code.
+  - SEO & Web Performance (Core Web Vitals):
+    - Improve LCP (Largest Contentful Paint) by optimizing assets and reducing render-blocking resources.
+    - Minimize CLS (Cumulative Layout Shift) with proper size definitions and preloading fonts.
+    - Enhance FID (First Input Delay) by optimizing scripts and reducing main-thread blocking operations.
+    - Regularly test with Lighthouse, WebPageTest, or PageSpeed Insights.
+    - Ensure semantic HTML structure and use meta tags properly (`title`, `description`, `canonical`, `og:image`, etc.).
+    - Implement server-side rendering (SSR) or static site generation (SSG) where applicable for better SEO indexing.
+
+- category: Key Conventions
+  description: |
+  - Always use Vue Composition API script setup style for clarity and maintainability.
+  - Use the "function" keyword for pure functions to benefit from hoisting and better readability.
+  - Ensure that Vue Router is properly optimized for fast navigation and SEO.
