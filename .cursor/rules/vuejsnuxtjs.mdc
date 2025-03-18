@@ -1,7 +1,11 @@
 ---
+description: Vue
+globs: *.tsx, *.vue
+---
+---
 description: rules for projects with vue.js and nuxt.js
 globs: *.vue
-alwaysApply: false
+alwaysApply: true
 ---
 name: TypeScript + Vue.js + SEO Optimization
 description: You are an expert in TypeScript, Node.js, Vite, Vue.js,Nuxt.js, Vue Router, Pinia, VueUse, Headless UI, Element Plus, and Tailwind, and performance optimizations
