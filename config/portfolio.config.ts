@@ -37,23 +37,23 @@ export const portfolioConfig = {
   process: [
     {
       id: "1",
-      title: "Architecture Design",
+      title: "Plan - Strategy & Architecture ",
       description:
-        "Creating scalable and maintainable system architectures with focus on performance and security",
+        "We start by understanding your business needs and goals. I create a clear roadmap, selecting the right technologies to ensure scalability, performance, and maintainability.",
       icon: "i-heroicons-cube-transparent-20-solid",
     },
     {
       id: "2",
-      title: "Development",
+      title: "Build – Full-Stack Development",
       description:
-        "Building robust applications using modern technologies and best practices",
+        "From frontend UI to backend APIs, I develop fast, secure, and user-friendly applications tailored to your project’s vision. Clean code, best practices, and seamless integrations are my priority",
       icon: "i-heroicons-code-bracket-20-solid",
     },
     {
       id: "3",
-      title: "Optimization",
+      title: "Scale – Optimization & Growth",
       description:
-        "Enhancing performance, SEO, and user experience through continuous improvement",
+        "Once launched, I ensure your app runs at peak performance. Speed, SEO, and security enhancements help you reach more users while keeping your platform efficient and future-proof",
       icon: "i-heroicons-arrow-trending-up-20-solid",
     },
   ],
@@ -76,7 +76,7 @@ export const portfolioConfig = {
     ],
     skills: [
       "Vue.js & Nuxt.js",
-      "Pinia, Vite", 
+      "Pinia, Vite",
       "TailwindCSS, Headless UI",
       "Angular, Angular Material, RxJS, NgRx",
       "C# & .NET",
@@ -87,7 +87,7 @@ export const portfolioConfig = {
       "CI/CD & DevOps",
       "Performance Optimization",
       "SEO & Accessibility",
-      "Retool"
+      "Retool",
     ],
   },
   contact: {
@@ -104,21 +104,24 @@ export const portfolioConfig = {
   projectCategories: {
     DataRemediation: {
       title: "Data Remediation",
-      description: "Advanced data cleansing and transformation solutions that ensure data quality and compliance across enterprise systems.",
+      description:
+        "Advanced data cleansing and transformation solutions that ensure data quality and compliance across enterprise systems.",
       icon: "heroicons:document-chart-bar",
-      technologies: ["Javascript", "Retool","AWS", "MongoDB"]
+      technologies: ["Javascript", "Retool", "AWS", "MongoDB"],
     },
     InfrastructurePortal: {
       title: "Infrastructure Portal",
-      description: "Centralized platform for managing cloud infrastructure, automating deployments, and monitoring system performance.",
+      description:
+        "Centralized platform for managing cloud infrastructure, automating deployments, and monitoring system performance.",
       icon: "heroicons:server",
-      technologies: ["Angular", "Node.js", "AWS", "C#", ".NET", "TypeScript"]
+      technologies: ["Angular", "Node.js", "AWS", "C#", ".NET", "TypeScript"],
     },
     InformationProvider: {
       title: "Information Provider",
-      description: "Real-time data aggregation and distribution systems that deliver critical business intelligence to stakeholders.",
+      description:
+        "Real-time data aggregation and distribution systems that deliver critical business intelligence to stakeholders.",
       icon: "heroicons:chart-bar",
-      technologies: ["Javascript", "Retool","AWS", "MongoDB"]
-    }
+      technologies: ["Javascript", "Retool", "AWS", "MongoDB"],
+    },
   },
 };

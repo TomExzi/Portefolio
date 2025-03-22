@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { portfolioConfig } from '~/config/portfolio.config';
+import { portfolioConfig } from "~/config/portfolio.config";
 
-type ProjectCategory = "DataRemediation" | "InfrastructurePortal" | "InformationProvider";
+type ProjectCategory =
+  | "DataRemediation"
+  | "InfrastructurePortal"
+  | "InformationProvider";
 type TabType = ProjectCategory | "all";
 
 const currentIndex = ref(0);
@@ -41,17 +44,41 @@ function getProjectTitle(category: string) {
   }
 }
 
+// Add this function to fix image paths
+function fixImagePath(path: string) {
+  // Remove /public prefix if present
+  let fixedPath = path.replace("/public", "");
+
+  // Ensure path starts with /
+  if (!fixedPath.startsWith("/")) {
+    fixedPath = "/" + fixedPath;
+  }
+
+  // For Infrastructure Portal specifically, try a different approach
+  if (fixedPath.includes("InfrastructurePortal")) {
+    // Try to use a more direct path
+    const filename = fixedPath.split("/").pop();
+    return `/projects/InfrastructurePortal/${filename}`;
+  }
+
+  return fixedPath;
+}
+
 // Load images from the projects folders
 onMounted(async () => {
   try {
+    console.log("Loading project images...");
+
     const dataRemediationFiles = import.meta.glob(
       "/public/projects/DataRemediation/*.{jpg,jpeg,png,webp}",
       { eager: true }
     );
+
     const infrastructureFiles = import.meta.glob(
       "/public/projects/InfrastructurePortal/*.{jpg,jpeg,png,webp}",
       { eager: true }
     );
+
     const informationProviderFiles = import.meta.glob(
       "/public/projects/InformationProvider/*.{jpg,jpeg,png,webp}",
       { eager: true }
@@ -62,7 +89,7 @@ onMounted(async () => {
         id: `data-${index + 1}`,
         title: "Data Remediation",
         type: "Project",
-        imageUrl: path.replace("/public", ""),
+        imageUrl: fixImagePath(path),
         category: "DataRemediation" as const,
       })
     );
@@ -72,7 +99,7 @@ onMounted(async () => {
         id: `infra-${index + 1}`,
         title: "Infrastructure Portal",
         type: "Project",
-        imageUrl: path.replace("/public", ""),
+        imageUrl: fixImagePath(path),
         category: "InfrastructurePortal" as const,
       })
     );
@@ -83,16 +110,17 @@ onMounted(async () => {
       id: `info-${index + 1}`,
       title: "Information Provider",
       type: "Project",
-      imageUrl: path.replace("/public", ""),
+      imageUrl: fixImagePath(path),
       category: "InformationProvider" as const,
-      })
-    );
+    }));
 
     allProjects.value = [
       ...dataRemediationProjects,
       ...infrastructureProjects,
       ...informationProviderProjects,
     ];
+
+    console.log("All projects loaded:", allProjects.value);
   } catch (error) {
     console.error("Error loading project images:", error);
   }
@@ -108,6 +136,18 @@ const filteredProjects = computed(() => {
 // Reset currentIndex when changing tabs
 watch(currentTab, () => {
   currentIndex.value = 0;
+
+  // Force a re-render of the background
+  nextTick(() => {
+    // This will trigger a re-evaluation of the currentProjectImage computed property
+    if (filteredProjects.value.length > 0) {
+      const temp = currentIndex.value;
+      currentIndex.value = -1;
+      setTimeout(() => {
+        currentIndex.value = temp;
+      }, 10);
+    }
+  });
 });
 
 const next = () => {
@@ -127,17 +167,95 @@ const goToSlide = (index: number) => {
 
 // Safely access project category data with type checking
 const currentCategoryData = computed(() => {
-  if (currentTab.value === 'all') return null;
+  if (currentTab.value === "all") return null;
   return portfolioConfig.projectCategories[currentTab.value as ProjectCategory];
+});
+
+// Add this to your script setup
+const preloadedImages = ref(new Set<string>());
+
+// Modify the preload images function to add debugging and handle errors
+watch(
+  filteredProjects,
+  (newProjects) => {
+    newProjects.forEach((project) => {
+      if (project.imageUrl && !preloadedImages.value.has(project.imageUrl)) {
+        console.log(`Attempting to preload: ${project.imageUrl}`);
+
+        const img = new Image();
+
+        // Add error handling
+        img.onerror = () => {
+          console.error(`Failed to load image: ${project.imageUrl}`);
+          // Try an alternative path format as fallback
+          const altPath = project.imageUrl.replace(/^\//, "");
+          console.log(`Trying alternative path: /${altPath}`);
+
+          const altImg = new Image();
+          altImg.src = `/${altPath}`;
+          altImg.onload = () => {
+            console.log(
+              `Successfully loaded with alternative path: /${altPath}`
+            );
+            // Store the working path
+            preloadedImages.value.add(project.imageUrl);
+          };
+        };
+
+        img.onload = () => {
+          console.log(`Successfully preloaded: ${project.imageUrl}`);
+          preloadedImages.value.add(project.imageUrl);
+        };
+
+        img.src = project.imageUrl.startsWith("/")
+          ? project.imageUrl
+          : `/${project.imageUrl}`;
+      }
+    });
+  },
+  { immediate: true }
+);
+
+// Simplify the currentProjectImage computed property
+const currentProjectImage = computed(() => {
+  if (filteredProjects.value.length === 0) return null;
+
+  const project = filteredProjects.value[currentIndex.value];
+  if (!project) return null;
+
+  return project.imageUrl;
 });
 </script>
 
 <template>
-  <SectionCard id="projects">
-    <div class="flex items-center gap-3 mb-6">
-      <Icon 
-        name="heroicons:rectangle-stack" 
-        class="w-6 h-6 text-blue-600 dark:text-blue-400" 
+  <SectionCard
+    id="projects"
+    :style="
+      currentProjectImage
+        ? {
+            backgroundImage: `url(${currentProjectImage})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            backgroundAttachment: 'fixed',
+            position: 'relative',
+            isolation: 'isolate',
+            imageRendering: 'auto',
+          }
+        : {}
+    "
+    class="relative overflow-hidden"
+  >
+    <!-- Overlay for the section background -->
+    <div
+      v-if="currentProjectImage"
+      class="absolute inset-0 bg-white/70 dark:bg-gray-800/75 backdrop-blur-sm -z-10"
+    ></div>
+
+    <div class="flex items-center gap-3 mb-6 relative">
+      <Icon
+        name="heroicons:rectangle-stack"
+        class="w-6 h-6 text-blue-600 dark:text-blue-400"
         aria-hidden="true"
       />
       <h2 class="text-2xl font-bold dark:text-white">Featured Projects</h2>
@@ -160,13 +278,18 @@ const currentCategoryData = computed(() => {
               : 'text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400',
           ]"
         >
-          <Icon 
-            v-if="tab.id !== 'all'" 
-            :name="portfolioConfig.projectCategories[tab.id as ProjectCategory].icon" 
+          <Icon
+            v-if="tab.id !== 'all'"
+            :name="portfolioConfig.projectCategories[tab.id as ProjectCategory].icon"
             class="w-4 h-4"
             aria-hidden="true"
           />
-          <Icon v-else name="heroicons:squares-2x2" class="w-4 h-4" aria-hidden="true" />
+          <Icon
+            v-else
+            name="heroicons:squares-2x2"
+            class="w-4 h-4"
+            aria-hidden="true"
+          />
           {{ tab.label }}
         </button>
       </div>
@@ -185,19 +308,41 @@ const currentCategoryData = computed(() => {
             v-for="(project, index) in filteredProjects"
             :key="project.id"
             v-show="index === currentIndex"
-            class="w-full bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg"
+            class="relative w-full bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg"
           >
+            <!-- Blurred Background Image -->
+            <div
+              class="absolute inset-0 w-full h-full bg-center bg-cover opacity-30 dark:opacity-20"
+              :style="{
+                backgroundImage: `url(${project.imageUrl})`,
+                filter: 'blur(20px) saturate(1.5)',
+                transform: 'scale(1.1)',
+                zIndex: 0,
+              }"
+            ></div>
+
+            <!-- Overlay to ensure content readability -->
+            <div
+              class="absolute inset-0 bg-white/70 dark:bg-gray-800/80"
+              style="z-index: 1"
+            ></div>
+
             <!-- Project Title -->
-            <div class="p-6 border-b border-gray-100 dark:border-gray-700">
+            <div
+              class="relative p-6 border-b border-gray-100 dark:border-gray-700"
+              style="z-index: 10"
+            >
               <div class="flex items-center justify-between select-none">
                 <button
                   @click="currentTab = project.category"
                   tabindex="-1"
                   class="text-xl md:text-2xl font-semibold dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-left flex items-center gap-2"
                 >
-                  <Icon 
-                    :name="portfolioConfig.projectCategories[project.category].icon" 
-                    class="w-6 h-6 text-blue-600 dark:text-blue-400 pointer-events-none" 
+                  <Icon
+                    :name="
+                      portfolioConfig.projectCategories[project.category].icon
+                    "
+                    class="w-6 h-6 text-blue-600 dark:text-blue-400 pointer-events-none"
                     aria-hidden="true"
                   />
                   <span class="pointer-events-none">{{ project.title }}</span>
@@ -206,16 +351,20 @@ const currentCategoryData = computed(() => {
             </div>
 
             <!-- Project Image -->
-            <div class="relative select-none">
+            <div class="relative select-none" style="z-index: 10">
               <img
                 :src="project.imageUrl"
                 :alt="project.title"
-                class="w-full h-[300px] md:h-[500px] object-contain bg-gray-100 dark:bg-gray-900 pointer-events-none"
+                class="w-full h-[300px] md:h-[500px] object-contain bg-transparent pointer-events-none"
               />
-              <div class="absolute bottom-3 right-3 bg-white/90 dark:bg-gray-800/90 rounded-full p-2 shadow-md">
-                <Icon 
-                  :name="portfolioConfig.projectCategories[project.category].icon" 
-                  class="w-5 h-5 text-blue-600 dark:text-blue-400 pointer-events-none" 
+              <div
+                class="absolute bottom-3 right-3 bg-white/90 dark:bg-gray-800/90 rounded-full p-2 shadow-md"
+              >
+                <Icon
+                  :name="
+                    portfolioConfig.projectCategories[project.category].icon
+                  "
+                  class="w-5 h-5 text-blue-600 dark:text-blue-400 pointer-events-none"
                   aria-hidden="true"
                 />
               </div>
@@ -225,7 +374,7 @@ const currentCategoryData = computed(() => {
 
         <!-- Navigation Buttons -->
         <div
-          class="absolute inset-0 flex items-center justify-between pointer-events-none"
+          class="absolute inset-0 flex items-center justify-between pointer-events-none z-20"
         >
           <button
             v-if="filteredProjects.length > 1"
@@ -234,9 +383,9 @@ const currentCategoryData = computed(() => {
             class="pointer-events-auto ml-2 md:ml-4 p-1.5 md:p-2 rounded-full bg-white/80 dark:bg-gray-800/80 shadow-lg hover:bg-white dark:hover:bg-gray-800 transition-colors transform hover:scale-110"
             aria-label="Previous project"
           >
-            <Icon 
-              name="heroicons:chevron-left" 
-              class="w-4 h-4 md:w-6 md:h-6 pointer-events-none" 
+            <Icon
+              name="heroicons:chevron-left"
+              class="w-4 h-4 md:w-6 md:h-6 pointer-events-none"
               aria-hidden="true"
             />
           </button>
@@ -278,45 +427,53 @@ const currentCategoryData = computed(() => {
       </div>
 
       <!-- Project Category Info -->
-      <div v-if="currentTab !== 'all' && currentCategoryData" class="max-w-3xl mx-auto space-y-6 select-none">
+      <div
+        v-if="currentTab !== 'all' && currentCategoryData"
+        class="max-w-3xl mx-auto space-y-6 select-none"
+      >
         <div class="">
           <div class="flex items-center gap-4 mb-4">
             <div class="p-3 bg-blue-100 dark:bg-blue-900 rounded-lg">
-              <Icon 
-                :name="currentCategoryData.icon" 
+              <Icon
+                :name="currentCategoryData.icon"
                 class="w-8 h-8 text-blue-600 dark:text-blue-400 pointer-events-none"
                 aria-hidden="true"
               />
             </div>
-            <h3 class="text-xl font-semibold dark:text-white pointer-events-none">
+            <h3
+              class="text-xl font-semibold dark:text-white pointer-events-none"
+            >
               {{ currentCategoryData.title }}
             </h3>
           </div>
-          
+
           <div class="text-gray-600 dark:text-gray-300 mb-5">
             <div class="flex items-start gap-2">
-              
-              <p class="pointer-events-none">{{ currentCategoryData.description }}</p>
+              <p class="pointer-events-none">
+                {{ currentCategoryData.description }}
+              </p>
             </div>
           </div>
-          
+
           <div class="flex flex-wrap gap-2">
             <div class="w-full flex items-center gap-2 mb-2">
-              <Icon 
-                name="heroicons:code-bracket" 
-                class="w-5 h-5 text-blue-600 dark:text-blue-400 pointer-events-none" 
+              <Icon
+                name="heroicons:code-bracket"
+                class="w-5 h-5 text-blue-600 dark:text-blue-400 pointer-events-none"
                 aria-hidden="true"
               />
-              <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 pointer-events-none">Technologies</h4>
+              <h4
+                class="text-sm font-medium text-gray-700 dark:text-gray-300 pointer-events-none"
+              >
+                Technologies
+              </h4>
             </div>
-            <div 
-              v-for="tech in currentCategoryData.technologies" 
+            <div
+              v-for="tech in currentCategoryData.technologies"
               :key="tech"
               class="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full flex items-center gap-1"
             >
-              <span class="flex-shrink-0">
-               
-              </span>
+              <span class="flex-shrink-0"> </span>
               <span class="pointer-events-none">{{ tech }}</span>
             </div>
           </div>
@@ -326,36 +483,74 @@ const currentCategoryData = computed(() => {
       <!-- All Projects Category Icons -->
       <div v-if="currentTab === 'all'" class="max-w-3xl mx-auto">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div 
-            v-for="(category, key) in portfolioConfig.projectCategories" 
+          <div
+            v-for="(category, key) in portfolioConfig.projectCategories"
             :key="key"
-            class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-lg transition-all cursor-pointer hover:translate-y-[-4px] select-none"
+            class="relative bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-lg transition-all cursor-pointer hover:translate-y-[-4px] select-none overflow-hidden"
             @click="currentTab = key as ProjectCategory"
           >
-            <div class="flex flex-col items-center text-center">
-              <div class="p-4 bg-blue-100 dark:bg-blue-900 rounded-full mb-4 relative">
-                <Icon 
-                  :name="category.icon" 
+            <!-- Blurred Background for Category Cards -->
+            <div
+              class="absolute inset-0 w-full h-full bg-center bg-cover opacity-10 dark:opacity-15"
+              :style="{
+                backgroundImage:
+                  allProjects.filter((p) => p.category === key).length > 0
+                    ? `url(${
+                        allProjects.filter((p) => p.category === key)[0]
+                          .imageUrl
+                      })`
+                    : 'none',
+                filter: 'blur(10px) saturate(1.2)',
+                transform: 'scale(1.1)',
+              }"
+              style="z-index: 0"
+            ></div>
+
+            <!-- Overlay -->
+            <div
+              class="absolute inset-0 bg-white/80 dark:bg-gray-800/90"
+              style="z-index: 1"
+            ></div>
+
+            <!-- Card Content -->
+            <div
+              class="flex flex-col items-center text-center relative"
+              style="z-index: 10"
+            >
+              <div
+                class="p-4 bg-blue-100 dark:bg-blue-900 rounded-full mb-4 relative"
+              >
+                <Icon
+                  :name="category.icon"
                   class="w-10 h-10 text-blue-600 dark:text-blue-400 pointer-events-none"
                   aria-hidden="true"
                 />
-                <span class="absolute -top-1 -right-1 bg-blue-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold pointer-events-none">
-                  {{ allProjects.filter((p: Project) => p.category === key).length }}
+                <span
+                  class="absolute -top-1 -right-1 bg-blue-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold pointer-events-none"
+                >
+                  {{
+                    allProjects.filter((p: Project) => p.category === key)
+                      .length
+                  }}
                 </span>
               </div>
-              <h3 class="text-lg font-semibold mb-2 dark:text-white pointer-events-none">
+              <h3
+                class="text-lg font-semibold mb-2 dark:text-white pointer-events-none"
+              >
                 {{ category.title }}
               </h3>
-              <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-3 pointer-events-none">
+              <p
+                class="text-sm text-gray-600 dark:text-gray-400 line-clamp-3 pointer-events-none"
+              >
                 {{ category.description }}
               </p>
-              <button 
+              <button
                 class="mt-4 text-blue-600 dark:text-blue-400 text-sm font-medium flex items-center gap-1 hover:underline"
                 @click.stop="currentTab = key as ProjectCategory"
               >
                 <span class="pointer-events-none">View Projects</span>
-                <Icon 
-                  name="heroicons:arrow-right" 
+                <Icon
+                  name="heroicons:arrow-right"
                   class="w-4 h-4 pointer-events-none"
                   aria-hidden="true"
                 />
@@ -404,7 +599,10 @@ button:focus-visible {
 }
 
 /* Prevent text selection on buttons and icons */
-button, .icon, [class*="heroicons"], [class*="mdi"] {
+button,
+.icon,
+[class*="heroicons"],
+[class*="mdi"] {
   user-select: none;
   -webkit-user-select: none;
 }
@@ -451,7 +649,8 @@ svg {
 }
 
 /* Ensure icons don't show their names when selected */
-.icon, svg {
+.icon,
+svg {
   font-size: 0;
   line-height: 0;
 }
