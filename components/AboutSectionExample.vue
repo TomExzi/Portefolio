@@ -29,10 +29,8 @@ const backgroundSvgUrl = computed(() =>
       isolation: 'isolate',
     }"
   >
-    <!-- Overlay for the section background to ensure content readability -->
-    <div
-      class="absolute inset-0 bg-white/85 dark:bg-gray-800/90 backdrop-blur-[2px] -z-10"
-    ></div>
+    <!-- Overlay for content readability -->
+    <div class="absolute inset-0 bg-white/90 dark:bg-gray-800/95 -z-10"></div>
 
     <!-- Your existing AboutSection content goes here -->
     <div class="flex items-center gap-3 mb-12">

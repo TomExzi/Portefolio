@@ -277,6 +277,9 @@ onUnmounted(() => {
       class="absolute inset-0 bg-white/70 dark:bg-gray-800/75 backdrop-blur-sm -z-10"
     ></div>
 
+    <!-- Background for better contrast -->
+    <div class="absolute inset-0 bg-white/85 dark:bg-gray-800/90 -z-10"></div>
+
     <div class="flex items-center gap-3 mb-6 relative">
       <Icon
         name="heroicons:rectangle-stack"
@@ -435,7 +438,7 @@ onUnmounted(() => {
               class="absolute inset-0 w-full h-full bg-center bg-cover opacity-30 dark:opacity-20"
               :style="{
                 backgroundImage: `url(${project.imageUrl})`,
-                filter: 'blur(20px) saturate(1.5)',
+                filter: 'blur(5px) saturate(1.2)',
                 transform: 'scale(1.1)',
                 zIndex: 0,
               }"
@@ -443,7 +446,7 @@ onUnmounted(() => {
 
             <!-- Overlay to ensure content readability -->
             <div
-              class="absolute inset-0 bg-white/70 dark:bg-gray-800/80"
+              class="absolute inset-0 bg-white/85 dark:bg-gray-800/90"
               style="z-index: 1"
             ></div>
 
@@ -632,7 +635,7 @@ onUnmounted(() => {
                           .imageUrl
                       })`
                     : 'none',
-                filter: 'blur(10px) saturate(1.2)',
+                filter: 'blur(3px) saturate(1.1)',
                 transform: 'scale(1.1)',
               }"
               style="z-index: 0"
@@ -640,7 +643,7 @@ onUnmounted(() => {
 
             <!-- Overlay -->
             <div
-              class="absolute inset-0 bg-white/80 dark:bg-gray-800/90"
+              class="absolute inset-0 bg-white/90 dark:bg-gray-800/95"
               style="z-index: 1"
             ></div>
 

@@ -1,7 +1,5 @@
 <template>
-  <header
-    class="sticky top-0 z-40 backdrop-blur-sm bg-white/80 dark:bg-gray-900/80 shadow-sm"
-  >
+  <header class="sticky top-0 z-40 bg-white/95 dark:bg-gray-900/95 shadow-sm">
     <div class="container mx-auto px-4 py-4">
       <div class="flex justify-between items-center">
         <!-- Logo and navigation -->

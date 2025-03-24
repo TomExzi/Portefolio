@@ -86,7 +86,7 @@ onUnmounted(() => {
 
 <template>
   <nav
-    class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 py-2 px-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur rounded-full shadow-lg border border-gray-200 dark:border-gray-700"
+    class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 py-2 px-4 bg-white/95 dark:bg-gray-900/95 rounded-full shadow-lg border border-gray-200 dark:border-gray-700"
   >
     <!-- Mobile Toggle Button (visible on small screens) -->
     <div class="md:hidden flex items-center justify-between">
@@ -158,7 +158,7 @@ onUnmounted(() => {
     <!-- Mobile Menu (conditionally visible) -->
     <div
       v-if="isMobileMenuOpen"
-      class="mobile-menu md:hidden absolute bottom-full mb-2 left-0 right-0 rounded-lg bg-white/95 dark:bg-gray-900/95 backdrop-blur shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50"
+      class="mobile-menu md:hidden absolute bottom-full mb-2 left-0 right-0 rounded-lg bg-white/98 dark:bg-gray-900/98 shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50"
     >
       <div class="flex flex-col w-full">
         <NuxtLink

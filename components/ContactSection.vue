@@ -43,10 +43,8 @@ const contactItems = [
       isolation: 'isolate',
     }"
   >
-    <!-- Reduced opacity overlay for better image visibility -->
-    <div
-      class="absolute inset-0 bg-white/70 dark:bg-gray-800/75 backdrop-blur-[1px] -z-10"
-    ></div>
+    <!-- Overlay for better readability -->
+    <div class="absolute inset-0 bg-white/85 dark:bg-gray-800/90 -z-10"></div>
 
     <div class="flex items-center gap-3 mb-8 relative z-10">
       <Icon name="mdi:email" class="w-7 h-7 text-blue-600 dark:text-blue-400" />
@@ -57,7 +55,7 @@ const contactItems = [
 
     <div class="max-w-3xl mx-auto relative z-10">
       <div
-        class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden"
+        class="bg-white/90 dark:bg-gray-800/90 rounded-2xl shadow-xl overflow-hidden"
       >
         <div class="p-8">
           <p

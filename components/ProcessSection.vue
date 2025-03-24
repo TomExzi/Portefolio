@@ -29,10 +29,8 @@ const backgroundImageUrl =
       isolation: 'isolate',
     }"
   >
-    <!-- Background overlay with reduced opacity -->
-    <div
-      class="absolute inset-0 bg-gray-50/60 dark:bg-gray-900/75 backdrop-blur-[1px] -z-10"
-    ></div>
+    <!-- Background overlay for better readability -->
+    <div class="absolute inset-0 bg-gray-50/75 dark:bg-gray-900/85 -z-10"></div>
 
     <div class="container mx-auto px-4 relative z-10">
       <div class="max-w-3xl mx-auto text-center mb-12">
@@ -48,7 +46,7 @@ const backgroundImageUrl =
       >
         <!-- Plan Card -->
         <div
-          class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-md p-6 process-card plan-card"
+          class="bg-white/90 dark:bg-gray-800/90 rounded-xl shadow-md p-6 process-card plan-card"
         >
           <div
             class="flex items-center justify-center w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full mb-4 mx-auto process-icon"
@@ -68,7 +66,7 @@ const backgroundImageUrl =
 
         <!-- Build Card -->
         <div
-          class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-md p-6 process-card build-card"
+          class="bg-white/90 dark:bg-gray-800/90 rounded-xl shadow-md p-6 process-card build-card"
         >
           <div
             class="flex items-center justify-center w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full mb-4 mx-auto process-icon"
@@ -88,7 +86,7 @@ const backgroundImageUrl =
 
         <!-- Scale Card -->
         <div
-          class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-md p-6 process-card scale-card"
+          class="bg-white/90 dark:bg-gray-800/90 rounded-xl shadow-md p-6 process-card scale-card"
         >
           <div
             class="flex items-center justify-center w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full mb-4 mx-auto process-icon"
@@ -181,7 +179,6 @@ const backgroundImageUrl =
   transition: all 0.3s ease;
   z-index: 1;
   overflow: hidden;
-
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
@@ -200,6 +197,7 @@ const backgroundImageUrl =
 .process-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  backdrop-filter: none;
 }
 
 .process-card:hover::before {

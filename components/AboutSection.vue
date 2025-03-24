@@ -19,10 +19,8 @@ const bgSvgUrl = "/assets/svg/undraw_dev-productivity_5wps.svg";
       isolation: 'isolate',
     }"
   >
-    <!-- Overlay for the section background to ensure content readability -->
-    <div
-      class="absolute inset-0 bg-white/80 dark:bg-gray-800/85 backdrop-blur-[1px] -z-10"
-    ></div>
+    <!-- Overlay for content readability -->
+    <div class="absolute inset-0 bg-white/90 dark:bg-gray-800/95 -z-10"></div>
 
     <div class="flex items-center gap-3 mb-12">
       <Icon
