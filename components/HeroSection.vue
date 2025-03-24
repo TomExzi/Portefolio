@@ -6,22 +6,80 @@ const { t, locale } = useI18n();
 const heroTitle = computed(() => t("hero.title"));
 const heroDescription = computed(() => t("hero.description"));
 const ctaText = computed(() => t("hero.ctaText"));
+
+// Import dark mode composable
+const colorMode = useColorMode();
+const isDarkMode = computed(() => colorMode.value === "dark");
+
+// Define images for different modes
+const darkArrowImage = "/assets/images/white-arrow-transparent-png-10.png";
+const lightArrowImage =
+  "/assets/images/Curved-arrow-doodle-Hand-drawn-brush-st-Graphics-70917217-1-1-580x387.png";
+
+// Reactive arrow image based on color mode
+const arrowImage = computed(() =>
+  isDarkMode.value ? darkArrowImage : lightArrowImage
+);
 </script>
 
 <template>
   <section class="py-16 md:py-24 hero-section">
     <div class="container mx-auto px-4 text-center">
-      <div class="max-w-3xl mx-auto">
-        <h1
-          class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-display hero-title"
-        >
-          {{ heroTitle }}
-        </h1>
-        <p
-          class="text-xl text-gray-600 dark:text-gray-400 mb-8 hero-description mx-auto"
-        >
-          {{ heroDescription }}
-        </p>
+      <div class="max-w-3xl mx-auto relative">
+        <!-- Title with arrow pointing to it -->
+        <div class="relative">
+          <h1
+            class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-display hero-title"
+          >
+            {{ heroTitle }}
+          </h1>
+          <ClientOnly>
+            <div
+              class="title-arrow-container"
+              :class="{ 'dark-mode': isDarkMode }"
+            >
+              <img
+                :src="arrowImage"
+                alt="Curved arrow"
+                class="arrow-image title-arrow"
+                :class="{ 'dark-mode': isDarkMode }"
+              />
+              <span
+                class="arrow-text title-arrow-text"
+                :class="{ 'dark-mode': isDarkMode }"
+                >Us</span
+              >
+            </div>
+          </ClientOnly>
+        </div>
+
+        <!-- Description with arrow pointing to it -->
+        <div class="relative">
+          <p
+            class="text-xl text-gray-600 dark:text-gray-400 mb-8 hero-description mx-auto"
+          >
+            {{ heroDescription }}
+          </p>
+          <ClientOnly>
+            <div
+              class="description-arrow-container"
+              :class="{ 'dark-mode': isDarkMode }"
+            >
+              <img
+                :src="arrowImage"
+                alt="Curved arrow"
+                class="arrow-image description-arrow"
+                :class="{ 'dark-mode': isDarkMode }"
+              />
+              <span
+                class="arrow-text description-arrow-text"
+                :class="{ 'dark-mode': isDarkMode }"
+                >Me</span
+              >
+            </div>
+          </ClientOnly>
+        </div>
+
         <NuxtLink
           to="#contact"
           class="inline-flex items-center px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-lg font-medium transition-colors hero-cta"
@@ -90,6 +148,108 @@ const ctaText = computed(() => t("hero.ctaText"));
   transform: translateY(-2px);
 }
 
+/* Add transitions for smoother changes */
+.arrow-image,
+.arrow-text,
+.title-arrow-container,
+.description-arrow-container {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Arrow styling */
+.arrow-image {
+  width: 120px;
+  height: auto;
+  position: absolute;
+  z-index: 2;
+}
+
+.arrow-image.dark-mode {
+  width: 180px;
+  border: 0px solid rgba(96, 165, 250, 0.4);
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+}
+
+.arrow-text {
+  position: absolute;
+  font-family: "Permanent Marker", cursive, sans-serif;
+  font-size: 1.5rem;
+  color: #000;
+  z-index: 3;
+  text-shadow: 1px 1px 2px white; /* Make text more visible */
+}
+
+.arrow-text.dark-mode {
+  color: #fff;
+  font-size: 2rem;
+  text-shadow: 1px 1px 2px black; /* Make text more visible in dark mode */
+}
+
+/* Title arrow positioning */
+.title-arrow-container {
+  position: absolute;
+  width: 120px;
+  height: 80px;
+  top: 20px;
+  left: -120px;
+}
+
+.title-arrow-container.dark-mode {
+  width: 180px;
+  height: 120px;
+  top: 20%;
+  left: -160px;
+  //border: 1px dashed rgba(96, 165, 250, 0.4);
+}
+
+.title-arrow {
+  top: 0;
+  left: 0;
+  transform: rotate(-30deg);
+}
+
+.title-arrow-text {
+  top: 80%;
+  left: 30px;
+}
+
+.title-arrow-text.dark-mode {
+  top: 60%;
+}
+
+/* Description arrow positioning */
+.description-arrow-container {
+  position: absolute;
+  width: 120px;
+  height: 80px;
+  top: 10px;
+  right: -120px;
+}
+
+.description-arrow-container.dark-mode {
+  width: 180px;
+  height: 120px;
+  top: 30px;
+  left: 95%;
+  //border: 1px dashed rgba(96, 165, 250, 0.4);
+}
+
+.description-arrow {
+  top: 0;
+  right: 0;
+  transform: scaleX(-1) rotate(-40deg);
+}
+
+.description-arrow-text {
+  top: 80%;
+  right: 40px;
+}
+
+.description-arrow-text.dark-mode {
+  top: 60%;
+  right: 50px;
+}
+
 /* Animations */
 @keyframes fadeInUp {
   from {
@@ -107,6 +267,35 @@ const ctaText = computed(() => t("hero.ctaText"));
   .hero-description,
   .hero-cta {
     animation: none;
+  }
+}
+
+/* Hide arrows on screens under 1200px */
+@media (max-width: 1199px) {
+  .title-arrow-container,
+  .description-arrow-container {
+    display: none;
+  }
+}
+
+/* Responsive adjustments for arrows if visible */
+@media (min-width: 1200px) {
+  .title-arrow-container {
+    left: -120px;
+  }
+
+  .description-arrow-container {
+    right: -120px;
+  }
+
+  .title-arrow-container.dark-mode {
+    left: -160px;
+    width: 180px;
+  }
+
+  .description-arrow-container.dark-mode {
+    right: -160px;
+    width: 180px;
   }
 }
 

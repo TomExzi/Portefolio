@@ -61,7 +61,7 @@ const contactItems = [
       >
         <div class="p-8">
           <p
-            class="text-lg text-gray-700 dark:text-gray-200 mb-8 flex items-start gap-3"
+            class="text-lg text-gray-700 dark:text-gray-400 mb-8 flex items-start gap-3"
           >
             <Icon
               name="heroicons:chat-bubble-left-right"
