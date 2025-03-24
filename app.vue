@@ -1,10 +1,5 @@
 <template>
   <div>
-    <!-- Debug display to check if translations are working -->
-    <div class="fixed bottom-0 right-0 p-2 bg-black/50 text-white z-50">
-      Locale: {{ locale }}
-    </div>
-
     <NuxtLayout>
       <NuxtPage :key="locale" />
     </NuxtLayout>

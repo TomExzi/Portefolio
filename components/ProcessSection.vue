@@ -10,14 +10,31 @@ const buildTitle = computed(() => t("process.build.title"));
 const buildDescription = computed(() => t("process.build.description"));
 const scaleTitle = computed(() => t("process.scale.title"));
 const scaleDescription = computed(() => t("process.scale.description"));
+
+// Background image path
+const backgroundImageUrl =
+  "/assets/images/daniel-mccullough-HtBlQdxfG9k-unsplash.jpg";
 </script>
 
 <template>
   <section
     id="process"
-    class="py-16 bg-gray-50 dark:bg-gray-900 process-section"
+    class="py-16 process-section relative overflow-hidden"
+    :style="{
+      backgroundImage: `url(${backgroundImageUrl})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      position: 'relative',
+      isolation: 'isolate',
+    }"
   >
-    <div class="container mx-auto px-4">
+    <!-- Background overlay with reduced opacity -->
+    <div
+      class="absolute inset-0 bg-gray-50/60 dark:bg-gray-900/75 backdrop-blur-[1px] -z-10"
+    ></div>
+
+    <div class="container mx-auto px-4 relative z-10">
       <div class="max-w-3xl mx-auto text-center mb-12">
         <h2
           class="text-3xl md:text-4xl font-bold mb-6 font-display process-title"
@@ -26,10 +43,12 @@ const scaleDescription = computed(() => t("process.scale.description"));
         </h2>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 process-cards">
+      <div
+        class="grid grid-cols-1 md:grid-cols-3 gap-8 process-cards dark:text-white"
+      >
         <!-- Plan Card -->
         <div
-          class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 process-card plan-card"
+          class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-md p-6 process-card plan-card"
         >
           <div
             class="flex items-center justify-center w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full mb-4 mx-auto process-icon"
@@ -42,14 +61,14 @@ const scaleDescription = computed(() => t("process.scale.description"));
           <h3 class="text-xl font-bold text-center mb-4">
             {{ planTitle }}
           </h3>
-          <p class="text-gray-600 dark:text-gray-400 text-center">
+          <p class="text-gray-800 dark:text-gray-200 text-center">
             {{ planDescription }}
           </p>
         </div>
 
         <!-- Build Card -->
         <div
-          class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 process-card build-card"
+          class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-md p-6 process-card build-card"
         >
           <div
             class="flex items-center justify-center w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full mb-4 mx-auto process-icon"
@@ -62,14 +81,14 @@ const scaleDescription = computed(() => t("process.scale.description"));
           <h3 class="text-xl font-bold text-center mb-4">
             {{ buildTitle }}
           </h3>
-          <p class="text-gray-600 dark:text-gray-400 text-center">
+          <p class="text-gray-800 dark:text-gray-200 text-center">
             {{ buildDescription }}
           </p>
         </div>
 
         <!-- Scale Card -->
         <div
-          class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 process-card scale-card"
+          class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-md p-6 process-card scale-card"
         >
           <div
             class="flex items-center justify-center w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full mb-4 mx-auto process-icon"
@@ -82,7 +101,7 @@ const scaleDescription = computed(() => t("process.scale.description"));
           <h3 class="text-xl font-bold text-center mb-4">
             {{ scaleTitle }}
           </h3>
-          <p class="text-gray-600 dark:text-gray-400 text-center">
+          <p class="text-gray-800 dark:text-gray-200 text-center">
             {{ scaleDescription }}
           </p>
         </div>
@@ -94,12 +113,40 @@ const scaleDescription = computed(() => t("process.scale.description"));
 <style scoped>
 .process-section {
   position: relative;
+  z-index: 0;
+}
+
+/* Enhanced animation for the background */
+@media (prefers-reduced-motion: no-preference) {
+  .process-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: inherit;
+    background-size: inherit;
+    background-position: inherit;
+    background-repeat: inherit;
+    z-index: -20;
+    opacity: 1;
+    animation: subtle-pan 180s infinite alternate ease-in-out;
+    filter: contrast(1.2) saturate(1.2);
+  }
+
+  @keyframes subtle-pan {
+    0% {
+      transform: scale(1.05) translate(0%, 0%);
+    }
+    100% {
+      transform: scale(1.05) translate(-2%, 0%);
+    }
+  }
 }
 
 .process-title {
   color: #1e40af;
   position: relative;
   display: inline-block;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.7);
 }
 
 .process-title::after {
@@ -125,7 +172,7 @@ const scaleDescription = computed(() => t("process.scale.description"));
   left: 25%;
   right: 25%;
   height: 2px;
-  background: #e5e7eb;
+  background: rgba(229, 231, 235, 0.7);
   z-index: 0;
 }
 
@@ -134,6 +181,8 @@ const scaleDescription = computed(() => t("process.scale.description"));
   transition: all 0.3s ease;
   z-index: 1;
   overflow: hidden;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .process-card::before {
@@ -150,7 +199,7 @@ const scaleDescription = computed(() => t("process.scale.description"));
 
 .process-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
 .process-card:hover::before {
@@ -159,6 +208,7 @@ const scaleDescription = computed(() => t("process.scale.description"));
 
 .process-icon {
   transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
 }
 
 .process-card:hover .process-icon {
@@ -218,6 +268,7 @@ const scaleDescription = computed(() => t("process.scale.description"));
 
 .dark .process-title {
   color: #60a5fa;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
 }
 
 .dark .process-title::after {
@@ -225,7 +276,7 @@ const scaleDescription = computed(() => t("process.scale.description"));
 }
 
 .dark .process-cards::before {
-  background: #374151;
+  background: rgba(55, 65, 81, 0.7);
 }
 
 .dark .process-card::before {
@@ -236,10 +287,19 @@ const scaleDescription = computed(() => t("process.scale.description"));
   background: linear-gradient(135deg, #2563eb, #60a5fa);
 }
 
+/* Dark mode adjustments */
+:deep(.dark) .process-section::before {
+  filter: brightness(0.8) saturate(1.1) contrast(1.2);
+}
+
 @media (prefers-reduced-motion) {
   .plan-card,
   .build-card,
   .scale-card {
+    animation: none;
+  }
+
+  .process-section::before {
     animation: none;
   }
 }

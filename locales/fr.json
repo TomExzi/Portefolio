@@ -6,8 +6,8 @@
     "contact": "Contact"
   },
   "hero": {
-    "title": "Construire le futur et le présent du web",
-    "description": "Développeur Full Stack passionné, concentré sur la performance, le SEO et l'architecture évolutive, créant des expériences web efficaces et conviviales.",
+    "title": "Construire l’Avenir avec l’IA, l’Automatisation et des Solutions Évolutives",
+    "description": "Développeur Full Stack, spécialisé dans la performance, le SEO, les architectures évolutives et les solutions basées sur l’IA. Je conçois des expériences numériques intelligentes, performantes et intuitives, du web au mobile et bien plus encore.",
     "ctaText": "Me contacter"
   },
   "projects": {
@@ -17,9 +17,13 @@
     "technologies": "Technologies",
     "viewProjects": "Voir les projets",
     "all": "Tous les projets",
-    "dataRemediation": "Correction de données",
-    "infrastructurePortal": "Portail d'infrastructure",
-    "informationProvider": "Fournisseur d'informations"
+    "dataRemediation": "Data Remediation",
+    "infrastructurePortal": "Infrastructure Portal",
+    "informationProvider": "Information Provider",
+    "dataremediationDescription": "Solutions avancées de nettoyage et de transformation de données qui garantissent la qualité et la conformité des données dans les systèmes d'entreprise.",
+    "infrastructureportalDescription": "Plateforme centralisée pour gérer l'infrastructure cloud, automatiser les déploiements et surveiller les performances du système.",
+    "informationproviderDescription": "Systèmes d'agrégation et de distribution de données en temps réel qui fournissent des informations commerciales essentielles aux parties prenantes.",
+    "description": "Aperçu du projet et détails techniques"
   },
   "process": {
     "title": "Processus",
@@ -43,7 +47,39 @@
     "experience": "Expérience",
     "position": "Poste",
     "period": "Période",
-    "specializeIn": "Je me spécialise dans la création d'applications web réactives et performantes avec des frameworks modernes et les meilleures pratiques pour l'accessibilité et le référencement."
+    "specializeIn": "Je me spécialise dans la création d'applications web réactives et performantes avec des frameworks modernes et les meilleures pratiques pour l'accessibilité et le référencement.",
+    "experiences": [
+      {
+        "company": "Moody's",
+        "position": "Développeur Logiciel Full Stack",
+        "period": "2022 - 2025",
+        "description": [
+          "Développé et maintenu une application web pour l'automatisation de l'infrastructure, simplifiant les flux de travail DevOps.",
+          "Conçu et construit le backend, assurant une intégration transparente avec les services d'infrastructure.",
+          "Transition de DevOps vers l'ingénierie Frontend, exploitant les connaissances backend et infrastructure pour le développement full-stack.",
+          "Optimisé les performances du système et amélioré les processus d'automatisation pour une meilleure évolutivité.",
+          "Travaillé avec des frameworks frontend modernes pour créer des applications dynamiques et réactives.",
+          "Collaboré avec des équipes interfonctionnelles pour implémenter de nouvelles fonctionnalités et améliorer les systèmes existants.",
+          "Développé et mis en œuvre des stratégies de récupération, assurant un temps d'arrêt minimal et l'intégrité des données."
+        ]
+      }
+    ],
+    "skills": [
+      "Vue.js & Nuxt.js",
+      "Pinia, Vite",
+      "TailwindCSS, Headless UI",
+      "Angular, Angular Material, RxJS, NgRx",
+      "C# & .NET",
+      "TypeScript & JavaScript",
+      "Node.js & Express",
+      "MongoDB & PostgreSQL",
+      "AWS",
+      "CI/CD & DevOps",
+      "Optimisation des performances",
+      "Référencement & Accessibilité",
+      "Retool",
+      "N8N"
+    ]
   },
   "contact": {
     "title": "Contactez-moi",

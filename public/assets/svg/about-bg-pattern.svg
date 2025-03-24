@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1440" height="800" viewBox="0 0 1440 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Pattern definitions -->
+  <defs>
+    <pattern id="grid-light" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#3B82F6" stroke-width="0.2" stroke-opacity="0.1"/>
+    </pattern>
+    
+    <pattern id="dots-light" width="80" height="80" patternUnits="userSpaceOnUse">
+      <circle cx="40" cy="40" r="1" fill="#3B82F6" fill-opacity="0.2"/>
+    </pattern>
+    
+    <pattern id="grid-dark" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#60A5FA" stroke-width="0.2" stroke-opacity="0.15"/>
+    </pattern>
+    
+    <pattern id="dots-dark" width="80" height="80" patternUnits="userSpaceOnUse">
+      <circle cx="40" cy="40" r="1" fill="#60A5FA" fill-opacity="0.25"/>
+    </pattern>
+  </defs>
+  
+  <!-- Light mode pattern group -->
+  <g class="light-pattern">
+    <!-- Grid pattern -->
+    <rect width="1440" height="800" fill="url(#grid-light)"/>
+    
+    <!-- Dots pattern -->
+    <rect width="1440" height="800" fill="url(#dots-light)"/>
+    
+    <!-- Abstract shapes -->
+    <circle cx="100" cy="100" r="250" fill="#3B82F6" fill-opacity="0.03"/>
+    <circle cx="1300" cy="700" r="280" fill="#3B82F6" fill-opacity="0.03"/>
+    
+    <!-- Flowing lines -->
+    <path d="M-100,300 Q400,100 900,400 T1600,300" stroke="#3B82F6" stroke-width="2" stroke-opacity="0.05" fill="none"/>
+    <path d="M-100,500 Q300,700 800,600 T1600,500" stroke="#3B82F6" stroke-width="2" stroke-opacity="0.05" fill="none"/>
+  </g>
+  
+  <!-- Dark mode pattern group -->
+  <g class="dark-pattern" style="display:none">
+    <!-- Grid pattern -->
+    <rect width="1440" height="800" fill="url(#grid-dark)"/>
+    
+    <!-- Dots pattern -->
+    <rect width="1440" height="800" fill="url(#dots-dark)"/>
+    
+    <!-- Abstract shapes -->
+    <circle cx="100" cy="100" r="250" fill="#60A5FA" fill-opacity="0.05"/>
+    <circle cx="1300" cy="700" r="280" fill="#60A5FA" fill-opacity="0.05"/>
+    
+    <!-- Flowing lines -->
+    <path d="M-100,300 Q400,100 900,400 T1600,300" stroke="#60A5FA" stroke-width="2" stroke-opacity="0.08" fill="none"/>
+    <path d="M-100,500 Q300,700 800,600 T1600,500" stroke="#60A5FA" stroke-width="2" stroke-opacity="0.08" fill="none"/>
+  </g>
+  
+  <style>
+    @media (prefers-color-scheme: dark) {
+      .light-pattern { display: none; }
+      .dark-pattern { display: block; }
+    }
+  </style>
+</svg> 

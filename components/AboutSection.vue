@@ -3,10 +3,27 @@ import { portfolioConfig } from "~/config/portfolio.config";
 
 const { about } = portfolioConfig;
 const { t } = useTranslations();
+const bgSvgUrl = "/assets/svg/undraw_dev-productivity_5wps.svg";
 </script>
 
 <template>
-  <SectionCard id="about">
+  <SectionCard
+    id="about"
+    class="about-section relative overflow-hidden"
+    :style="{
+      backgroundImage: `url(${bgSvgUrl})`,
+      backgroundSize: '60%',
+      backgroundPosition: 'right -5% bottom 0%',
+      backgroundRepeat: 'no-repeat',
+      position: 'relative',
+      isolation: 'isolate',
+    }"
+  >
+    <!-- Overlay for the section background to ensure content readability -->
+    <div
+      class="absolute inset-0 bg-white/80 dark:bg-gray-800/85 backdrop-blur-[1px] -z-10"
+    ></div>
+
     <div class="flex items-center gap-3 mb-12">
       <Icon
         name="heroicons:user"
@@ -28,7 +45,7 @@ const { t } = useTranslations();
         </div>
         <div class="space-y-8">
           <div
-            v-for="experience in about.experiences"
+            v-for="(experience, expIndex) in about.experiences"
             :key="experience.company"
             class="pl-4 border-l-2 border-blue-200 dark:border-blue-800"
           >
@@ -39,7 +56,7 @@ const { t } = useTranslations();
                 name="heroicons:building-office"
                 class="w-5 h-5 text-blue-600 dark:text-blue-400"
               />
-              {{ experience.position }}
+              {{ t(`about.experiences.${expIndex}.position`) }}
             </h4>
             <p
               class="text-gray-600 dark:text-gray-400 mb-2 flex items-center gap-2"
@@ -48,11 +65,12 @@ const { t } = useTranslations();
                 name="heroicons:calendar"
                 class="w-4 h-4 text-gray-500 dark:text-gray-400"
               />
-              {{ experience.company }} | {{ experience.period }}
+              {{ t(`about.experiences.${expIndex}.company`) }} |
+              {{ t(`about.experiences.${expIndex}.period`) }}
             </p>
             <ul class="space-y-2">
               <li
-                v-for="(item, index) in experience.description"
+                v-for="(item, index) in experience.description.length"
                 :key="index"
                 class="flex gap-2 text-gray-600 dark:text-gray-300"
               >
@@ -60,7 +78,9 @@ const { t } = useTranslations();
                   name="heroicons:check"
                   class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5"
                 />
-                <span>{{ item }}</span>
+                <span>{{
+                  t(`about.experiences.${expIndex}.description.${index}`)
+                }}</span>
               </li>
             </ul>
           </div>
@@ -78,16 +98,9 @@ const { t } = useTranslations();
           </h3>
         </div>
         <div class="prose dark:prose-invert">
-          <p class="text-gray-600 dark:text-gray-300 flex items-start gap-2">
-            <Icon
-              name="heroicons:light-bulb"
-              class="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5"
-            />
-            <span>{{ t("about.specializeIn") }}</span>
-          </p>
           <ul class="space-y-1 mt-4">
             <li
-              v-for="skill in about.skills"
+              v-for="(skill, skillIndex) in about.skills"
               :key="skill"
               class="flex gap-2 text-gray-600 dark:text-gray-300"
             >
@@ -103,3 +116,39 @@ const { t } = useTranslations();
     </div>
   </SectionCard>
 </template>
+
+<style scoped>
+.about-section {
+  z-index: 0;
+  transition: all 0.3s ease;
+}
+
+/* Optional animation for the background pattern */
+@media (prefers-reduced-motion: no-preference) {
+  .about-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: inherit;
+    background-size: inherit;
+    background-position: inherit;
+    background-repeat: inherit;
+    z-index: -20;
+    opacity: 1;
+    animation: subtle-float 120s infinite alternate ease-in-out;
+  }
+
+  @keyframes subtle-float {
+    0% {
+      transform: scale(1) translate(0, 0);
+    }
+    100% {
+      transform: scale(1.05) translate(1%, 1%);
+    }
+  }
+}
+
+:deep(.dark) .about-section::before {
+  filter: brightness(0.85) hue-rotate(10deg);
+}
+</style>

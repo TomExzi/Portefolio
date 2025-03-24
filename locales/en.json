@@ -3,11 +3,12 @@
     "home": "Home",
     "projects": "Projects",
     "about": "About",
-    "contact": "Contact"
+    "contact": "Contact",
+    "process": "Process"
   },
   "hero": {
-    "title": "Building the future and the present of the web",
-    "description": "Passionate Full Stack Developer focused on performance, SEO, and scalable architecture, crafting efficient and user-friendly web experiences.",
+    "title": "Building the Future of Tech with AI, Automation, and Scalable Solutions",
+    "description": "Passionate Full Stack Developer specializing in performance, SEO, scalable architecture, and AI-driven solutions. I build high-performing, intelligent, and user-friendly digital experiences across web, mobile, and beyond.",
     "ctaText": "Get in touch"
   },
   "projects": {
@@ -19,7 +20,11 @@
     "all": "All Projects",
     "dataRemediation": "Data Remediation",
     "infrastructurePortal": "Infrastructure Portal",
-    "informationProvider": "Information Provider"
+    "informationProvider": "Information Provider",
+    "dataremediationDescription": "Advanced data cleansing and transformation solutions that ensure data quality and compliance across enterprise systems.",
+    "infrastructureportalDescription": "Centralized platform for managing cloud infrastructure, automating deployments, and monitoring system performance.",
+    "informationproviderDescription": "Real-time data aggregation and distribution systems that deliver critical business intelligence to stakeholders.",
+    "description": "Project overview and technical details"
   },
   "process": {
     "title": "Process",
@@ -43,7 +48,39 @@
     "experience": "Experience",
     "position": "Position",
     "period": "Period",
-    "specializeIn": "I specialize in building responsive, high-performance web applications with modern frameworks and best practices for accessibility and SEO."
+    "specializeIn": "I specialize in building responsive, high-performance web applications with modern frameworks and best practices for accessibility and SEO.",
+    "experiences": [
+      {
+        "company": "Moody's",
+        "position": "Full Stack Software Engineer",
+        "period": "2022 - 2025",
+        "description": [
+          "Developed and maintained a web application for infrastructure automation, streamlining DevOps workflows.",
+          "Designed and built the backend, ensuring seamless integration with infrastructure services.",
+          "Transitioned from DevOps to Frontend Engineering, leveraging both backend and infrastructure knowledge for full-stack development.",
+          "Optimized system performance and enhanced automation processes for better scalability.",
+          "Worked with modern frontend frameworks to create dynamic and responsive applications.",
+          "Collaborated with cross-functional teams to implement new features and improve existing systems.",
+          "Developed and implemented recovery strategies, ensuring minimal downtime and data integrity."
+        ]
+      }
+    ],
+    "skills": [
+      "Vue.js & Nuxt.js",
+      "Pinia, Vite",
+      "TailwindCSS, Headless UI",
+      "Angular, Angular Material, RxJS, NgRx",
+      "C# & .NET",
+      "TypeScript & JavaScript",
+      "Node.js & Express",
+      "MongoDB & PostgreSQL",
+      "AWS",
+      "CI/CD & DevOps",
+      "Performance Optimization",
+      "SEO & Accessibility",
+      "Retool",
+      "N8N"
+    ]
   },
   "contact": {
     "title": "Get in Touch",

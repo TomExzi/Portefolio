@@ -3,6 +3,7 @@ import { portfolioConfig } from "~/config/portfolio.config";
 
 const { contact } = portfolioConfig;
 const { t } = useTranslations();
+const contactBgUrl = "/assets/images/krakenimages-376KN_ISplE-unsplash.jpg";
 
 const contactItems = [
   {
@@ -30,21 +31,37 @@ const contactItems = [
 </script>
 
 <template>
-  <SectionCard id="contact">
-    <div class="flex items-center gap-3 mb-8">
+  <SectionCard
+    id="contact"
+    class="contact-section relative overflow-hidden"
+    :style="{
+      backgroundImage: `url(${contactBgUrl})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      position: 'relative',
+      isolation: 'isolate',
+    }"
+  >
+    <!-- Reduced opacity overlay for better image visibility -->
+    <div
+      class="absolute inset-0 bg-white/70 dark:bg-gray-800/75 backdrop-blur-[1px] -z-10"
+    ></div>
+
+    <div class="flex items-center gap-3 mb-8 relative z-10">
       <Icon name="mdi:email" class="w-7 h-7 text-blue-600 dark:text-blue-400" />
       <h2 class="text-3xl font-bold dark:text-white">
         {{ t("contact.title") }}
       </h2>
     </div>
 
-    <div class="max-w-3xl mx-auto">
+    <div class="max-w-3xl mx-auto relative z-10">
       <div
-        class="bg-gradient-to-br from-white to-blue-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl shadow-xl overflow-hidden"
+        class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden"
       >
         <div class="p-8">
           <p
-            class="text-lg text-gray-600 dark:text-gray-300 mb-8 flex items-start gap-3"
+            class="text-lg text-gray-700 dark:text-gray-200 mb-8 flex items-start gap-3"
           >
             <Icon
               name="heroicons:chat-bubble-left-right"
@@ -70,7 +87,7 @@ const contactItems = [
               :to="item.link"
               :external="item.external"
               target="_blank"
-              class="flex flex-col items-center text-center hover:translate-y-[-2px] transition-transform group py-4 cursor-pointer"
+              class="flex flex-col items-center text-center hover:translate-y-[-2px] transition-transform group py-4 cursor-pointer bg-white/90 dark:bg-gray-900/60 rounded-xl hover:shadow-md"
             >
               <Icon
                 :name="item.icon"
@@ -94,8 +111,44 @@ const contactItems = [
 </template>
 
 <style scoped>
+.contact-section {
+  z-index: 0;
+  transition: all 0.3s ease;
+}
+
+/* Optional animation for the background */
+@media (prefers-reduced-motion: no-preference) {
+  .contact-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: inherit;
+    background-size: inherit;
+    background-position: inherit;
+    background-repeat: inherit;
+    z-index: -20;
+    opacity: 1;
+    animation: subtle-zoom 180s infinite alternate ease-in-out;
+    filter: contrast(1.1);
+  }
+
+  @keyframes subtle-zoom {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1.1);
+    }
+  }
+}
+
 /* Prevent text selection and cursor issues */
 ::selection {
   background: transparent;
+}
+
+/* Dark mode adjustments */
+:deep(.dark) .contact-section::before {
+  filter: brightness(0.8) saturate(1) contrast(1.1);
 }
 </style>

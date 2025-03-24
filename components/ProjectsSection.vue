@@ -232,6 +232,24 @@ const currentProjectImage = computed(() => {
 const slides = ref([
   // Your slide data
 ]);
+
+const isTabsMenuOpen = ref(false);
+
+// Close the menu when clicking outside
+function onClickOutside(event: MouseEvent) {
+  const target = event.target as HTMLElement;
+  if (!target.closest(".tabs-menu") && isTabsMenuOpen.value) {
+    isTabsMenuOpen.value = false;
+  }
+}
+
+onMounted(() => {
+  document.addEventListener("click", onClickOutside);
+});
+
+onUnmounted(() => {
+  document.removeEventListener("click", onClickOutside);
+});
 </script>
 
 <template>
@@ -271,44 +289,129 @@ const slides = ref([
     </div>
 
     <!-- Tabs -->
-    <div class="flex justify-center mb-8 overflow-x-auto">
-      <div
-        class="inline-flex p-1 space-x-1 bg-gray-100 dark:bg-gray-800 rounded-xl"
-      >
+    <div class="mb-8 overflow-hidden">
+      <!-- Mobile tabs dropdown (visible on small screens) -->
+      <div class="md:hidden px-2 tabs-menu">
         <button
-          v-for="tab in tabs"
-          :key="tab.id"
-          @click="currentTab = tab.id"
-          tabindex="-1"
-          class="px-3 py-2 text-sm rounded-lg transition-colors whitespace-nowrap flex-shrink-0 flex items-center gap-1.5"
-          :class="[
-            currentTab === tab.id
-              ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm'
-              : 'text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400',
-          ]"
+          @click="isTabsMenuOpen = !isTabsMenuOpen"
+          class="w-full flex items-center justify-between px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-xl text-gray-700 dark:text-gray-300"
         >
+          <div class="flex items-center gap-2">
+            <Icon
+              v-if="currentTab !== 'all'"
+              :name="portfolioConfig.projectCategories[currentTab as ProjectCategory].icon"
+              class="w-4 h-4"
+              aria-hidden="true"
+            />
+            <Icon
+              v-else
+              name="heroicons:squares-2x2"
+              class="w-4 h-4"
+              aria-hidden="true"
+            />
+            <span>
+              {{
+                currentTab === "all"
+                  ? $t("projects.all")
+                  : currentTab === "DataRemediation"
+                  ? $t("projects.dataRemediation")
+                  : currentTab === "InfrastructurePortal"
+                  ? $t("projects.infrastructurePortal")
+                  : $t("projects.informationProvider")
+              }}
+            </span>
+          </div>
           <Icon
-            v-if="tab.id !== 'all'"
-            :name="portfolioConfig.projectCategories[tab.id as ProjectCategory].icon"
-            class="w-4 h-4"
-            aria-hidden="true"
+            name="heroicons:chevron-down"
+            class="w-5 h-5"
+            :class="{ 'transform rotate-180': isTabsMenuOpen }"
           />
-          <Icon
-            v-else
-            name="heroicons:squares-2x2"
-            class="w-4 h-4"
-            aria-hidden="true"
-          />
-          {{
-            tab.id === "all"
-              ? $t("projects.all")
-              : tab.id === "DataRemediation"
-              ? $t("projects.dataRemediation")
-              : tab.id === "InfrastructurePortal"
-              ? $t("projects.infrastructurePortal")
-              : $t("projects.informationProvider")
-          }}
         </button>
+
+        <!-- Mobile dropdown menu -->
+        <div
+          v-if="isTabsMenuOpen"
+          class="mt-2 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden"
+        >
+          <button
+            v-for="tab in tabs"
+            :key="tab.id"
+            @click="
+              currentTab = tab.id;
+              isTabsMenuOpen = false;
+            "
+            class="w-full px-4 py-3 text-left text-sm transition-colors flex items-center gap-2"
+            :class="[
+              currentTab === tab.id
+                ? 'bg-gray-100 dark:bg-gray-700 text-blue-600 dark:text-blue-400'
+                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-750',
+            ]"
+          >
+            <Icon
+              v-if="tab.id !== 'all'"
+              :name="portfolioConfig.projectCategories[tab.id as ProjectCategory].icon"
+              class="w-4 h-4"
+              aria-hidden="true"
+            />
+            <Icon
+              v-else
+              name="heroicons:squares-2x2"
+              class="w-4 h-4"
+              aria-hidden="true"
+            />
+            {{
+              tab.id === "all"
+                ? $t("projects.all")
+                : tab.id === "DataRemediation"
+                ? $t("projects.dataRemediation")
+                : tab.id === "InfrastructurePortal"
+                ? $t("projects.infrastructurePortal")
+                : $t("projects.informationProvider")
+            }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Desktop tabs (visible on medium screens and up) -->
+      <div class="hidden md:flex justify-center">
+        <div
+          class="inline-flex p-1 space-x-1 bg-gray-100 dark:bg-gray-800 rounded-xl"
+        >
+          <button
+            v-for="tab in tabs"
+            :key="tab.id"
+            @click="currentTab = tab.id"
+            tabindex="-1"
+            class="px-3 py-2 text-sm rounded-lg transition-colors whitespace-nowrap flex-shrink-0 flex items-center gap-1.5"
+            :class="[
+              currentTab === tab.id
+                ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm'
+                : 'text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400',
+            ]"
+          >
+            <Icon
+              v-if="tab.id !== 'all'"
+              :name="portfolioConfig.projectCategories[tab.id as ProjectCategory].icon"
+              class="w-4 h-4"
+              aria-hidden="true"
+            />
+            <Icon
+              v-else
+              name="heroicons:squares-2x2"
+              class="w-4 h-4"
+              aria-hidden="true"
+            />
+            {{
+              tab.id === "all"
+                ? $t("projects.all")
+                : tab.id === "DataRemediation"
+                ? $t("projects.dataRemediation")
+                : tab.id === "InfrastructurePortal"
+                ? $t("projects.infrastructurePortal")
+                : $t("projects.informationProvider")
+            }}
+          </button>
+        </div>
       </div>
     </div>
 
@@ -397,12 +500,12 @@ const slides = ref([
             v-if="filteredProjects.length > 1"
             @click="prev"
             tabindex="-1"
-            class="pointer-events-auto ml-2 md:ml-4 p-1.5 md:p-2 rounded-full bg-white/80 dark:bg-gray-800/80 shadow-lg hover:bg-white dark:hover:bg-gray-800 transition-colors transform hover:scale-110"
+            class="pointer-events-auto ml-1 sm:ml-2 md:ml-4 p-2 md:p-3 rounded-full bg-white/90 dark:bg-gray-800/90 shadow-lg hover:bg-white dark:hover:bg-gray-800 transition-colors transform hover:scale-110"
             aria-label="Previous project"
           >
             <Icon
               name="heroicons:chevron-left"
-              class="w-4 h-4 md:w-6 md:h-6 pointer-events-none"
+              class="w-4 h-4 md:w-5 md:h-5"
               aria-hidden="true"
             />
           </button>
@@ -411,12 +514,12 @@ const slides = ref([
             v-if="filteredProjects.length > 1"
             @click="next"
             tabindex="-1"
-            class="pointer-events-auto mr-2 md:mr-4 p-1.5 md:p-2 rounded-full bg-white/80 dark:bg-gray-800/80 shadow-lg hover:bg-white dark:hover:bg-gray-800 transition-colors transform hover:scale-110"
+            class="pointer-events-auto mr-1 sm:mr-2 md:mr-4 p-2 md:p-3 rounded-full bg-white/90 dark:bg-gray-800/90 shadow-lg hover:bg-white dark:hover:bg-gray-800 transition-colors transform hover:scale-110"
             aria-label="Next project"
           >
             <Icon
               name="heroicons:chevron-right"
-              class="w-4 h-4 md:w-6 md:h-6 pointer-events-none"
+              class="w-4 h-4 md:w-5 md:h-5"
               aria-hidden="true"
             />
           </button>
@@ -426,17 +529,17 @@ const slides = ref([
       <!-- Dots Navigation -->
       <div
         v-if="filteredProjects.length > 1"
-        class="flex justify-center gap-1 md:gap-2"
+        class="flex justify-center gap-1 md:gap-2 mb-4"
       >
         <button
           v-for="(_, index) in filteredProjects"
           :key="index"
           @click="goToSlide(index)"
           tabindex="-1"
-          class="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full transition-all duration-300"
+          class="w-2 h-2 md:w-3 md:h-3 rounded-full transition-all duration-300"
           :class="[
             index === currentIndex
-              ? 'bg-blue-600 w-3 md:w-4'
+              ? 'bg-blue-600 w-4 md:w-5'
               : 'bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500',
           ]"
           :aria-label="`Go to project ${index + 1}`"
@@ -460,14 +563,26 @@ const slides = ref([
             <h3
               class="text-xl font-semibold dark:text-white pointer-events-none"
             >
-              {{ currentCategoryData.title }}
+              {{
+                $t(
+                  `projects.${
+                    currentTab === "DataRemediation"
+                      ? "dataRemediation"
+                      : currentTab === "InfrastructurePortal"
+                      ? "infrastructurePortal"
+                      : currentTab === "InformationProvider"
+                      ? "informationProvider"
+                      : currentTab
+                  }`
+                )
+              }}
             </h3>
           </div>
 
           <div class="text-gray-600 dark:text-gray-300 mb-5">
             <div class="flex items-start gap-2">
               <p class="pointer-events-none">
-                {{ currentCategoryData.description }}
+                {{ $t(`projects.${currentTab.toLowerCase()}Description`) }}
               </p>
             </div>
           </div>
@@ -554,12 +669,24 @@ const slides = ref([
               <h3
                 class="text-lg font-semibold mb-2 dark:text-white pointer-events-none"
               >
-                {{ category.title }}
+                {{
+                  $t(
+                    `projects.${
+                      key === "DataRemediation"
+                        ? "dataRemediation"
+                        : key === "InfrastructurePortal"
+                        ? "infrastructurePortal"
+                        : key === "InformationProvider"
+                        ? "informationProvider"
+                        : key
+                    }`
+                  )
+                }}
               </h3>
               <p
                 class="text-sm text-gray-600 dark:text-gray-400 line-clamp-3 pointer-events-none"
               >
-                {{ category.description }}
+                {{ $t(`projects.${key.toLowerCase()}Description`) }}
               </p>
               <button
                 class="mt-4 text-blue-600 dark:text-blue-400 text-sm font-medium flex items-center gap-1 hover:underline"

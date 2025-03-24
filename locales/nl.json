@@ -6,8 +6,8 @@
     "contact": "Contact"
   },
   "hero": {
-    "title": "Bouwen aan de toekomst en het heden van het web",
-    "description": "Gepassioneerde Full Stack Developer gericht op prestaties, SEO en schaalbare architectuur, die efficiënte en gebruiksvriendelijke web-ervaringen creëert.",
+    "title": "De Toekomst Bouwen met AI, Automatisering en Schaalbare Oplossingen",
+    "description": "Passievolle Full Stack Developer, gespecialiseerd in prestaties, SEO, schaalbare architecturen en AI-oplossingen. Ik ontwikkel slimme, efficiënte en gebruiksvriendelijke digitale ervaringen voor web, mobiel en meer.",
     "ctaText": "Neem contact op"
   },
   "projects": {
@@ -17,9 +17,13 @@
     "technologies": "Technologieën",
     "viewProjects": "Projecten bekijken",
     "all": "Alle projecten",
-    "dataRemediation": "Gegevenscorrectie",
-    "infrastructurePortal": "Infrastructuurportaal",
-    "informationProvider": "Informatieverstrekker"
+    "dataRemediation": "Data Remediation",
+    "infrastructurePortal": "Infrastructure Portal",
+    "informationProvider": "Information Provider",
+    "dataremediationDescription": "Geavanceerde oplossingen voor gegevensopschoning en transformatie die de gegevenskwaliteit en naleving in bedrijfssystemen waarborgen.",
+    "infrastructureportalDescription": "Gecentraliseerd platform voor het beheren van cloudinfrastructuur, het automatiseren van implementaties en het monitoren van systeemprestaties.",
+    "informationproviderDescription": "Realtime gegevensaggregatie- en distributiesystemen die kritieke bedrijfsinformatie aan belanghebbenden leveren.",
+    "description": "Projectoverzicht en technische details"
   },
   "process": {
     "title": "Proces",
@@ -43,7 +47,39 @@
     "experience": "Ervaring",
     "position": "Functie",
     "period": "Periode",
-    "specializeIn": "Ik ben gespecialiseerd in het bouwen van responsieve, hoogwaardige webapplicaties met moderne frameworks en best practices voor toegankelijkheid en SEO."
+    "specializeIn": "Ik ben gespecialiseerd in het bouwen van responsieve, hoogwaardige webapplicaties met moderne frameworks en best practices voor toegankelijkheid en SEO.",
+    "experiences": [
+      {
+        "company": "Moody's",
+        "position": "Full Stack Software Engineer",
+        "period": "2022 - 2025",
+        "description": [
+          "Ontwikkeld en onderhouden van een webapplicatie voor infrastructuurautomatisering, waardoor DevOps-workflows worden gestroomlijnd.",
+          "Backend ontworpen en gebouwd, met naadloze integratie met infrastructuurdiensten.",
+          "Overgestapt van DevOps naar Frontend Engineering, gebruikmakend van zowel backend- als infrastructuurkennis voor full-stack ontwikkeling.",
+          "Systeemprestaties geoptimaliseerd en automatiseringsprocessen verbeterd voor betere schaalbaarheid.",
+          "Gewerkt met moderne frontend-frameworks om dynamische en responsieve applicaties te creëren.",
+          "Samengewerkt met multifunctionele teams om nieuwe functies te implementeren en bestaande systemen te verbeteren.",
+          "Herstelstrategieën ontwikkeld en geïmplementeerd, met minimale uitvaltijd en gegevensintegriteit."
+        ]
+      }
+    ],
+    "skills": [
+      "Vue.js & Nuxt.js",
+      "Pinia, Vite",
+      "TailwindCSS, Headless UI",
+      "Angular, Angular Material, RxJS, NgRx",
+      "C# & .NET",
+      "TypeScript & JavaScript",
+      "Node.js & Express",
+      "MongoDB & PostgreSQL",
+      "AWS",
+      "CI/CD & DevOps",
+      "Prestatie-optimalisatie",
+      "SEO & Toegankelijkheid",
+      "Retool",
+      "N8N"
+    ]
   },
   "contact": {
     "title": "Neem contact op",

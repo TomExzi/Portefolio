@@ -117,6 +117,7 @@ export const portfolioConfig = {
       "Performance Optimization",
       "SEO & Accessibility",
       "Retool",
+      "n8n",
     ],
   },
   contact: {

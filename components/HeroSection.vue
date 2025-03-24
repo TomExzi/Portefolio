@@ -10,15 +10,15 @@ const ctaText = computed(() => t("hero.ctaText"));
 
 <template>
   <section class="py-16 md:py-24 hero-section">
-    <div class="container mx-auto px-4">
-      <div class="max-w-3xl">
+    <div class="container mx-auto px-4 text-center">
+      <div class="max-w-3xl mx-auto">
         <h1
           class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-display hero-title"
         >
           {{ heroTitle }}
         </h1>
         <p
-          class="text-xl text-gray-600 dark:text-gray-400 mb-8 hero-description"
+          class="text-xl text-gray-600 dark:text-gray-400 mb-8 hero-description mx-auto"
         >
           {{ heroDescription }}
         </p>
