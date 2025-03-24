@@ -2,20 +2,21 @@
 import { portfolioConfig } from "~/config/portfolio.config";
 
 const { about } = portfolioConfig;
+const { t } = useTranslations();
 </script>
 
 <template>
   <SectionCard id="about">
     <div class="flex items-center gap-3 mb-12">
       <Icon name="heroicons:user" class="w-7 h-7 text-blue-600 dark:text-blue-400" />
-      <h2 class="text-3xl font-bold dark:text-white">About Me</h2>
+      <h2 class="text-3xl font-bold dark:text-white">{{ t('aboutMe') }}</h2>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
       <div>
         <div class="flex items-center gap-2 mb-6">
           <Icon name="heroicons:briefcase" class="w-6 h-6 text-blue-600 dark:text-blue-400" />
-          <h3 class="text-2xl font-semibold dark:text-white">Experience</h3>
+          <h3 class="text-2xl font-semibold dark:text-white">{{ t('experience') }}</h3>
         </div>
         <div class="space-y-8">
           <div
@@ -49,14 +50,13 @@ const { about } = portfolioConfig;
         <div class="flex items-center gap-2 mb-6">
           <Icon name="heroicons:code-bracket" class="w-6 h-6 text-blue-600 dark:text-blue-400" />
           <h3 class="text-2xl font-semibold dark:text-white">
-            Skills & Technologies
+            {{ t('skillsTechnologies') }}
           </h3>
         </div>
         <div class="prose dark:prose-invert">
           <p class="text-gray-600 dark:text-gray-300 flex items-start gap-2">
             <Icon name="heroicons:light-bulb" class="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
-            <span>I specialize in full stack development with a focus on scalable
-            architectures. My expertise includes:</span>
+            <span>{{ t('specializeIn') }}</span>
           </p>
           <ul class="space-y-1 mt-4">
             <li
@@ -72,4 +72,4 @@ const { about } = portfolioConfig;
       </div>
     </div>
   </SectionCard>
-</template>
+</template> 

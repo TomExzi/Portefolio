@@ -2,6 +2,7 @@
 import { portfolioConfig } from "~/config/portfolio.config";
 
 const { hero } = portfolioConfig;
+const { t } = useTranslations();
 
 const scrollToContact = () => {
   const element = document.getElementById("contact");
@@ -13,7 +14,7 @@ const scrollToContact = () => {
   <section class="py-16 md:py-24 select-none text-center">
     <div class="flex flex-col items-center justify-center gap-3 mb-4">
       <h1 class="text-4xl md:text-6xl font-bold dark:text-white pointer-events-none">
-        Hi, I'm {{ hero.name }}
+        {{ t('hiIm') }} {{ hero.name }}
       </h1>
     </div>
     
@@ -35,7 +36,7 @@ const scrollToContact = () => {
         class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg transition-colors duration-200 font-medium flex items-center gap-2"
       >
         <Icon name="heroicons:paper-airplane" class="w-5 h-5 pointer-events-none" aria-hidden="true" />
-        {{ hero.ctaText }}
+        {{ t('getInTouch') }}
       </button>
     </div>
   </section>
@@ -52,4 +53,4 @@ p {
   word-break: normal;
   overflow-wrap: break-word;
 }
-</style>
+</style> 

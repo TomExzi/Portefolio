@@ -2,6 +2,7 @@
 import { portfolioConfig } from "~/config/portfolio.config";
 
 const { contact } = portfolioConfig;
+const { t } = useTranslations();
 
 const contactItems = [
   {
@@ -32,7 +33,7 @@ const contactItems = [
   <SectionCard id="contact">
     <div class="flex items-center gap-3 mb-8">
       <Icon name="mdi:email" class="w-7 h-7 text-blue-600 dark:text-blue-400" />
-      <h2 class="text-3xl font-bold dark:text-white">Get in Touch</h2>
+      <h2 class="text-3xl font-bold dark:text-white">{{ t('getInTouchTitle') }}</h2>
     </div>
 
     <div class="max-w-3xl mx-auto">
@@ -40,14 +41,12 @@ const contactItems = [
         <div class="p-8">
           <p class="text-lg text-gray-600 dark:text-gray-300 mb-8 flex items-start gap-3">
             <Icon name="heroicons:chat-bubble-left-right" class="w-6 h-6 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-1" />
-            <span>I'm always interested in hearing about new projects and opportunities.
-            Whether you have a question or just want to say hi, feel free to reach
-            out!</span>
+            <span>{{ t('contactIntro') }}</span>
           </p>
 
           <h3 class="text-xl font-semibold mb-6 dark:text-white flex items-center gap-2">
             <Icon name="heroicons:link" class="w-5 h-5 text-blue-600 dark:text-blue-400" />
-            Connect With Me
+            {{ t('connectWithMe') }}
           </h3>
           
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6 select-none">
@@ -82,4 +81,4 @@ const contactItems = [
 ::selection {
   background: transparent;
 }
-</style>
+</style> 

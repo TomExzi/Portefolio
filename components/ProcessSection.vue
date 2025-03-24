@@ -2,13 +2,14 @@
 import { portfolioConfig } from "~/config/portfolio.config";
 
 const { process } = portfolioConfig;
+const { t } = useTranslations();
 </script>
 
 <template>
   <SectionCard id="process">
     <div class="flex items-center gap-3 mb-12">
       <Icon name="heroicons:arrow-path" class="w-7 h-7 text-blue-600 dark:text-blue-400" />
-      <h2 class="text-3xl font-bold dark:text-white">How I Work</h2>
+      <h2 class="text-3xl font-bold dark:text-white">{{ t('howIWork') }}</h2>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -29,4 +30,4 @@ const { process } = portfolioConfig;
       </div>
     </div>
   </SectionCard>
-</template>
+</template> 

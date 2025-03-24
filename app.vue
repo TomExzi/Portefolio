@@ -4,6 +4,20 @@
   </NuxtLayout>
 </template>
 
+<script setup>
+const { currentLanguage } = useLanguage();
+
+// Update HTML lang attribute when language changes
+watch(currentLanguage, (newLang) => {
+  document.documentElement.lang = newLang;
+});
+
+// Set initial language attribute
+onMounted(() => {
+  document.documentElement.lang = currentLanguage.value;
+});
+</script>
+
 <style>
 html {
   scroll-behavior: smooth;
