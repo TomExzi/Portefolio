@@ -1,0 +1,90 @@
+/* Background image utility classes for responsive, optimized backgrounds */
+
+.bg-full-cover {
+  @apply absolute inset-0 w-full h-full;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.bg-card {
+  @apply bg-full-cover;
+  z-index: 0;
+}
+
+.bg-card-blur-light {
+  @apply bg-card;
+  filter: blur(3px) saturate(1.1);
+  opacity: 0.1;
+}
+
+.bg-card-blur-dark {
+  @apply bg-card;
+  filter: blur(3px) saturate(1.1);
+  opacity: 0.15;
+}
+
+.bg-overlay-light {
+  @apply absolute inset-0 bg-white/90 dark:bg-gray-800/95;
+  z-index: 1;
+}
+
+.bg-overlay-medium {
+  @apply absolute inset-0 bg-white/85 dark:bg-gray-800/90;
+  z-index: 1;
+}
+
+.bg-overlay-dark {
+  @apply absolute inset-0 bg-white/70 dark:bg-gray-800/80;
+  z-index: 1;
+}
+
+/* Hardware acceleration for smooth transitions */
+.hw-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Fix for z-index stacking in project cards */
+.project-content {
+  position: relative;
+  z-index: 10;
+}
+
+/* Featured project header styles */
+.featured-project-header {
+  @apply bg-white/90 dark:bg-gray-800/90 px-4 py-3 rounded-xl shadow-md;
+  position: relative;
+  z-index: 20;
+}
+
+/* Project menu styles */
+.project-menu {
+  position: relative;
+  z-index: 30;
+}
+
+/* Project section backdrop */
+.project-backdrop {
+  @apply absolute inset-0 bg-white/40 dark:bg-gray-800/50;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transform: translateZ(0);
+  will-change: backdrop-filter;
+  z-index: 1;
+}
+
+/* Project section background blur */
+.project-bg-blur {
+  @apply absolute inset-0 bg-white/70 dark:bg-gray-800/70;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  transform: translateZ(0);
+  will-change: backdrop-filter;
+  z-index: 1;
+  margin: 0;
+  border-radius: inherit;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}

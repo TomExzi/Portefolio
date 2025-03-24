@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // Use the preferred translation composable for consistency
-const { t } = useTranslations();
+const { t } = useI18n();
 
 // Add reactivity to ensure component updates when language changes
 const sectionTitle = computed(() => t("process.title"));
@@ -14,21 +14,71 @@ const scaleDescription = computed(() => t("process.scale.description"));
 // Background image path
 const backgroundImageUrl =
   "/assets/images/daniel-mccullough-HtBlQdxfG9k-unsplash.jpg";
+
+// Lazy loading setup
+const isIntersecting = ref(false);
+const sectionRef = ref<HTMLElement | null>(null);
+
+onMounted(() => {
+  // Delay the initialization to ensure the DOM is ready
+  if (process.client) {
+    nextTick(() => {
+      try {
+        if (sectionRef.value) {
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                isIntersecting.value = entry.isIntersecting;
+              });
+            },
+            { threshold: 0.1 }
+          );
+
+          observer.observe(sectionRef.value);
+
+          // Cleanup
+          onBeforeUnmount(() => {
+            observer.disconnect();
+          });
+        } else {
+          // Fallback when ref is not available
+          isIntersecting.value = true;
+        }
+      } catch (error) {
+        console.error("IntersectionObserver error:", error);
+        // Fallback - always show image
+        isIntersecting.value = true;
+      }
+    });
+  } else {
+    // Fallback for SSR
+    isIntersecting.value = true;
+  }
+});
 </script>
 
 <template>
   <section
     id="process"
     class="py-16 process-section relative overflow-hidden"
-    :style="{
-      backgroundImage: `url(${backgroundImageUrl})`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
-      position: 'relative',
-      isolation: 'isolate',
-    }"
+    ref="sectionRef"
   >
+    <!-- Optimized Background Image -->
+    <ClientOnly>
+      <div class="absolute inset-0 -z-20">
+        <NuxtImg
+          :src="backgroundImageUrl"
+          format="webp"
+          width="1920"
+          height="1080"
+          loading="lazy"
+          quality="80"
+          class="w-full h-full object-cover hw-accelerated lazy-fade-in"
+          :class="{ loaded: isIntersecting }"
+        />
+      </div>
+    </ClientOnly>
+
     <!-- Background overlay for better readability -->
     <div class="absolute inset-0 bg-gray-50/75 dark:bg-gray-900/85 -z-10"></div>
 
@@ -114,32 +164,6 @@ const backgroundImageUrl =
   z-index: 0;
 }
 
-/* Enhanced animation for the background */
-@media (prefers-reduced-motion: no-preference) {
-  .process-section::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: inherit;
-    background-size: inherit;
-    background-position: inherit;
-    background-repeat: inherit;
-    z-index: -20;
-    opacity: 1;
-    animation: subtle-pan 180s infinite alternate ease-in-out;
-    filter: contrast(1.2) saturate(1.2);
-  }
-
-  @keyframes subtle-pan {
-    0% {
-      transform: scale(1.05) translate(0%, 0%);
-    }
-    100% {
-      transform: scale(1.05) translate(-2%, 0%);
-    }
-  }
-}
-
 .process-title {
   color: #1e40af;
   position: relative;
@@ -176,7 +200,7 @@ const backgroundImageUrl =
 
 .process-card {
   position: relative;
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   z-index: 1;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -197,7 +221,6 @@ const backgroundImageUrl =
 .process-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  backdrop-filter: none;
 }
 
 .process-card:hover::before {
@@ -205,7 +228,7 @@ const backgroundImageUrl =
 }
 
 .process-icon {
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, background 0.3s ease;
   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
 }
 
@@ -218,49 +241,52 @@ const backgroundImageUrl =
   color: white !important;
 }
 
-.plan-card {
-  animation: fadeInLeft 0.8s ease-out;
-}
-
-.build-card {
-  animation: fadeInUp 1s ease-out;
-}
-
-.scale-card {
-  animation: fadeInRight 1.2s ease-out;
-}
-
-/* Animations */
-@keyframes fadeInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
+/* Optimized animations with reduced motion preference support */
+@media (prefers-reduced-motion: no-preference) {
+  .plan-card {
+    animation: fadeInLeft 0.8s ease-out;
   }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
 
-@keyframes fadeInRight {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
+  .build-card {
+    animation: fadeInUp 1s ease-out;
   }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+  .scale-card {
+    animation: fadeInRight 1.2s ease-out;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  /* Animations */
+  @keyframes fadeInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes fadeInRight {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }
 

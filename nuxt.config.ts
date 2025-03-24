@@ -34,6 +34,7 @@ export default defineNuxtConfig({
         {
           rel: "stylesheet",
           href: "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap",
+          crossorigin: "anonymous",
         },
       ],
       meta: [
@@ -41,6 +42,8 @@ export default defineNuxtConfig({
         { name: "viewport", content: "width=device-width, initial-scale=1" },
       ],
     },
+    pageTransition: { name: "page", mode: "out-in" },
+    layoutTransition: { name: "layout", mode: "out-in" },
   },
   components: {
     dirs: ["~/components"],
@@ -51,8 +54,8 @@ export default defineNuxtConfig({
     configPath: "tailwind.config.ts",
   },
   image: {
-    quality: 100,
-    format: ["png", "webp", "jpg"],
+    quality: 80,
+    format: ["webp", "png", "jpg"],
     screens: {
       xs: 320,
       sm: 640,
@@ -60,6 +63,16 @@ export default defineNuxtConfig({
       lg: 1024,
       xl: 1280,
       xxl: 1536,
+    },
+    presets: {
+      background: {
+        modifiers: {
+          format: "webp",
+          width: 1920,
+          height: 1080,
+          quality: 80,
+        },
+      },
     },
   },
   i18n: {
@@ -81,5 +94,45 @@ export default defineNuxtConfig({
       },
     ],
     strategy: "prefix_except_default",
+  },
+  nitro: {
+    prerender: {
+      concurrency: 10,
+      routes: ["/"],
+    },
+    compressPublicAssets: true,
+  },
+  build: {
+    transpile: [],
+  },
+  vite: {
+    build: {
+      chunkSizeWarningLimit: 1000,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vue: ["vue", "vue-router"],
+            ui: ["nuxt-icon", "@nuxtjs/tailwindcss"],
+          },
+        },
+      },
+      cssCodeSplit: true,
+    },
+    optimizeDeps: {
+      include: ["vue", "vue-router"],
+    },
+    css: {
+      devSourcemap: false,
+    },
+  },
+  experimental: {
+    asyncEntry: true,
+    viewTransition: true,
+    headNext: true,
+  },
+  routeRules: {
+    "/assets/**": {
+      headers: { "cache-control": "public, max-age=31536000, immutable" },
+    },
   },
 });

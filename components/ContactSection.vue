@@ -2,8 +2,49 @@
 import { portfolioConfig } from "~/config/portfolio.config";
 
 const { contact } = portfolioConfig;
-const { t } = useTranslations();
+const { t } = useI18n();
 const contactBgUrl = "/assets/images/krakenimages-376KN_ISplE-unsplash.jpg";
+const isIntersecting = ref(false);
+
+// Lazy loading setup - fix by using template ref
+const sectionRef = ref<HTMLElement | null>(null);
+
+onMounted(() => {
+  // Delay the initialization to ensure the DOM is ready
+  if (process.client) {
+    nextTick(() => {
+      try {
+        if (sectionRef.value) {
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                isIntersecting.value = entry.isIntersecting;
+              });
+            },
+            { threshold: 0.1 }
+          );
+
+          observer.observe(sectionRef.value);
+
+          // Cleanup
+          onBeforeUnmount(() => {
+            observer.disconnect();
+          });
+        } else {
+          // Fallback when ref is not available
+          isIntersecting.value = true;
+        }
+      } catch (error) {
+        console.error("IntersectionObserver error:", error);
+        // Fallback - always show image
+        isIntersecting.value = true;
+      }
+    });
+  } else {
+    // Fallback for SSR
+    isIntersecting.value = true;
+  }
+});
 
 const contactItems = [
   {
@@ -34,17 +75,19 @@ const contactItems = [
   <SectionCard
     id="contact"
     class="contact-section relative overflow-hidden"
-    :style="{
-      backgroundImage: `url(${contactBgUrl})`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
-      position: 'relative',
-      isolation: 'isolate',
-    }"
+    ref="sectionRef"
   >
-    <!-- Overlay for better readability -->
-    <div class="absolute inset-0 bg-white/85 dark:bg-gray-800/90 -z-10"></div>
+    <!-- Full-width/height wrapper with direct img tag -->
+    <div class="absolute inset-0 w-full h-full -z-30">
+      <!-- Background Image (Direct Img Approach) -->
+      <img
+        src="/assets/images/krakenimages-376KN_ISplE-unsplash.jpg"
+        alt="Contact background"
+        class="absolute inset-0 w-full h-full object-cover -z-20 opacity-80 dark:opacity-70 contrast-120 saturate-120 brightness-105"
+      />
+
+      <!-- Overlay for better readability -->
+    </div>
 
     <div class="flex items-center gap-3 mb-8 relative z-10">
       <Icon name="mdi:email" class="w-7 h-7 text-blue-600 dark:text-blue-400" />
@@ -112,32 +155,10 @@ const contactItems = [
 .contact-section {
   z-index: 0;
   transition: all 0.3s ease;
-}
-
-/* Optional animation for the background */
-@media (prefers-reduced-motion: no-preference) {
-  .contact-section::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: inherit;
-    background-size: inherit;
-    background-position: inherit;
-    background-repeat: inherit;
-    z-index: -20;
-    opacity: 1;
-    animation: subtle-zoom 180s infinite alternate ease-in-out;
-    filter: contrast(1.1);
-  }
-
-  @keyframes subtle-zoom {
-    0% {
-      transform: scale(1);
-    }
-    100% {
-      transform: scale(1.1);
-    }
-  }
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
 }
 
 /* Prevent text selection and cursor issues */
@@ -145,8 +166,23 @@ const contactItems = [
   background: transparent;
 }
 
-/* Dark mode adjustments */
-:deep(.dark) .contact-section::before {
-  filter: brightness(0.8) saturate(1) contrast(1.1);
+.opacity-80 {
+  opacity: 0.8;
+}
+
+.opacity-70 {
+  opacity: 0.7;
+}
+
+.contrast-120 {
+  filter: contrast(1.2);
+}
+
+.saturate-120 {
+  filter: saturate(1.2);
+}
+
+.brightness-105 {
+  filter: brightness(1.05);
 }
 </style>

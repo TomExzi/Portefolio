@@ -22,8 +22,32 @@ onMounted(() => {
 </script>
 
 <style>
-html {
+html,
+body {
   scroll-behavior: smooth;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  position: fixed;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Hide scrollbar completely for all elements */
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+* {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 /* Add smooth transitions for dark mode */

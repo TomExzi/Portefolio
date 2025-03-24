@@ -1,4 +1,5 @@
 @import "./theme.css";
+@import "./background-utils.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -39,6 +40,16 @@
     /* Shadow for light mode */
     --shadow-light-card: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
       0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+    /* Animation variables */
+    --animation-duration-standard: 0.3s;
+    --animation-timing-standard: ease;
+    --animation-transition-standard: transform
+        var(--animation-duration-standard) var(--animation-timing-standard),
+      box-shadow var(--animation-duration-standard)
+        var(--animation-timing-standard),
+      opacity var(--animation-duration-standard)
+        var(--animation-timing-standard);
   }
 
   .dark {
@@ -50,6 +61,24 @@
     /* Shadow for dark mode */
     --shadow-dark-card: 0 10px 15px -3px rgba(0, 0, 0, 0.3),
       0 4px 6px -2px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Performance optimizations */
+  * {
+    /* Optimize GPU rendering */
+    /* transform-style: preserve-3d; Removed as it affects background image rendering */
+    backface-visibility: hidden;
+  }
+
+  /* Improve animation performance */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      animation-delay: 0ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 
@@ -110,13 +139,17 @@
   .glass-light {
     background-color: rgb(var(--color-card-light) / var(--glass-opacity-light));
     backdrop-filter: blur(var(--glass-blur-light));
-    transition: backdrop-filter 0.3s ease;
+    transition: backdrop-filter var(--animation-duration-standard)
+      var(--animation-timing-standard);
+    will-change: backdrop-filter;
   }
 
   .glass-dark {
     background-color: rgb(var(--color-card-dark) / var(--glass-opacity-dark));
     backdrop-filter: blur(var(--glass-blur-dark));
-    transition: backdrop-filter 0.3s ease;
+    transition: backdrop-filter var(--animation-duration-standard)
+      var(--animation-timing-standard);
+    will-change: backdrop-filter;
   }
 
   /* Remove blur on hover */
@@ -127,8 +160,31 @@
 
   /* Transition utilities */
   .transition-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease,
-      background-color 0.3s ease;
+    transition: var(--animation-transition-standard);
+    will-change: transform, box-shadow, background-color;
+  }
+
+  /* Hardware-accelerated transforms */
+  .hw-accelerated {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+
+  /* Performance optimized fade-in */
+  .fade-in {
+    opacity: 0;
+    animation: optimizedFadeIn 0.5s ease forwards;
+    will-change: opacity;
+  }
+
+  /* Lazy load transitions */
+  .lazy-fade-in {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .lazy-fade-in.loaded {
+    opacity: 1;
   }
 }
 
@@ -139,4 +195,14 @@
 
 .font-display {
   font-family: "Montserrat", sans-serif;
+}
+
+/* Optimized animations */
+@keyframes optimizedFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

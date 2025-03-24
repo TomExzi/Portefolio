@@ -199,7 +199,6 @@ const arrowImage = computed(() =>
   height: 120px;
   top: 20%;
   left: -160px;
-  //border: 1px dashed rgba(96, 165, 250, 0.4);
 }
 
 .title-arrow {
@@ -231,7 +230,6 @@ const arrowImage = computed(() =>
   height: 120px;
   top: 30px;
   left: 95%;
-  //border: 1px dashed rgba(96, 165, 250, 0.4);
 }
 
 .description-arrow {

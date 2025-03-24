@@ -20,7 +20,7 @@ defineProps<{
         <!-- Other project details -->
       </div>
       <div class="order-1 md:order-2">
-        <img
+        <NuxtImg
           :src="project.image"
           alt="Project image"
           class="rounded-lg shadow-md"

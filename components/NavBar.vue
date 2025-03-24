@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { TranslationKey } from "~/composables/useTranslations";
 import { languages } from "~/config/portfolio.config";
+import { ref, onMounted, onUnmounted, inject } from "vue";
 
 // Access i18n directly at the top level (must be first)
 const { locale, t } = useI18n();
@@ -25,6 +25,11 @@ const languageOptions = languages.map((lang) => ({
   flag: lang.flag,
   path: lang.path,
 }));
+
+// Inject the scroll function provided by the parent component
+const scrollToSection = inject("scrollToSection") as (
+  sectionId: string
+) => void;
 
 function selectLanguage(langCode: string, langPath: string) {
   // Update the i18n locale
@@ -75,6 +80,22 @@ function closeMenuOnNavigation() {
   isMobileMenuOpen.value = false;
 }
 
+// Function to handle smooth scrolling with proper offsets
+function smoothScrollToSection(sectionId: string, event: Event) {
+  event.preventDefault();
+
+  // Close mobile menu if it's open
+  if (isMobileMenuOpen.value) {
+    isMobileMenuOpen.value = false;
+  }
+
+  // Use the injected scroll function from the parent
+  scrollToSection(sectionId);
+
+  // Update URL without causing a scroll
+  history.pushState(null, "", `#${sectionId}`);
+}
+
 onMounted(() => {
   document.addEventListener("click", onClickOutside);
 });
@@ -117,7 +138,7 @@ onUnmounted(() => {
           <!-- Dropdown Menu -->
           <div
             v-if="isLanguageMenuOpen"
-            class="absolute bottom-full mb-2 right-0 rounded-lg bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 py-1 w-40 z-50"
+            class="absolute bottom-full mb-2 right-0 max-w-[95vw] rounded-lg bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 py-1 w-40 z-50"
           >
             <button
               v-for="option in languageOptions"
@@ -158,12 +179,12 @@ onUnmounted(() => {
     <!-- Mobile Menu (conditionally visible) -->
     <div
       v-if="isMobileMenuOpen"
-      class="mobile-menu md:hidden absolute bottom-full mb-2 left-0 right-0 rounded-lg bg-white/98 dark:bg-gray-900/98 shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50"
+      class="mobile-menu md:hidden absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-[90%] max-w-[95vw] rounded-lg bg-white/98 dark:bg-gray-900/98 shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50"
     >
       <div class="flex flex-col w-full">
         <NuxtLink
           href="#projects"
-          @click="closeMenuOnNavigation"
+          @click.prevent="smoothScrollToSection('projects', $event)"
           class="px-4 py-3 text-sm text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-blue-400 dark:hover:bg-gray-800/50 transition-colors flex items-center gap-1.5"
         >
           <Icon name="heroicons:rectangle-stack" class="w-4 h-4" />
@@ -172,7 +193,7 @@ onUnmounted(() => {
 
         <NuxtLink
           href="#process"
-          @click="closeMenuOnNavigation"
+          @click.prevent="smoothScrollToSection('process', $event)"
           class="px-4 py-3 text-sm text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-blue-400 dark:hover:bg-gray-800/50 transition-colors flex items-center gap-1.5"
         >
           <Icon name="heroicons:arrow-path" class="w-4 h-4" />
@@ -181,7 +202,7 @@ onUnmounted(() => {
 
         <NuxtLink
           href="#about"
-          @click="closeMenuOnNavigation"
+          @click.prevent="smoothScrollToSection('about', $event)"
           class="px-4 py-3 text-sm text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-blue-400 dark:hover:bg-gray-800/50 transition-colors flex items-center gap-1.5"
         >
           <Icon name="heroicons:user" class="w-4 h-4" />
@@ -190,7 +211,7 @@ onUnmounted(() => {
 
         <NuxtLink
           href="#contact"
-          @click="closeMenuOnNavigation"
+          @click.prevent="smoothScrollToSection('contact', $event)"
           class="px-4 py-3 text-sm text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-blue-400 dark:hover:bg-gray-800/50 transition-colors flex items-center gap-1.5"
         >
           <Icon name="heroicons:envelope" class="w-4 h-4" />
@@ -203,6 +224,7 @@ onUnmounted(() => {
     <div class="hidden md:flex items-center space-x-1 sm:space-x-2">
       <NuxtLink
         href="#projects"
+        @click.prevent="smoothScrollToSection('projects', $event)"
         class="px-3 py-2 text-sm rounded-full text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-blue-400 dark:hover:bg-gray-800/50 transition-colors flex items-center gap-1.5"
       >
         <Icon name="heroicons:rectangle-stack" class="w-4 h-4" />
@@ -211,6 +233,7 @@ onUnmounted(() => {
 
       <NuxtLink
         href="#process"
+        @click.prevent="smoothScrollToSection('process', $event)"
         class="px-3 py-2 text-sm rounded-full text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-blue-400 dark:hover:bg-gray-800/50 transition-colors flex items-center gap-1.5"
       >
         <Icon name="heroicons:arrow-path" class="w-4 h-4" />
@@ -219,6 +242,7 @@ onUnmounted(() => {
 
       <NuxtLink
         href="#about"
+        @click.prevent="smoothScrollToSection('about', $event)"
         class="px-3 py-2 text-sm rounded-full text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-blue-400 dark:hover:bg-gray-800/50 transition-colors flex items-center gap-1.5"
       >
         <Icon name="heroicons:user" class="w-4 h-4" />
@@ -227,6 +251,7 @@ onUnmounted(() => {
 
       <NuxtLink
         href="#contact"
+        @click.prevent="smoothScrollToSection('contact', $event)"
         class="px-3 py-2 text-sm rounded-full text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-blue-400 dark:hover:bg-gray-800/50 transition-colors flex items-center gap-1.5"
       >
         <Icon name="heroicons:envelope" class="w-4 h-4" />
@@ -250,7 +275,7 @@ onUnmounted(() => {
         <!-- Dropdown Menu -->
         <div
           v-if="isLanguageMenuOpen"
-          class="absolute bottom-full mb-2 right-0 rounded-lg bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 py-1 w-40 z-50"
+          class="absolute bottom-full mb-2 right-0 max-w-[95vw] rounded-lg bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 py-1 w-40 z-50"
         >
           <button
             v-for="option in languageOptions"

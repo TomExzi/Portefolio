@@ -12,15 +12,17 @@ const localePrefix = computed(() => {
 </script>
 
 <template>
-  <footer class="py-8 border-t border-gray-200 dark:border-gray-800">
+  <footer
+    class="py-6 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 transition-all duration-300 w-full"
+  >
     <div class="container mx-auto px-4">
-      <div class="flex justify-between items-center">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-4">
         <p class="text-gray-600 dark:text-gray-400 flex items-center gap-2">
           <Icon
             name="heroicons:shield-check"
             class="w-5 h-5 text-blue-600 dark:text-blue-400"
           />
-          © {{ new Date().getFullYear() }} ExziSoft. All rights reserved.
+          {{ new Date().getFullYear() }} ExziSoft. All rights reserved.
         </p>
         <div class="flex items-center space-x-4">
           <NuxtLink

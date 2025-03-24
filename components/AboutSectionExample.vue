@@ -5,7 +5,7 @@
 import { portfolioConfig } from "~/config/portfolio.config";
 
 const { about } = portfolioConfig;
-const { t } = useTranslations();
+const { t } = useI18n();
 
 // To toggle between background patterns if needed
 const useSimpleBackground = ref(false);

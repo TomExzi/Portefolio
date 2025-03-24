@@ -2,25 +2,67 @@
 import { portfolioConfig } from "~/config/portfolio.config";
 
 const { about } = portfolioConfig;
-const { t } = useTranslations();
+const { t } = useI18n();
 const bgSvgUrl = "/assets/svg/undraw_dev-productivity_5wps.svg";
+
+// Lazy loading setup
+const isIntersecting = ref(false);
+const sectionRef = ref<HTMLElement | null>(null);
+
+onMounted(() => {
+  // Delay the initialization to ensure the DOM is ready
+  if (process.client) {
+    nextTick(() => {
+      try {
+        if (sectionRef.value) {
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                isIntersecting.value = entry.isIntersecting;
+              });
+            },
+            { threshold: 0.1 }
+          );
+
+          observer.observe(sectionRef.value);
+
+          // Cleanup
+          onBeforeUnmount(() => {
+            observer.disconnect();
+          });
+        } else {
+          // Fallback when ref is not available
+          isIntersecting.value = true;
+        }
+      } catch (error) {
+        console.error("IntersectionObserver error:", error);
+        // Fallback - always show image
+        isIntersecting.value = true;
+      }
+    });
+  } else {
+    // Fallback for SSR
+    isIntersecting.value = true;
+  }
+});
 </script>
 
 <template>
   <SectionCard
     id="about"
+    ref="sectionRef"
     class="about-section relative overflow-hidden"
-    :style="{
-      backgroundImage: `url(${bgSvgUrl})`,
-      backgroundSize: '60%',
-      backgroundPosition: 'right -5% bottom 0%',
-      backgroundRepeat: 'no-repeat',
-      position: 'relative',
-      isolation: 'isolate',
-    }"
   >
-    <!-- Overlay for content readability -->
-    <div class="absolute inset-0 bg-white/90 dark:bg-gray-800/95 -z-10"></div>
+    <!-- SVG Background Image -->
+    <div
+      v-if="isIntersecting"
+      class="absolute inset-0 -z-20 w-full h-full opacity-20 dark:opacity-10"
+      :style="{
+        backgroundImage: `url(${bgSvgUrl})`,
+        backgroundSize: '100% 100%',
+        backgroundPosition: 'center',
+      }"
+    ></div>
 
     <div class="flex items-center gap-3 mb-12">
       <Icon
@@ -119,6 +161,9 @@ const bgSvgUrl = "/assets/svg/undraw_dev-productivity_5wps.svg";
 .about-section {
   z-index: 0;
   transition: all 0.3s ease;
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 /* Optional animation for the background pattern */
@@ -128,11 +173,11 @@ const bgSvgUrl = "/assets/svg/undraw_dev-productivity_5wps.svg";
     position: absolute;
     inset: 0;
     background-image: inherit;
-    background-size: inherit;
-    background-position: inherit;
-    background-repeat: inherit;
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
     z-index: -20;
-    opacity: 1;
+    opacity: 0.2;
     animation: subtle-float 120s infinite alternate ease-in-out;
   }
 
@@ -147,6 +192,7 @@ const bgSvgUrl = "/assets/svg/undraw_dev-productivity_5wps.svg";
 }
 
 :deep(.dark) .about-section::before {
-  filter: brightness(0.85) hue-rotate(10deg);
+  filter: brightness(0.8) hue-rotate(10deg);
+  opacity: 0.1;
 }
 </style>
