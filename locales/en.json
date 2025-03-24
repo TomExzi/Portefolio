@@ -1,0 +1,51 @@
+{
+  "navigation": {
+    "home": "Home",
+    "projects": "Projects",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Building the future and the present of the web",
+    "description": "Passionate Full Stack Developer focused on performance, SEO, and scalable architecture, crafting efficient and user-friendly web experiences.",
+    "ctaText": "Get in touch"
+  },
+  "projects": {
+    "title": "Projects",
+    "viewProject": "View Project",
+    "featuredProjects": "Featured Projects",
+    "technologies": "Technologies",
+    "viewProjects": "View Projects",
+    "all": "All Projects",
+    "dataRemediation": "Data Remediation",
+    "infrastructurePortal": "Infrastructure Portal",
+    "informationProvider": "Information Provider"
+  },
+  "process": {
+    "title": "My Working Process",
+    "plan": {
+      "title": "Plan - Strategy & Architecture",
+      "description": "We start by understanding your business needs and goals. I create a clear roadmap, selecting the right technologies to ensure scalability, performance, and maintainability."
+    },
+    "build": {
+      "title": "Build – Full-Stack Development",
+      "description": "From frontend UI to backend APIs, I develop fast, secure, and user-friendly applications tailored to your project's vision. Clean code, best practices, and seamless integrations are my priority"
+    },
+    "scale": {
+      "title": "Scale – Optimization & Growth",
+      "description": "Once launched, I ensure your app runs at peak performance. Speed, SEO, and security enhancements help you reach more users while keeping your platform efficient and future-proof"
+    }
+  },
+  "about": {
+    "title": "About Me",
+    "skills": "Skills",
+    "experience": "Experience",
+    "position": "Position",
+    "period": "Period"
+  },
+  "contact": {
+    "title": "Get in Touch",
+    "email": "Email",
+    "social": "Social Profiles"
+  }
+}

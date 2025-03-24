@@ -1,10 +1,20 @@
 <template>
-  <NuxtLayout>
-    <NuxtPage />
-  </NuxtLayout>
+  <div>
+    <!-- Debug display to check if translations are working -->
+    <div class="fixed bottom-0 right-0 p-2 bg-black/50 text-white z-50">
+      Locale: {{ $i18n.locale }}
+    </div>
+
+    <NuxtLayout>
+      <TheHeader />
+      <NuxtPage />
+    </NuxtLayout>
+  </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import TheHeader from "~/components/TheHeader.vue";
+
 const { currentLanguage } = useLanguage();
 
 // Update HTML lang attribute when language changes

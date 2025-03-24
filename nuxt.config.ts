@@ -7,11 +7,17 @@ export default defineNuxtConfig({
     "@nuxtjs/color-mode",
     "nuxt-icon",
     "@nuxt/image",
+    "@nuxtjs/i18n",
   ],
   colorMode: {
-    classSuffix: "",
     preference: "system",
     fallback: "light",
+    hid: "nuxt-color-mode-script",
+    globalName: "__NUXT_COLOR_MODE__",
+    componentName: "ColorScheme",
+    classPrefix: "",
+    classSuffix: "",
+    storageKey: "nuxt-color-mode",
   },
   app: {
     head: {
@@ -55,5 +61,25 @@ export default defineNuxtConfig({
       xl: 1280,
       xxl: 1536,
     },
+  },
+  i18n: {
+    lazy: true,
+    langDir: "locales",
+    defaultLocale: "en",
+    locales: [
+      {
+        code: "en",
+        file: "en.json",
+      },
+      {
+        code: "fr",
+        file: "fr.json",
+      },
+      {
+        code: "nl",
+        file: "nl.json",
+      },
+    ],
+    strategy: "prefix_except_default",
   },
 });

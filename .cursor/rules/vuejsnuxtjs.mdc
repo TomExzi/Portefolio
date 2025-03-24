@@ -1,6 +1,11 @@
 ---
 description: Vue
 globs: *.tsx, *.vue
+alwaysApply: false
+---
+---
+description: rules for projects with vue.js and nuxt.js
+globs: *.vue
 alwaysApply: true
 ---
 name: TypeScript + Vue.js + SEO Optimization

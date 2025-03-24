@@ -1,43 +1,29 @@
 <script setup lang="ts">
-import { portfolioConfig } from "~/config/portfolio.config";
-
-const { hero } = portfolioConfig;
-const { t } = useTranslations();
-
-const scrollToContact = () => {
-  const element = document.getElementById("contact");
-  element?.scrollIntoView({ behavior: "smooth" });
-};
+// No additional setup needed - remove any custom translation functions
 </script>
 
 <template>
-  <section class="py-16 md:py-24 select-none text-center">
-    <div class="flex flex-col items-center justify-center gap-3 mb-4">
-      <h1 class="text-4xl md:text-6xl font-bold dark:text-white pointer-events-none">
-        {{ t('hiIm') }} {{ hero.name }}
-      </h1>
-    </div>
-    
-    <div class="flex flex-col items-center justify-center gap-3 mb-8">
-      <h2 class="text-2xl md:text-4xl font-semibold text-gray-700 dark:text-gray-300 pointer-events-none">
-        {{ hero.title }}
-      </h2>
-    </div>
-    
-    <div class="flex flex-col items-center justify-center gap-3 mb-12">
-      <p class="text-lg md:text-xl max-w-2xl text-gray-600 dark:text-gray-400 pointer-events-none mx-auto">
-        {{ hero.description }}
-      </p>
-    </div>
-    
-    <div class="flex justify-center">
-      <button
-        @click="scrollToContact"
-        class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg transition-colors duration-200 font-medium flex items-center gap-2"
-      >
-        <Icon name="heroicons:paper-airplane" class="w-5 h-5 pointer-events-none" aria-hidden="true" />
-        {{ t('getInTouch') }}
-      </button>
+  <section class="py-16 md:py-24 hero-section">
+    <div class="container mx-auto px-4">
+      <div class="max-w-3xl">
+        <h1
+          class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-display hero-title"
+        >
+          {{ $t("hero.title") }}
+        </h1>
+        <p
+          class="text-xl text-gray-600 dark:text-gray-400 mb-8 hero-description"
+        >
+          {{ $t("hero.description") }}
+        </p>
+        <NuxtLink
+          to="#contact"
+          class="inline-flex items-center px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-lg font-medium transition-colors hero-cta"
+        >
+          {{ $t("hero.ctaText") }}
+          <Icon name="heroicons:arrow-right" class="ml-2 w-5 h-5" />
+        </NuxtLink>
+      </div>
     </div>
   </section>
 </template>
@@ -48,9 +34,88 @@ const scrollToContact = () => {
   background: transparent;
 }
 
-/* Ensure proper text wrapping */
-p {
+/* Hero section styling */
+.hero-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::after {
+  content: "";
+  position: absolute;
+  top: -10%;
+  right: -10%;
+  width: 50%;
+  height: 80%;
+  background: radial-gradient(
+    circle,
+    rgba(59, 130, 246, 0.1) 0%,
+    rgba(59, 130, 246, 0) 70%
+  );
+  z-index: -1;
+  border-radius: 50%;
+}
+
+.hero-title {
+  background: linear-gradient(90deg, #1e40af 0%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+  animation: fadeInUp 1s ease-out;
+}
+
+.hero-description {
   word-break: normal;
   overflow-wrap: break-word;
+  max-width: 90%;
+  animation: fadeInUp 1.2s ease-out;
 }
-</style> 
+
+.hero-cta {
+  animation: fadeInUp 1.4s ease-out;
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+  transition: all 0.3s ease;
+}
+
+.hero-cta:hover {
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+  transform: translateY(-2px);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion) {
+  .hero-title,
+  .hero-description,
+  .hero-cta {
+    animation: none;
+  }
+}
+
+.dark .hero-title {
+  background: linear-gradient(90deg, #60a5fa 0%, #93c5fd 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.dark .hero-cta {
+  box-shadow: 0 4px 14px rgba(96, 165, 250, 0.4);
+}
+
+.dark .hero-cta:hover {
+  box-shadow: 0 6px 20px rgba(96, 165, 250, 0.6);
+}
+</style>

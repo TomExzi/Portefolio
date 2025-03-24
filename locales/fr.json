@@ -1,0 +1,51 @@
+{
+  "navigation": {
+    "home": "Accueil",
+    "projects": "Projets",
+    "about": "À propos",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Construire le futur et le présent du web",
+    "description": "Développeur Full Stack passionné, concentré sur la performance, le SEO et l'architecture évolutive, créant des expériences web efficaces et conviviales.",
+    "ctaText": "Me contacter"
+  },
+  "projects": {
+    "title": "Projets",
+    "viewProject": "Voir le projet",
+    "featuredProjects": "Projets en vedette",
+    "technologies": "Technologies",
+    "viewProjects": "Voir les projets",
+    "all": "Tous les projets",
+    "dataRemediation": "Correction de données",
+    "infrastructurePortal": "Portail d'infrastructure",
+    "informationProvider": "Fournisseur d'informations"
+  },
+  "process": {
+    "title": "Ma méthode de travail",
+    "plan": {
+      "title": "Planifier - Stratégie et architecture",
+      "description": "Nous commençons par comprendre vos besoins et objectifs commerciaux. Je crée une feuille de route claire, en sélectionnant les technologies adaptées pour garantir l'évolutivité, la performance et la maintenabilité."
+    },
+    "build": {
+      "title": "Construire – Développement Full-Stack",
+      "description": "De l'interface utilisateur frontend aux API backend, je développe des applications rapides, sécurisées et conviviales, adaptées à la vision de votre projet. Code propre, meilleures pratiques et intégrations transparentes sont ma priorité."
+    },
+    "scale": {
+      "title": "Évoluer – Optimisation et croissance",
+      "description": "Une fois lancée, je m'assure que votre application fonctionne à performance optimale. Les améliorations de vitesse, de référencement et de sécurité vous aident à atteindre plus d'utilisateurs tout en maintenant votre plateforme efficace et pérenne."
+    }
+  },
+  "about": {
+    "title": "À propos de moi",
+    "skills": "Compétences",
+    "experience": "Expérience",
+    "position": "Poste",
+    "period": "Période"
+  },
+  "contact": {
+    "title": "Contactez-moi",
+    "email": "Email",
+    "social": "Profils sociaux"
+  }
+}

@@ -1,4 +1,33 @@
+export interface LanguageConfig {
+  code: string;
+  name: string;
+  flag: string;
+  path: string;
+}
+
+export const languages: LanguageConfig[] = [
+  {
+    code: "en",
+    name: "English",
+    flag: "emojione:flag-for-united-kingdom",
+    path: "/",
+  },
+  {
+    code: "fr",
+    name: "Français",
+    flag: "emojione:flag-for-france",
+    path: "/fr",
+  },
+  {
+    code: "nl",
+    name: "Nederlands",
+    flag: "emojione:flag-for-netherlands",
+    path: "/nl",
+  },
+];
+
 export const portfolioConfig = {
+  languages,
   hero: {
     name: "Tom Rogiers",
     title: "Building the future and the present of the web",
@@ -46,7 +75,7 @@ export const portfolioConfig = {
       id: "2",
       title: "Build – Full-Stack Development",
       description:
-        "From frontend UI to backend APIs, I develop fast, secure, and user-friendly applications tailored to your project’s vision. Clean code, best practices, and seamless integrations are my priority",
+        "From frontend UI to backend APIs, I develop fast, secure, and user-friendly applications tailored to your project's vision. Clean code, best practices, and seamless integrations are my priority",
       icon: "i-heroicons-code-bracket-20-solid",
     },
     {

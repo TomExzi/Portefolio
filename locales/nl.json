@@ -1,0 +1,51 @@
+{
+  "navigation": {
+    "home": "Home",
+    "projects": "Projecten",
+    "about": "Over",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Bouwen aan de toekomst en het heden van het web",
+    "description": "Gepassioneerde Full Stack Developer gericht op prestaties, SEO en schaalbare architectuur, die efficiënte en gebruiksvriendelijke web-ervaringen creëert.",
+    "ctaText": "Neem contact op"
+  },
+  "projects": {
+    "title": "Projecten",
+    "viewProject": "Project bekijken",
+    "featuredProjects": "Uitgelichte projecten",
+    "technologies": "Technologieën",
+    "viewProjects": "Projecten bekijken",
+    "all": "Alle projecten",
+    "dataRemediation": "Gegevenscorrectie",
+    "infrastructurePortal": "Infrastructuurportaal",
+    "informationProvider": "Informatieverstrekker"
+  },
+  "process": {
+    "title": "Mijn werkproces",
+    "plan": {
+      "title": "Plannen - Strategie & Architectuur",
+      "description": "We beginnen met het begrijpen van uw zakelijke behoeften en doelen. Ik creëer een duidelijke routekaart en selecteer de juiste technologieën om schaalbaarheid, prestaties en onderhoudbaarheid te garanderen."
+    },
+    "build": {
+      "title": "Bouwen – Full-Stack Ontwikkeling",
+      "description": "Van frontend UI tot backend API's, ik ontwikkel snelle, veilige en gebruiksvriendelijke applicaties op maat van de visie van uw project. Schone code, best practices en naadloze integraties zijn mijn prioriteit."
+    },
+    "scale": {
+      "title": "Schalen – Optimalisatie & Groei",
+      "description": "Eenmaal gelanceerd, zorg ik ervoor dat uw app op maximale capaciteit draait. Verbeteringen in snelheid, SEO en beveiliging helpen u meer gebruikers te bereiken terwijl uw platform efficiënt en toekomstbestendig blijft."
+    }
+  },
+  "about": {
+    "title": "Over mij",
+    "skills": "Vaardigheden",
+    "experience": "Ervaring",
+    "position": "Functie",
+    "period": "Periode"
+  },
+  "contact": {
+    "title": "Neem contact op",
+    "email": "E-mail",
+    "social": "Sociale profielen"
+  }
+}

@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { portfolioConfig } from "~/config/portfolio.config";
+import { ref } from "vue";
+import SectionCard from "~/components/SectionCard.vue";
 
 type ProjectCategory =
   | "DataRemediation"
@@ -225,6 +227,11 @@ const currentProjectImage = computed(() => {
 
   return project.imageUrl;
 });
+
+// If you're using a slide component, make sure it's properly defined
+const slides = ref([
+  // Your slide data
+]);
 </script>
 
 <template>
@@ -258,7 +265,9 @@ const currentProjectImage = computed(() => {
         class="w-6 h-6 text-blue-600 dark:text-blue-400"
         aria-hidden="true"
       />
-      <h2 class="text-2xl font-bold dark:text-white">Featured Projects</h2>
+      <h2 class="text-2xl font-bold dark:text-white">
+        {{ $t("projects.featuredProjects") }}
+      </h2>
     </div>
 
     <!-- Tabs -->
@@ -290,7 +299,15 @@ const currentProjectImage = computed(() => {
             class="w-4 h-4"
             aria-hidden="true"
           />
-          {{ tab.label }}
+          {{
+            tab.id === "all"
+              ? $t("projects.all")
+              : tab.id === "DataRemediation"
+              ? $t("projects.dataRemediation")
+              : tab.id === "InfrastructurePortal"
+              ? $t("projects.infrastructurePortal")
+              : $t("projects.informationProvider")
+          }}
         </button>
       </div>
     </div>
@@ -465,7 +482,7 @@ const currentProjectImage = computed(() => {
               <h4
                 class="text-sm font-medium text-gray-700 dark:text-gray-300 pointer-events-none"
               >
-                Technologies
+                {{ $t("projects.technologies") }}
               </h4>
             </div>
             <div
@@ -548,7 +565,9 @@ const currentProjectImage = computed(() => {
                 class="mt-4 text-blue-600 dark:text-blue-400 text-sm font-medium flex items-center gap-1 hover:underline"
                 @click.stop="currentTab = key as ProjectCategory"
               >
-                <span class="pointer-events-none">View Projects</span>
+                <span class="pointer-events-none">{{
+                  $t("projects.viewProjects")
+                }}</span>
                 <Icon
                   name="heroicons:arrow-right"
                   class="w-4 h-4 pointer-events-none"
