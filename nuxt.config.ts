@@ -108,18 +108,14 @@ export default defineNuxtConfig({
   vite: {
     build: {
       chunkSizeWarningLimit: 1000,
-      rollupOptions: {
-        output: {
-          manualChunks: {
-            vue: ["vue", "vue-router"],
-            ui: ["nuxt-icon", "@nuxtjs/tailwindcss"],
-          },
-        },
-      },
       cssCodeSplit: true,
     },
     optimizeDeps: {
       include: ["vue", "vue-router"],
+      exclude: ["nuxt-icon", "@nuxtjs/tailwindcss"],
+    },
+    ssr: {
+      noExternal: ["nuxt-icon", "@nuxtjs/tailwindcss"],
     },
     css: {
       devSourcemap: false,
