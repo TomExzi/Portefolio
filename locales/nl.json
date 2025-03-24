@@ -22,7 +22,7 @@
     "informationProvider": "Informatieverstrekker"
   },
   "process": {
-    "title": "Mijn werkproces",
+    "title": "Proces",
     "plan": {
       "title": "Plannen - Strategie & Architectuur",
       "description": "We beginnen met het begrijpen van uw zakelijke behoeften en doelen. Ik creëer een duidelijke routekaart en selecteer de juiste technologieën om schaalbaarheid, prestaties en onderhoudbaarheid te garanderen."
@@ -39,13 +39,30 @@
   "about": {
     "title": "Over mij",
     "skills": "Vaardigheden",
+    "skillsTechnologies": "Vaardigheden & Technologieën",
     "experience": "Ervaring",
     "position": "Functie",
-    "period": "Periode"
+    "period": "Periode",
+    "specializeIn": "Ik ben gespecialiseerd in het bouwen van responsieve, hoogwaardige webapplicaties met moderne frameworks en best practices voor toegankelijkheid en SEO."
   },
   "contact": {
     "title": "Neem contact op",
     "email": "E-mail",
-    "social": "Sociale profielen"
+    "social": "Sociale profielen",
+    "intro": "Ik sta altijd open voor nieuwe kansen en samenwerkingen. Aarzel niet om contact met mij op te nemen via een van deze kanalen."
+  },
+  "legal": {
+    "privacy": {
+      "title": "Privacybeleid",
+      "effective": "Ingangsdatum"
+    },
+    "terms": {
+      "title": "Gebruiksvoorwaarden",
+      "effective": "Ingangsdatum"
+    },
+    "footer": {
+      "privacy": "Privacybeleid",
+      "terms": "Gebruiksvoorwaarden"
+    }
   }
 }

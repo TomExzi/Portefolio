@@ -1,5 +1,11 @@
 <script setup lang="ts">
-// No additional setup needed - remove any custom translation functions
+// Import i18n composable to properly handle language changes
+const { t, locale } = useI18n();
+
+// Add reactivity to ensure component updates when language changes
+const heroTitle = computed(() => t("hero.title"));
+const heroDescription = computed(() => t("hero.description"));
+const ctaText = computed(() => t("hero.ctaText"));
 </script>
 
 <template>
@@ -9,18 +15,18 @@
         <h1
           class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-display hero-title"
         >
-          {{ $t("hero.title") }}
+          {{ heroTitle }}
         </h1>
         <p
           class="text-xl text-gray-600 dark:text-gray-400 mb-8 hero-description"
         >
-          {{ $t("hero.description") }}
+          {{ heroDescription }}
         </p>
         <NuxtLink
           to="#contact"
           class="inline-flex items-center px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-lg font-medium transition-colors hero-cta"
         >
-          {{ $t("hero.ctaText") }}
+          {{ ctaText }}
           <Icon name="heroicons:arrow-right" class="ml-2 w-5 h-5" />
         </NuxtLink>
       </div>

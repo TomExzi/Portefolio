@@ -1,15 +1,18 @@
 <template>
   <div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-4">Privacy Policy</h1>
+    <h1 class="text-3xl font-bold mb-4">{{ $t("legal.privacy.title") }}</h1>
     <MarkdownRenderer :content="privacyContent" />
   </div>
 </template>
 
 <script setup lang="ts">
 import MarkdownRenderer from "~/components/MarkdownRenderer.vue";
+const { t, locale } = useI18n();
 
+// You could have different markdown content per language
+// For now we're using the same content with translated title
 const privacyContent = `
-**Effective Date:** 2025-03-02
+**${t("legal.privacy.effective")}:** 2025-03-02
 
 ## Introduction
 
@@ -66,6 +69,17 @@ If you have any questions about this Privacy Policy, please contact us at:
 
 
 `;
+
+// Set the page metadata with correct language
+useHead({
+  title: `${t("legal.privacy.title")} | Tom Rogiers`,
+  meta: [
+    {
+      name: "description",
+      content: `${t("legal.privacy.title")} for Tom Rogiers' portfolio website`,
+    },
+  ],
+});
 </script>
 
 <style scoped>

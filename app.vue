@@ -2,29 +2,27 @@
   <div>
     <!-- Debug display to check if translations are working -->
     <div class="fixed bottom-0 right-0 p-2 bg-black/50 text-white z-50">
-      Locale: {{ $i18n.locale }}
+      Locale: {{ locale }}
     </div>
 
     <NuxtLayout>
-      <TheHeader />
-      <NuxtPage />
+      <NuxtPage :key="locale" />
     </NuxtLayout>
   </div>
 </template>
 
 <script setup lang="ts">
-import TheHeader from "~/components/TheHeader.vue";
-
-const { currentLanguage } = useLanguage();
+// Get i18n instance at the top level of setup function
+const { locale } = useI18n();
 
 // Update HTML lang attribute when language changes
-watch(currentLanguage, (newLang) => {
+watch(locale, (newLang) => {
   document.documentElement.lang = newLang;
 });
 
 // Set initial language attribute
 onMounted(() => {
-  document.documentElement.lang = currentLanguage.value;
+  document.documentElement.lang = locale.value;
 });
 </script>
 

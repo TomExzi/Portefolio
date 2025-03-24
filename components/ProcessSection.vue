@@ -1,5 +1,15 @@
 <script setup lang="ts">
-// No additional imports needed
+// Use the preferred translation composable for consistency
+const { t } = useTranslations();
+
+// Add reactivity to ensure component updates when language changes
+const sectionTitle = computed(() => t("process.title"));
+const planTitle = computed(() => t("process.plan.title"));
+const planDescription = computed(() => t("process.plan.description"));
+const buildTitle = computed(() => t("process.build.title"));
+const buildDescription = computed(() => t("process.build.description"));
+const scaleTitle = computed(() => t("process.scale.title"));
+const scaleDescription = computed(() => t("process.scale.description"));
 </script>
 
 <template>
@@ -12,7 +22,7 @@
         <h2
           class="text-3xl md:text-4xl font-bold mb-6 font-display process-title"
         >
-          {{ $t("process.title") }}
+          {{ sectionTitle }}
         </h2>
       </div>
 
@@ -30,10 +40,10 @@
             />
           </div>
           <h3 class="text-xl font-bold text-center mb-4">
-            {{ $t("process.plan.title") }}
+            {{ planTitle }}
           </h3>
           <p class="text-gray-600 dark:text-gray-400 text-center">
-            {{ $t("process.plan.description") }}
+            {{ planDescription }}
           </p>
         </div>
 
@@ -50,10 +60,10 @@
             />
           </div>
           <h3 class="text-xl font-bold text-center mb-4">
-            {{ $t("process.build.title") }}
+            {{ buildTitle }}
           </h3>
           <p class="text-gray-600 dark:text-gray-400 text-center">
-            {{ $t("process.build.description") }}
+            {{ buildDescription }}
           </p>
         </div>
 
@@ -70,10 +80,10 @@
             />
           </div>
           <h3 class="text-xl font-bold text-center mb-4">
-            {{ $t("process.scale.title") }}
+            {{ scaleTitle }}
           </h3>
           <p class="text-gray-600 dark:text-gray-400 text-center">
-            {{ $t("process.scale.description") }}
+            {{ scaleDescription }}
           </p>
         </div>
       </div>

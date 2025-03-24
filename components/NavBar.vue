@@ -1,67 +1,112 @@
 <script setup lang="ts">
-import type { TranslationKey } from '~/composables/useTranslations';
-import type { LanguageCode } from '~/composables/useLanguage';
+import type { TranslationKey } from "~/composables/useTranslations";
+import { languages } from "~/config/portfolio.config";
 
-const { isDark } = useTheme();
-const { currentLanguage, language } = useLanguage();
-const { t } = useTranslations();
+// Access i18n directly at the top level (must be first)
+const { locale, t } = useI18n();
+const currentLocale = computed(() => locale.value);
 
-const navigation = [
-  { name: 'projects' as TranslationKey, href: "#projects", icon: "heroicons:rectangle-stack" },
-  { name: 'process' as TranslationKey, href: "#process", icon: "heroicons:arrow-path" },
-  { name: 'about' as TranslationKey, href: "#about", icon: "heroicons:user" },
-  { name: 'contact' as TranslationKey, href: "#contact", icon: "heroicons:envelope" },
-];
+// Theme handling
+const colorMode = useColorMode();
+const isDark = computed({
+  get: () => colorMode.value === "dark",
+  set: (value) => {
+    colorMode.preference = value ? "dark" : "light";
+  },
+});
 
 const isLanguageMenuOpen = ref(false);
 
-const languageOptions = [
-  { code: 'en' as LanguageCode, label: 'English' },
-  { code: 'fr' as LanguageCode, label: 'Français'},
-  { code: 'nl' as LanguageCode, label: 'Nederlands' },
-];
+// Generate language options from config
+const languageOptions = languages.map((lang) => ({
+  code: lang.code,
+  label: lang.name,
+  flag: lang.flag,
+  path: lang.path,
+}));
 
-function selectLanguage(langCode: LanguageCode) {
-  language.value = langCode;
+function selectLanguage(langCode: string, langPath: string) {
+  // Update the i18n locale
+  locale.value = langCode;
+
+  // Get the current route path without the language prefix
+  let newPath = window.location.pathname;
+
+  // Remove language prefix from current path
+  for (const lang of languages) {
+    if (lang.path !== "/" && newPath.startsWith(lang.path)) {
+      newPath = newPath.substring(lang.path.length) || "/";
+      break;
+    }
+  }
+
+  // Construct the target path
+  let targetPath;
+  if (langPath === "/") {
+    // For default language (EN), use path without prefix
+    targetPath = newPath;
+  } else {
+    // For other languages (FR, NL), add the language prefix
+    targetPath = `${langPath}${newPath === "/" ? "" : newPath}`;
+  }
+
+  // Navigate using window.location to ensure complete reload
+  window.location.href = targetPath;
   isLanguageMenuOpen.value = false;
 }
 
 // Close the menu when clicking outside
 function onClickOutside(event: MouseEvent) {
   const target = event.target as HTMLElement;
-  if (!target.closest('.language-menu') && isLanguageMenuOpen.value) {
+  if (!target.closest(".language-menu") && isLanguageMenuOpen.value) {
     isLanguageMenuOpen.value = false;
   }
 }
 
 onMounted(() => {
-  document.addEventListener('click', onClickOutside);
+  document.addEventListener("click", onClickOutside);
 });
 
 onUnmounted(() => {
-  document.removeEventListener('click', onClickOutside);
+  document.removeEventListener("click", onClickOutside);
 });
 </script>
 
 <template>
-  <div class="fixed top-0 left-0 w-full z-50">
-    <div class="container mx-auto px-4 py-4">
-      <Logo />
-    </div>
-  </div>
-
   <nav
     class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 py-2 px-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur rounded-full shadow-lg border border-gray-200 dark:border-gray-700"
   >
     <div class="flex items-center space-x-1 sm:space-x-2">
       <NuxtLink
-        v-for="item in navigation"
-        :key="item.name"
-        :to="item.href"
+        href="#projects"
         class="px-3 py-2 text-sm rounded-full text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-blue-400 dark:hover:bg-gray-800/50 transition-colors flex items-center gap-1.5"
       >
-        <Icon :name="item.icon" class="w-4 h-4" />
-        {{ t(item.name) }}
+        <Icon name="heroicons:rectangle-stack" class="w-4 h-4" />
+        {{ $t("navigation.projects") }}
+      </NuxtLink>
+
+      <NuxtLink
+        href="#process"
+        class="px-3 py-2 text-sm rounded-full text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-blue-400 dark:hover:bg-gray-800/50 transition-colors flex items-center gap-1.5"
+      >
+        <Icon name="heroicons:arrow-path" class="w-4 h-4" />
+        {{ $t("process.title") }}
+      </NuxtLink>
+
+      <NuxtLink
+        href="#about"
+        class="px-3 py-2 text-sm rounded-full text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-blue-400 dark:hover:bg-gray-800/50 transition-colors flex items-center gap-1.5"
+      >
+        <Icon name="heroicons:user" class="w-4 h-4" />
+        {{ $t("about.title") }}
+      </NuxtLink>
+
+      <NuxtLink
+        href="#contact"
+        class="px-3 py-2 text-sm rounded-full text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-blue-400 dark:hover:bg-gray-800/50 transition-colors flex items-center gap-1.5"
+      >
+        <Icon name="heroicons:envelope" class="w-4 h-4" />
+        {{ $t("contact.title") }}
       </NuxtLink>
 
       <!-- Language Menu -->
@@ -74,7 +119,7 @@ onUnmounted(() => {
         >
           <span class="flex items-center gap-1.5">
             <Icon name="heroicons:language" class="w-4 h-4" />
-            {{ currentLanguage.toUpperCase() }}
+            {{ currentLocale.toUpperCase() }}
           </span>
         </button>
 
@@ -86,11 +131,14 @@ onUnmounted(() => {
           <button
             v-for="option in languageOptions"
             :key="option.code"
-            @click="selectLanguage(option.code)"
+            @click="selectLanguage(option.code, option.path)"
             class="flex items-center gap-2 w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-            :class="{ 'bg-gray-100 dark:bg-gray-700': currentLanguage === option.code }"
-            :aria-current="currentLanguage === option.code ? 'true' : 'false'"
+            :class="{
+              'bg-gray-100 dark:bg-gray-700': currentLocale === option.code,
+            }"
+            :aria-current="currentLocale === option.code ? 'true' : 'false'"
           >
+            <Icon :name="option.flag" class="w-5 h-5" />
             <span>{{ option.label }}</span>
           </button>
         </div>

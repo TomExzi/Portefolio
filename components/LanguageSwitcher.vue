@@ -1,11 +1,40 @@
 <script setup lang="ts">
 import { languages } from "~/config/portfolio.config";
-import { useLanguage } from "~/composables/useLanguage";
 
+// Use i18n directly at the top level of setup
 const { locale } = useI18n();
-const { currentLanguage } = useLanguage();
+const currentLocale = computed(() => locale.value);
+const route = useRoute();
 
-const currentLocale = computed(() => currentLanguage.value);
+function switchLanguage(langCode: string, langPath: string) {
+  // Update the i18n locale
+  locale.value = langCode;
+
+  // Get the current route path without the language prefix
+  let newPath = route.path;
+
+  // Remove language prefix from current path
+  for (const lang of languages) {
+    if (lang.path !== "/" && newPath.startsWith(lang.path)) {
+      newPath = newPath.substring(lang.path.length) || "/";
+      break;
+    }
+  }
+
+  // Construct the target path
+  let targetPath;
+  if (langPath === "/") {
+    // For default language (EN), use path without prefix
+    targetPath = newPath;
+  } else {
+    // For other languages (FR, NL), add the language prefix
+    targetPath = `${langPath}${newPath === "/" ? "" : newPath}`;
+  }
+
+  // Use window.location.href to ensure a full page reload
+  // This forces all components to remount with the new language
+  window.location.href = targetPath;
+}
 </script>
 
 <template>
@@ -43,9 +72,8 @@ const currentLocale = computed(() => currentLanguage.value);
               :key="lang.code"
               v-slot="{ active }"
             >
-              <!-- Use direct a tags for simplicity -->
-              <a
-                :href="lang.path"
+              <button
+                @click="switchLanguage(lang.code, lang.path)"
                 :class="[
                   active ? 'bg-gray-100 dark:bg-gray-700' : '',
                   'flex items-center gap-2 w-full px-4 py-2 text-sm text-gray-700 dark:text-gray-300',
@@ -53,7 +81,7 @@ const currentLocale = computed(() => currentLanguage.value);
               >
                 <Icon :name="lang.flag" class="w-5 h-5" />
                 <span>{{ lang.name }}</span>
-              </a>
+              </button>
             </MenuItem>
           </div>
         </MenuItems>

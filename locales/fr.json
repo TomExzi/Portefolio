@@ -22,7 +22,7 @@
     "informationProvider": "Fournisseur d'informations"
   },
   "process": {
-    "title": "Ma méthode de travail",
+    "title": "Processus",
     "plan": {
       "title": "Planifier - Stratégie et architecture",
       "description": "Nous commençons par comprendre vos besoins et objectifs commerciaux. Je crée une feuille de route claire, en sélectionnant les technologies adaptées pour garantir l'évolutivité, la performance et la maintenabilité."
@@ -39,13 +39,30 @@
   "about": {
     "title": "À propos de moi",
     "skills": "Compétences",
+    "skillsTechnologies": "Compétences & Technologies",
     "experience": "Expérience",
     "position": "Poste",
-    "period": "Période"
+    "period": "Période",
+    "specializeIn": "Je me spécialise dans la création d'applications web réactives et performantes avec des frameworks modernes et les meilleures pratiques pour l'accessibilité et le référencement."
   },
   "contact": {
     "title": "Contactez-moi",
     "email": "Email",
-    "social": "Profils sociaux"
+    "social": "Profils sociaux",
+    "intro": "Je suis toujours ouvert à de nouvelles opportunités et collaborations. N'hésitez pas à me contacter via l'un de ces canaux."
+  },
+  "legal": {
+    "privacy": {
+      "title": "Politique de Confidentialité",
+      "effective": "Date d'effet"
+    },
+    "terms": {
+      "title": "Conditions d'Utilisation",
+      "effective": "Date d'effet"
+    },
+    "footer": {
+      "privacy": "Politique de Confidentialité",
+      "terms": "Conditions d'Utilisation"
+    }
   }
 }

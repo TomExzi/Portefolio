@@ -1,15 +1,18 @@
 <template>
   <div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-4">Terms of Service</h1>
-    <MarkdownRenderer :content="privacyContent" />
+    <h1 class="text-3xl font-bold mb-4">{{ $t("legal.terms.title") }}</h1>
+    <MarkdownRenderer :content="termsContent" />
   </div>
 </template>
 
 <script setup lang="ts">
 import MarkdownRenderer from "~/components/MarkdownRenderer.vue";
+const { t, locale } = useI18n();
 
-const privacyContent = `
-**Effective Date:** 2025-03-02
+// You could have different markdown content per language
+// For now we're using the same content with translated title
+const termsContent = `
+**${t("legal.terms.effective")}:** 2025-03-02
 
 ## Introduction
 
@@ -53,7 +56,17 @@ If you have any questions about these Terms, please contact us at:
 - Email: tom.rogiers@gmail.com
 
 `;
-// Add the rest of your privacy policy content here
+
+// Set the page metadata with correct language
+useHead({
+  title: `${t("legal.terms.title")} | Tom Rogiers`,
+  meta: [
+    {
+      name: "description",
+      content: `${t("legal.terms.title")} for Tom Rogiers' portfolio website`,
+    },
+  ],
+});
 </script>
 
 <style scoped>

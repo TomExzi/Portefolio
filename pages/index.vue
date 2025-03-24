@@ -1,7 +1,14 @@
 <template>
   <div class="min-h-screen bg-white dark:bg-gray-900">
+    <!-- Top logo -->
+    <div class="fixed top-0 left-0 w-full z-50 px-4 py-4">
+      <div class="container mx-auto">
+        <Logo />
+      </div>
+    </div>
+
     <NavBar />
-    <main class="container mx-auto px-4 py-8 pt-24 space-y-16">
+    <main class="container mx-auto px-4 py-8 pt-20 space-y-16">
       <HeroSection />
       <ProjectsSection />
       <ProcessSection />

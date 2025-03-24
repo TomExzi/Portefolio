@@ -1,22 +1,13 @@
 export type LanguageCode = "en" | "fr" | "nl";
 
+// Simpler implementation of useLanguage that avoids composable nesting issues
 export function useLanguage() {
-  const { locale } = useI18n();
-
-  const currentLanguage = computed(() => {
-    return locale.value;
-  });
-
-  // Add language ref for direct modification
-  const language = ref(locale.value);
-
-  // Watch language changes and update i18n locale
-  watch(language, (newLang) => {
-    locale.value = newLang;
-  });
-
+  // Return the function to be called within setup functions
   return {
-    currentLanguage,
-    language,
+    // Method to switch the language manually
+    switchLanguage: (locale: string, path: string) => {
+      // Simple redirect to the new path
+      window.location.href = path;
+    },
   };
 }

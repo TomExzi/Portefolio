@@ -22,7 +22,7 @@
     "informationProvider": "Information Provider"
   },
   "process": {
-    "title": "My Working Process",
+    "title": "Process",
     "plan": {
       "title": "Plan - Strategy & Architecture",
       "description": "We start by understanding your business needs and goals. I create a clear roadmap, selecting the right technologies to ensure scalability, performance, and maintainability."
@@ -39,13 +39,30 @@
   "about": {
     "title": "About Me",
     "skills": "Skills",
+    "skillsTechnologies": "Skills & Technologies",
     "experience": "Experience",
     "position": "Position",
-    "period": "Period"
+    "period": "Period",
+    "specializeIn": "I specialize in building responsive, high-performance web applications with modern frameworks and best practices for accessibility and SEO."
   },
   "contact": {
     "title": "Get in Touch",
     "email": "Email",
-    "social": "Social Profiles"
+    "social": "Social Profiles",
+    "intro": "I'm always open to new opportunities and collaborations. Feel free to reach out through any of these channels."
+  },
+  "legal": {
+    "privacy": {
+      "title": "Privacy Policy",
+      "effective": "Effective Date"
+    },
+    "terms": {
+      "title": "Terms of Service",
+      "effective": "Effective Date"
+    },
+    "footer": {
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service"
+    }
   }
 }
