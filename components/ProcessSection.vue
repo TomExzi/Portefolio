@@ -11,9 +11,8 @@ const buildDescription = computed(() => t("process.build.description"));
 const scaleTitle = computed(() => t("process.scale.title"));
 const scaleDescription = computed(() => t("process.scale.description"));
 
-// Background image path
-const backgroundImageUrl =
-  "/assets/images/daniel-mccullough-HtBlQdxfG9k-unsplash.jpg";
+// Background image path - use an absolute path from the root
+const backgroundImageUrl = "/daniel-mccullough-HtBlQdxfG9k-unsplash.jpg";
 
 // Lazy loading setup
 const isVisible = ref(false);
@@ -67,17 +66,14 @@ onMounted(() => {
   >
     <!-- Optimized Background Image with improved lazy loading -->
     <div class="absolute inset-0 -z-20">
-      <NuxtImg
+      <img
         :src="backgroundImageUrl"
-        format="webp"
-        width="1920"
-        height="1080"
-        loading="lazy"
-        quality="80"
-        placeholder
         class="w-full h-full object-cover opacity-0 transition-opacity duration-500"
         :class="{ 'opacity-100': isVisible }"
         alt="Process background"
+        loading="lazy"
+        width="1920"
+        height="1080"
       />
     </div>
 

@@ -3,7 +3,7 @@ import { portfolioConfig } from "~/config/portfolio.config";
 
 const { about } = portfolioConfig;
 const { t } = useI18n();
-const bgSvgUrl = "/assets/svg/undraw_dev-productivity_5wps.svg";
+const bgSvgUrl = "/undraw_dev-productivity_5wps.svg";
 
 // Lazy loading setup
 const isVisible = ref(false);
@@ -55,9 +55,9 @@ onMounted(() => {
     ref="sectionRef"
     class="about-section relative overflow-hidden"
   >
-    <!-- SVG Background Image with NuxtImg -->
+    <!-- SVG Background Image with img tag -->
     <div class="absolute inset-0 -z-20 w-full h-full">
-      <NuxtImg
+      <img
         v-if="isVisible"
         :src="bgSvgUrl"
         alt="Background pattern"

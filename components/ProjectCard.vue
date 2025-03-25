@@ -16,15 +16,12 @@ defineProps<{
   >
     <!-- Project Image with improved background handling -->
     <div class="relative h-56 overflow-hidden">
-      <OptimizedImage
-        :src="project.imageUrl"
+      <img
+        :src="'/' + project.imageUrl"
         :alt="project.title"
-        :width="400"
-        :height="224"
-        format="webp"
-        :quality="85"
-        sizes="sm:100vw md:50vw lg:400px"
-        className="transform transition-transform duration-300 hover:scale-105"
+        width="400"
+        height="224"
+        class="transform transition-transform duration-300 hover:scale-105"
       />
       <div
         class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"

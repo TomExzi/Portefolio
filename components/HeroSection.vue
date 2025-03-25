@@ -11,15 +11,13 @@ const ctaText = computed(() => t("hero.ctaText"));
 const colorMode = useColorMode();
 const isDarkMode = computed(() => colorMode.value === "dark");
 
-// Define images for different modes
-const darkArrowImage = "/assets/images/white-arrow-transparent-png-10.png";
-const lightArrowImage =
-  "/assets/images/Curved-arrow-doodle-Hand-drawn-brush-st-Graphics-70917217-1-1-580x387.png";
+// Setup for initial state handling
+const initialDarkMode = ref(false);
 
-// Reactive arrow image based on color mode
-const arrowImage = computed(() =>
-  isDarkMode.value ? darkArrowImage : lightArrowImage
-);
+// Simplify arrow image handling - use static paths without any computations
+const darkArrowImage = "/white-arrow-transparent-png-10.png";
+const lightArrowImage =
+  "/Curved-arrow-doodle-Hand-drawn-brush-st-Graphics-70917217-1-1-580x387.png";
 
 // Visibility state for lazy loading
 const titleArrowVisible = ref(false);
@@ -28,6 +26,32 @@ const heroSectionRef = ref<HTMLElement | null>(null);
 
 // Setup lazy loading for arrows
 onMounted(() => {
+  // Force a reactivity update for dark mode on mount
+  nextTick(() => {
+    // Detect and set initial color mode state
+    initialDarkMode.value = colorMode.value === "dark";
+    console.log("Initial dark mode:", initialDarkMode.value);
+
+    // Execute immediately to set correct images before Vue hydration (moved from inline script)
+    if (process.client) {
+      const isDark =
+        document.documentElement.classList.contains("dark") ||
+        localStorage.getItem("nuxt-color-mode") === "dark" ||
+        (localStorage.getItem("nuxt-color-mode") === "system" &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+      // Find all arrow images and set to correct version
+      document.querySelectorAll(".arrow-image").forEach((img) => {
+        (img as HTMLImageElement).src = isDark
+          ? darkArrowImage
+          : lightArrowImage;
+      });
+
+      console.log("Arrow images set to", isDark ? "dark" : "light", "mode");
+    }
+  });
+
+  // Ensure we're on client-side
   if (process.client) {
     nextTick(() => {
       try {
@@ -70,6 +94,27 @@ onMounted(() => {
     descArrowVisible.value = true;
   }
 });
+
+// Watch for color mode changes
+watch(
+  () => colorMode.value,
+  (newMode) => {
+    console.log("Color mode changed to:", newMode);
+    const isDark = newMode === "dark";
+
+    // Allow time for DOM updates
+    nextTick(() => {
+      // Update all arrow images directly in the DOM
+      if (process.client) {
+        document.querySelectorAll(".arrow-image").forEach((img) => {
+          (img as HTMLImageElement).src = isDark
+            ? darkArrowImage
+            : lightArrowImage;
+        });
+      }
+    });
+  }
+);
 </script>
 
 <template>
@@ -87,20 +132,24 @@ onMounted(() => {
             class="title-arrow-container"
             :class="{ 'dark-mode': isDarkMode }"
           >
-            <NuxtImg
-              :src="arrowImage"
-              format="webp"
-              loading="lazy"
-              placeholder
-              alt="Curved arrow"
-              class="arrow-image title-arrow opacity-0 transition-opacity duration-500"
-              :class="{
-                'dark-mode': isDarkMode,
-                'opacity-100': titleArrowVisible,
-              }"
-              width="180"
-              height="120"
-            />
+            <client-only>
+              <img
+                :src="isDarkMode ? darkArrowImage : lightArrowImage"
+                :data-initial-mode="initialDarkMode ? 'dark' : 'light'"
+                alt="Curved arrow"
+                class="arrow-image title-arrow opacity-0 transition-opacity duration-500"
+                :class="{
+                  'dark-mode': isDarkMode,
+                  'opacity-100': titleArrowVisible,
+                }"
+                width="180"
+                height="120"
+              />
+              <template #fallback>
+                <!-- Fallback during SSR -->
+                <div class="w-[180px] h-[120px]"></div>
+              </template>
+            </client-only>
             <span
               class="arrow-text title-arrow-text opacity-0 transition-opacity duration-500"
               :class="{
@@ -123,20 +172,24 @@ onMounted(() => {
             class="description-arrow-container"
             :class="{ 'dark-mode': isDarkMode }"
           >
-            <NuxtImg
-              :src="arrowImage"
-              format="webp"
-              loading="lazy"
-              placeholder
-              alt="Curved arrow"
-              class="arrow-image description-arrow opacity-0 transition-opacity duration-500"
-              :class="{
-                'dark-mode': isDarkMode,
-                'opacity-100': descArrowVisible,
-              }"
-              width="180"
-              height="120"
-            />
+            <client-only>
+              <img
+                :src="isDarkMode ? darkArrowImage : lightArrowImage"
+                :data-initial-mode="initialDarkMode ? 'dark' : 'light'"
+                alt="Curved arrow"
+                class="arrow-image description-arrow opacity-0 transition-opacity duration-500"
+                :class="{
+                  'dark-mode': isDarkMode,
+                  'opacity-100': descArrowVisible,
+                }"
+                width="180"
+                height="120"
+              />
+              <template #fallback>
+                <!-- Fallback during SSR -->
+                <div class="w-[180px] h-[120px]"></div>
+              </template>
+            </client-only>
             <span
               class="arrow-text description-arrow-text opacity-0 transition-opacity duration-500"
               :class="{
@@ -221,7 +274,7 @@ onMounted(() => {
 .arrow-text,
 .title-arrow-container,
 .description-arrow-container {
-  transition: all 0.3s ease-in-out;
+  transition: all;
 }
 
 /* Arrow styling */
@@ -282,8 +335,8 @@ onMounted(() => {
 }
 
 .title-arrow-text.dark-mode {
-  top: 90%;
-  right: 120px;
+  top: 60%;
+  right: 100px;
 }
 
 /* Description arrow positioning */
@@ -314,8 +367,8 @@ onMounted(() => {
 }
 
 .description-arrow-text.dark-mode {
-  top: 90%;
-  right: 30px;
+  top: 60%;
+  right: 40px;
 }
 
 /* Animations */

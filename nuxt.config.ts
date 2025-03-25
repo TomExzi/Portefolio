@@ -55,7 +55,7 @@ export default defineNuxtConfig({
         { property: "og:type", content: "website" },
         { property: "og:title", content: "Portfolio Website" },
         { property: "og:description", content: "Personal Portfolio Website" },
-        { property: "og:image", content: "/public/assets/images/og-image.jpg" },
+        { property: "og:image", content: "assets/images/og-image.jpg" },
         { property: "og:url", content: "https://yourwebsite.com" },
       ],
     },
@@ -161,10 +161,7 @@ export default defineNuxtConfig({
       cssCodeSplit: true,
       rollupOptions: {
         output: {
-          manualChunks: {
-            vue: ["vue", "vue-router"],
-            ui: ["@headlessui/vue"],
-          },
+          manualChunks: {},
         },
       },
     },
@@ -187,6 +184,10 @@ export default defineNuxtConfig({
   },
   routeRules: {
     "/assets/**": {
+      headers: { "cache-control": "public, max-age=31536000, immutable" },
+      prerender: true,
+    },
+    "/projects/**": {
       headers: { "cache-control": "public, max-age=31536000, immutable" },
       prerender: true,
     },

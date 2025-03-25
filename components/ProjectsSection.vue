@@ -53,21 +53,28 @@ function getProjectTitle(category: string) {
 
 // Add this function to fix image paths
 function fixImagePath(path: string) {
-  // Remove /public prefix if present
-  let fixedPath = path.replace("/public", "");
+  console.log("Original path:", path);
 
-  // Ensure path starts with /
-  if (!fixedPath.startsWith("/")) {
-    fixedPath = "/" + fixedPath;
-  }
+  // Remove /public or ../public prefix if present
+  let fixedPath = path.replace(/^(\/|\.\.\/)?public\//, "");
 
-  // For Infrastructure Portal specifically, try a different approach
+  // Further clean up the path, ensuring no leading slash
+  fixedPath = fixedPath.replace(/^\//, "");
+
+  // Handle different project categories
   if (fixedPath.includes("InfrastructurePortal")) {
-    // Try to use a more direct path
-    const filename = fixedPath.split("/").pop();
-    return `/projects/InfrastructurePortal/${filename}`;
+    // Extract just the filename
+    const filename = fixedPath.split("/").pop() || "";
+    fixedPath = `projects/InfrastructurePortal/${filename}`;
+  } else if (fixedPath.includes("DataRemediation")) {
+    const filename = fixedPath.split("/").pop() || "";
+    fixedPath = `projects/DataRemediation/${filename}`;
+  } else if (fixedPath.includes("InformationProvider")) {
+    const filename = fixedPath.split("/").pop() || "";
+    fixedPath = `projects/InformationProvider/${filename}`;
   }
 
+  console.log("Fixed path:", fixedPath);
   return fixedPath;
 }
 
@@ -76,50 +83,69 @@ onMounted(async () => {
   try {
     console.log("Loading project images...");
 
+    // Simplify paths to use relative paths without ../public/
     const dataRemediationFiles = import.meta.glob(
-      "/public/projects/DataRemediation/*.{jpg,jpeg,png,webp}",
+      "../public/projects/DataRemediation/*.{jpg,jpeg,png,webp}",
       { eager: true }
     );
 
     const infrastructureFiles = import.meta.glob(
-      "/public/projects/InfrastructurePortal/*.{jpg,jpeg,png,webp}",
+      "../public/projects/InfrastructurePortal/*.{jpg,jpeg,png,webp}",
       { eager: true }
     );
 
     const informationProviderFiles = import.meta.glob(
-      "/public/projects/InformationProvider/*.{jpg,jpeg,png,webp}",
+      "../public/projects/InformationProvider/*.{jpg,jpeg,png,webp}",
       { eager: true }
     );
 
+    // Log for debugging
+    console.log("Data Remediation files:", Object.keys(dataRemediationFiles));
+    console.log("Infrastructure files:", Object.keys(infrastructureFiles));
+    console.log(
+      "Information Provider files:",
+      Object.keys(informationProviderFiles)
+    );
+
+    // Simplify the path handling in project creation
     const dataRemediationProjects = Object.keys(dataRemediationFiles).map(
-      (path, index) => ({
-        id: `data-${index + 1}`,
-        title: "Data Remediation",
-        type: "Project",
-        imageUrl: fixImagePath(path),
-        category: "DataRemediation" as const,
-      })
+      (path, index) => {
+        const filename = path.split("/").pop() || "";
+        return {
+          id: `data-${index + 1}`,
+          title: "Data Remediation",
+          type: "Project",
+          imageUrl: `img/projects/DataRemediation/${filename}`,
+          category: "DataRemediation" as const,
+        };
+      }
     );
 
     const infrastructureProjects = Object.keys(infrastructureFiles).map(
-      (path, index) => ({
-        id: `infra-${index + 1}`,
-        title: "Infrastructure Portal",
-        type: "Project",
-        imageUrl: fixImagePath(path),
-        category: "InfrastructurePortal" as const,
-      })
+      (path, index) => {
+        const filename = path.split("/").pop() || "";
+        return {
+          id: `infra-${index + 1}`,
+          title: "Infrastructure Portal",
+          type: "Project",
+          imageUrl: `img/projects/InfrastructurePortal/${filename}`,
+          category: "InfrastructurePortal" as const,
+        };
+      }
     );
 
     const informationProviderProjects = Object.keys(
       informationProviderFiles
-    ).map((path, index) => ({
-      id: `info-${index + 1}`,
-      title: "Information Provider",
-      type: "Project",
-      imageUrl: fixImagePath(path),
-      category: "InformationProvider" as const,
-    }));
+    ).map((path, index) => {
+      const filename = path.split("/").pop() || "";
+      return {
+        id: `info-${index + 1}`,
+        title: "Information Provider",
+        type: "Project",
+        imageUrl: `img/projects/InformationProvider/${filename}`,
+        category: "InformationProvider" as const,
+      };
+    });
 
     allProjects.value = [
       ...dataRemediationProjects,
@@ -530,16 +556,21 @@ function handleImageDoubleClick(event: MouseEvent) {
             @touchmove="handleTouchMoveZoom"
             @touchend="handleTouchEndZoom"
           >
-            <NuxtImg
-              :src="currentExpandedImage"
+            <img
+              :src="'/' + currentExpandedImage"
               alt="Expanded project image"
               class="max-w-full max-h-[80vh] object-contain modal-image"
               :style="{ transform: `scale(${imageScale})` }"
-              loading="eager"
-              format="webp"
-              quality="95"
               @touchstart="handleImageTouch"
               @dblclick="handleImageDoubleClick"
+              @error="
+                (e) =>
+                  console.error(
+                    'Expanded image error:',
+                    currentExpandedImage,
+                    e
+                  )
+              "
             />
           </div>
         </div>
@@ -831,14 +862,20 @@ function handleImageDoubleClick(event: MouseEvent) {
                     <div
                       class="absolute inset-0 flex items-center justify-center"
                     >
-                      <NuxtImg
-                        :src="project.imageUrl"
+                      <img
+                        :src="'/' + project.imageUrl"
                         :alt="project.title"
                         class="max-h-full max-w-full w-auto h-auto object-contain"
-                        loading="lazy"
-                        format="webp"
-                        quality="90"
+                        loading="eager"
                         @load="(e) => handleImageLoad(e, project.imageUrl)"
+                        @error="
+                          (e) =>
+                            console.error(
+                              'Image load error:',
+                              project.imageUrl,
+                              e
+                            )
+                        "
                       />
                     </div>
 
