@@ -101,7 +101,9 @@ const contactItems = [
 
     <div class="flex items-center gap-3 mb-8 relative z-10">
       <Icon name="mdi:email" class="w-7 h-7 text-blue-600 dark:text-blue-400" />
-      <h2 class="text-3xl font-bold dark:text-black">
+      <h2
+        class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent px-2 rounded-full hover:bg-gray-100/20 dark:hover:bg-gray-800/20 transition-colors"
+      >
         {{ t("contact.title") }}
       </h2>
     </div>

@@ -15,8 +15,4 @@ defineProps<{
   </section>
 </template>
 
-<style scoped>
-section:hover {
-  transform: scale(1.005);
-}
-</style>
+<style scoped></style>

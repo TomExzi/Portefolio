@@ -61,7 +61,7 @@ onMounted(() => {
 <template>
   <section
     id="process"
-    class="py-16 process-section relative overflow-hidden"
+    class="py-16 process-section relative overflow-hidden rounded-xl"
     ref="sectionRef"
   >
     <!-- Optimized Background Image with improved lazy loading -->
@@ -85,7 +85,7 @@ onMounted(() => {
     <div class="container mx-auto px-4 relative z-10">
       <div class="max-w-3xl mx-auto text-center mb-12">
         <h2
-          class="text-3xl md:text-4xl font-bold mb-6 font-display process-title dark:process-title-light"
+          class="text-3xl md:text-4xl font-bold mb-6 font-display process-title text-shadow"
         >
           {{ sectionTitle }}
         </h2>
@@ -162,6 +162,10 @@ onMounted(() => {
 .process-section {
   position: relative;
   z-index: 0;
+}
+
+.text-shadow {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .process-title {
@@ -292,7 +296,7 @@ onMounted(() => {
 
 .dark .process-title {
   color: #60a5fa;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
 }
 
 .dark .process-title::after {

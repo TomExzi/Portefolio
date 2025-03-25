@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     "nuxt-icon",
     "@nuxt/image",
     "@nuxtjs/i18n",
+    "~/modules/i18n-module",
   ],
   colorMode: {
     classSuffix: "",

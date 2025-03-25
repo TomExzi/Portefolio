@@ -11,12 +11,8 @@ const ctaText = computed(() => t("hero.ctaText"));
 const colorMode = useColorMode();
 const isDarkMode = computed(() => colorMode.value === "dark");
 
-// Setup for initial state handling
-const initialDarkMode = ref(false);
-
-// Simplify arrow image handling - use static paths without any computations
-const darkArrowImage = "/white-arrow-transparent-png-10.png";
-const lightArrowImage =
+// Single arrow image path
+const arrowImage =
   "/Curved-arrow-doodle-Hand-drawn-brush-st-Graphics-70917217-1-1-580x387.png";
 
 // Visibility state for lazy loading
@@ -26,31 +22,6 @@ const heroSectionRef = ref<HTMLElement | null>(null);
 
 // Setup lazy loading for arrows
 onMounted(() => {
-  // Force a reactivity update for dark mode on mount
-  nextTick(() => {
-    // Detect and set initial color mode state
-    initialDarkMode.value = colorMode.value === "dark";
-    console.log("Initial dark mode:", initialDarkMode.value);
-
-    // Execute immediately to set correct images before Vue hydration (moved from inline script)
-    if (process.client) {
-      const isDark =
-        document.documentElement.classList.contains("dark") ||
-        localStorage.getItem("nuxt-color-mode") === "dark" ||
-        (localStorage.getItem("nuxt-color-mode") === "system" &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches);
-
-      // Find all arrow images and set to correct version
-      document.querySelectorAll(".arrow-image").forEach((img) => {
-        (img as HTMLImageElement).src = isDark
-          ? darkArrowImage
-          : lightArrowImage;
-      });
-
-      console.log("Arrow images set to", isDark ? "dark" : "light", "mode");
-    }
-  });
-
   // Ensure we're on client-side
   if (process.client) {
     nextTick(() => {
@@ -94,27 +65,6 @@ onMounted(() => {
     descArrowVisible.value = true;
   }
 });
-
-// Watch for color mode changes
-watch(
-  () => colorMode.value,
-  (newMode) => {
-    console.log("Color mode changed to:", newMode);
-    const isDark = newMode === "dark";
-
-    // Allow time for DOM updates
-    nextTick(() => {
-      // Update all arrow images directly in the DOM
-      if (process.client) {
-        document.querySelectorAll(".arrow-image").forEach((img) => {
-          (img as HTMLImageElement).src = isDark
-            ? darkArrowImage
-            : lightArrowImage;
-        });
-      }
-    });
-  }
-);
 </script>
 
 <template>
@@ -128,20 +78,13 @@ watch(
           >
             {{ heroTitle }}
           </h1>
-          <div
-            class="title-arrow-container"
-            :class="{ 'dark-mode': isDarkMode }"
-          >
+          <div class="title-arrow-container">
             <client-only>
               <img
-                :src="isDarkMode ? darkArrowImage : lightArrowImage"
-                :data-initial-mode="initialDarkMode ? 'dark' : 'light'"
+                :src="arrowImage"
                 alt="Curved arrow"
                 class="arrow-image title-arrow opacity-0 transition-opacity duration-500"
-                :class="{
-                  'dark-mode': isDarkMode,
-                  'opacity-100': titleArrowVisible,
-                }"
+                :class="{ 'opacity-100': titleArrowVisible }"
                 width="180"
                 height="120"
               />
@@ -152,10 +95,7 @@ watch(
             </client-only>
             <span
               class="arrow-text title-arrow-text opacity-0 transition-opacity duration-500"
-              :class="{
-                'dark-mode': isDarkMode,
-                'opacity-100': titleArrowVisible,
-              }"
+              :class="{ 'opacity-100': titleArrowVisible }"
               >Us</span
             >
           </div>
@@ -168,20 +108,13 @@ watch(
           >
             {{ heroDescription }}
           </p>
-          <div
-            class="description-arrow-container"
-            :class="{ 'dark-mode': isDarkMode }"
-          >
+          <div class="description-arrow-container">
             <client-only>
               <img
-                :src="isDarkMode ? darkArrowImage : lightArrowImage"
-                :data-initial-mode="initialDarkMode ? 'dark' : 'light'"
+                :src="arrowImage"
                 alt="Curved arrow"
                 class="arrow-image description-arrow opacity-0 transition-opacity duration-500"
-                :class="{
-                  'dark-mode': isDarkMode,
-                  'opacity-100': descArrowVisible,
-                }"
+                :class="{ 'opacity-100': descArrowVisible }"
                 width="180"
                 height="120"
               />
@@ -192,10 +125,7 @@ watch(
             </client-only>
             <span
               class="arrow-text description-arrow-text opacity-0 transition-opacity duration-500"
-              :class="{
-                'dark-mode': isDarkMode,
-                'opacity-100': descArrowVisible,
-              }"
+              :class="{ 'opacity-100': descArrowVisible }"
               >Me</span
             >
           </div>
@@ -279,47 +209,39 @@ watch(
 
 /* Arrow styling */
 .arrow-image {
-  width: 120px;
+  width: 180px;
   height: auto;
   position: absolute;
   z-index: 2;
+  filter: none;
+  mix-blend-mode: multiply;
 }
 
-.arrow-image.dark-mode {
-  width: 180px;
-  border: 0px solid rgba(96, 165, 250, 0.4);
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+.dark .arrow-image {
+  filter: invert(1);
+  mix-blend-mode: screen;
 }
 
 .arrow-text {
   position: absolute;
   font-family: "Permanent Marker", cursive, sans-serif;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   color: #000;
   z-index: 3;
-  text-shadow: 1px 1px 2px white; /* Make text more visible */
+  text-shadow: 1px 1px 2px white;
 }
 
-.arrow-text.dark-mode {
+.dark .arrow-text {
   color: #fff;
-  font-size: 2rem;
-  text-shadow: 1px 1px 2px black; /*
- Make text more visible in dark mode */
+  text-shadow: 1px 1px 2px black;
 }
 
 /* Title arrow positioning */
 .title-arrow-container {
   position: absolute;
-  width: 120px;
-  height: 80px;
-  top: 20px;
-  left: -120px;
-}
-
-.title-arrow-container.dark-mode {
   width: 180px;
   height: 120px;
-  top: 20%;
+  top: 20px;
   left: -160px;
 }
 
@@ -331,28 +253,16 @@ watch(
 
 .title-arrow-text {
   top: 80%;
-  left: 30px;
-}
-
-.title-arrow-text.dark-mode {
-  top: 60%;
-  right: 100px;
+  left: 50px;
 }
 
 /* Description arrow positioning */
 .description-arrow-container {
   position: absolute;
-  width: 120px;
-  height: 80px;
-  top: 10px;
-  right: -120px;
-}
-
-.description-arrow-container.dark-mode {
   width: 180px;
   height: 120px;
   top: 30px;
-  left: 95%;
+  right: -160px;
 }
 
 .description-arrow {
@@ -362,13 +272,8 @@ watch(
 }
 
 .description-arrow-text {
-  top: 80%;
-  right: 40px;
-}
-
-.description-arrow-text.dark-mode {
-  top: 60%;
-  right: 40px;
+  top: 85%;
+  right: 60px;
 }
 
 /* Animations */
@@ -396,27 +301,6 @@ watch(
   .title-arrow-container,
   .description-arrow-container {
     display: none;
-  }
-}
-
-/* Responsive adjustments for arrows if visible */
-@media (min-width: 1200px) {
-  .title-arrow-container {
-    left: -120px;
-  }
-
-  .description-arrow-container {
-    right: -120px;
-  }
-
-  .title-arrow-container.dark-mode {
-    left: -160px;
-    width: 180px;
-  }
-
-  .description-arrow-container.dark-mode {
-    right: -160px;
-    width: 180px;
   }
 }
 

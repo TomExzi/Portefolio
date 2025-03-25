@@ -635,7 +635,9 @@ function handleImageDoubleClick(event: MouseEvent) {
           class="w-6 h-6 text-blue-600 dark:text-blue-400"
           aria-hidden="true"
         />
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+        <h2
+          class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent px-2 rounded-full hover:bg-gray-100/20 dark:hover:bg-gray-800/20 transition-colors"
+        >
           {{ $t("projects.featuredProjects") }}
         </h2>
       </div>
@@ -997,7 +999,7 @@ function handleImageDoubleClick(event: MouseEvent) {
                 />
               </div>
               <h3
-                class="text-xl dark:text-black font-semibold pointer-events-none"
+                class="text-xl dark:text-black font-semibold pointer-events-none text-shadow"
               >
                 {{
                   $t(
@@ -1031,7 +1033,7 @@ function handleImageDoubleClick(event: MouseEvent) {
                   aria-hidden="true"
                 />
                 <h4
-                  class="text-sm font-medium text-gray-700 dark:text-black pointer-events-none"
+                  class="text-sm font-medium text-gray-700 dark:text-black pointer-events-none text-shadow"
                 >
                   {{ $t("projects.technologies") }}
                 </h4>
@@ -1501,5 +1503,10 @@ html:not(.dark) .tabs-menu > div {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
+}
+
+/* Add text shadow class for better visibility */
+.text-shadow {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 </style>
