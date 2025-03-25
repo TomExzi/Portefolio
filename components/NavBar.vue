@@ -250,7 +250,7 @@ watchEffect(() => {
             <!-- Dropdown Menu -->
             <div
               v-if="isLanguageMenuOpen"
-              class="absolute bottom-full mb-2 right-0 max-w-[95vw] rounded-lg bg-white dark:bg-[#1a202c] shadow-xl border-2 border-gray-200 dark:border-gray-600/50 py-1 w-40 z-50 transition-all duration-200 ease-in-out animate-fadeIn"
+              class="absolute bottom-full mb-2 right-0 max-w-[95vw] rounded-lg bg-white dark:bg-[#1a202c] shadow-xl py-1 w-40 z-50 transition-all duration-200 ease-in-out animate-fadeIn"
             >
               <button
                 v-for="option in languageOptions"

@@ -64,17 +64,24 @@ onMounted(() => {
         width="1000"
         height="1000"
         loading="lazy"
-        class="w-full h-full opacity-0 transition-opacity duration-500 dark:opacity-10"
-        :class="{ 'opacity-20': isVisible }"
+        class="w-full h-full opacity-0 transition-opacity duration-500 dark:opacity-10 backdrop-blur-sm filter blur-sm"
+        :class="{ 'opacity-15': isVisible }"
       />
     </div>
+
+    <!-- Add semi-transparent overlay for better text contrast -->
+    <div class="absolute inset-0 -z-10 bg-white/70 dark:bg-slate-900/70"></div>
 
     <div class="flex items-center gap-3 mb-12">
       <Icon
         name="heroicons:user"
         class="w-7 h-7 text-blue-600 dark:text-blue-400"
       />
-      <h2 class="text-3xl font-bold dark:text-white">{{ t("about.title") }}</h2>
+      <h2
+        class="text-3xl font-bold text-gray-900 dark:text-slate-100 text-shadow-dark"
+      >
+        {{ t("about.title") }}
+      </h2>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -84,7 +91,9 @@ onMounted(() => {
             name="heroicons:briefcase"
             class="w-6 h-6 text-blue-600 dark:text-blue-400"
           />
-          <h3 class="text-2xl font-semibold dark:text-white">
+          <h3
+            class="text-2xl font-semibold text-gray-800 dark:text-slate-100 text-shadow-dark"
+          >
             {{ t("about.experience") }}
           </h3>
         </div>
@@ -92,23 +101,23 @@ onMounted(() => {
           <div
             v-for="(experience, expIndex) in about.experiences"
             :key="experience.company"
-            class="pl-4 border-l-2 border-blue-200 dark:border-blue-800"
+            class="pl-4 border-l-2 border-blue-200 dark:border-slate-600"
           >
             <h4
-              class="text-xl font-medium dark:text-white flex items-center gap-2"
+              class="text-xl font-medium text-gray-800 dark:text-amber-50 flex items-center gap-2 text-shadow-dark"
             >
               <Icon
                 name="heroicons:building-office"
-                class="w-5 h-5 text-blue-600 dark:text-blue-400"
+                class="w-5 h-5 text-blue-600 dark:text-amber-400"
               />
               {{ t(`about.experiences.${expIndex}.position`) }}
             </h4>
             <p
-              class="text-gray-600 dark:text-gray-400 mb-2 flex items-center gap-2"
+              class="text-gray-700 dark:text-slate-200 mb-2 flex items-center gap-2"
             >
               <Icon
                 name="heroicons:calendar"
-                class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                class="w-4 h-4 text-gray-500 dark:text-slate-300"
               />
               {{ t(`about.experiences.${expIndex}.company`) }} |
               {{ t(`about.experiences.${expIndex}.period`) }}
@@ -117,11 +126,11 @@ onMounted(() => {
               <li
                 v-for="(item, index) in experience.description.length"
                 :key="index"
-                class="flex gap-2 text-gray-600 dark:text-gray-300"
+                class="flex gap-2 text-gray-700 dark:text-slate-100"
               >
                 <Icon
                   name="heroicons:check"
-                  class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5"
+                  class="w-5 h-5 text-green-500 dark:text-green-400 flex-shrink-0 mt-0.5"
                 />
                 <span>{{
                   t(`about.experiences.${expIndex}.description.${index}`)
@@ -138,7 +147,9 @@ onMounted(() => {
             name="heroicons:code-bracket"
             class="w-6 h-6 text-blue-600 dark:text-blue-400"
           />
-          <h3 class="text-2xl font-semibold dark:text-white">
+          <h3
+            class="text-2xl font-semibold text-gray-800 dark:text-slate-100 text-shadow-dark"
+          >
             {{ t("about.skillsTechnologies") }}
           </h3>
         </div>
@@ -147,11 +158,11 @@ onMounted(() => {
             <li
               v-for="(skill, skillIndex) in about.skills"
               :key="skill"
-              class="flex gap-2 text-gray-600 dark:text-gray-300"
+              class="flex gap-2 text-gray-700 dark:text-slate-100"
             >
               <Icon
                 name="heroicons:star"
-                class="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5"
+                class="w-5 h-5 text-yellow-500 dark:text-yellow-300 flex-shrink-0 mt-0.5"
               />
               <span>{{ skill }}</span>
             </li>
@@ -171,6 +182,14 @@ onMounted(() => {
   height: 100%;
 }
 
+.text-shadow {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 0 4px rgba(255, 255, 255, 0.3);
+}
+
+.text-shadow-dark {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
 /* Optional animation for the background pattern */
 @media (prefers-reduced-motion: no-preference) {
   .about-section::before {
@@ -184,6 +203,7 @@ onMounted(() => {
     z-index: -20;
     opacity: 0.2;
     animation: subtle-float 120s infinite alternate ease-in-out;
+    filter: blur(2px);
   }
 
   @keyframes subtle-float {

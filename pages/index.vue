@@ -23,7 +23,7 @@
         <!-- Lazy load Contact Section -->
         <LazyContactSection />
         <!-- Add padding at bottom to ensure space for footer -->
-        <div class="pb-24"></div>
+        <div class="pb-40"></div>
       </div>
       <!-- Footer only appears when scrolled to bottom -->
       <div
@@ -50,8 +50,8 @@ function checkScrollPosition() {
   const scrollPosition = element.scrollTop;
   const maxScroll = element.scrollHeight - element.clientHeight;
 
-  // Show footer when within 150px of bottom
-  showFooter.value = maxScroll - scrollPosition < 150;
+  // Show footer when within 250px of bottom
+  showFooter.value = maxScroll - scrollPosition < 250;
 }
 
 // Function to handle navigation to sections

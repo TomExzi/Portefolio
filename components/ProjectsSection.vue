@@ -672,12 +672,14 @@ function handleImageDoubleClick(event: MouseEvent) {
                 v-if="tab.id !== 'all'"
                 :name="portfolioConfig.projectCategories[tab.id as ProjectCategory].icon"
                 class="w-4 h-4"
+                :class="{ 'text-blue-500': currentTab === tab.id }"
                 aria-hidden="true"
               />
               <Icon
                 v-else
                 name="heroicons:squares-2x2"
                 class="w-4 h-4"
+                :class="{ 'text-blue-500': currentTab === tab.id }"
                 aria-hidden="true"
               />
               {{
@@ -1111,6 +1113,33 @@ function handleImageDoubleClick(event: MouseEvent) {
   overflow: hidden;
 }
 
+/* Project tab menu styling for light mode */
+html:not(.dark) .project-menu .inline-flex {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.95),
+    rgba(249, 250, 251, 0.95)
+  );
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(229, 231, 235, 0.8);
+}
+
+.project-menu button[tabindex="-1"] {
+  transition: all 0.2s ease;
+}
+
+.project-menu button[tabindex="-1"]:active {
+  transform: scale(0.97);
+}
+
+/* Active tab in light mode */
+html:not(.dark) .project-menu button.bg-white {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border-bottom: 2px solid #3b82f6;
+  font-weight: 500;
+}
+
 /* Project card styling */
 .project-card {
   display: flex;
@@ -1386,5 +1415,11 @@ a {
   .aspect-video {
     height: 500px;
   }
+}
+
+/* Hover styles for tabs in light mode */
+html:not(.dark) .project-menu button.text-gray-600:hover {
+  background-color: rgba(249, 250, 251, 0.8);
+  color: #3b82f6;
 }
 </style>
