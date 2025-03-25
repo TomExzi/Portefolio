@@ -1,6 +1,6 @@
 <template>
   <div
-    class="h-screen w-screen bg-white dark:bg-gray-900 flex flex-col overflow-hidden"
+    class="h-screen w-screen bg-white dark:bg-[#1a202c] flex flex-col overflow-hidden"
   >
     <!-- Top logo -->
     <div class="fixed top-0 left-0 w-full z-50 px-4 py-4">

@@ -6,11 +6,11 @@ const { t } = useI18n();
 const bgSvgUrl = "/assets/svg/undraw_dev-productivity_5wps.svg";
 
 // Lazy loading setup
-const isIntersecting = ref(false);
+const isVisible = ref(false);
 const sectionRef = ref<HTMLElement | null>(null);
 
 onMounted(() => {
-  // Delay the initialization to ensure the DOM is ready
+  // Ensure we're on client-side
   if (process.client) {
     nextTick(() => {
       try {
@@ -18,31 +18,33 @@ onMounted(() => {
           const observer = new IntersectionObserver(
             (entries) => {
               entries.forEach((entry) => {
-                isIntersecting.value = entry.isIntersecting;
+                isVisible.value = entry.isIntersecting;
               });
             },
-            { threshold: 0.1 }
+            { threshold: 0.1, rootMargin: "200px" }
           );
 
           observer.observe(sectionRef.value);
 
           // Cleanup
           onBeforeUnmount(() => {
-            observer.disconnect();
+            if (observer) {
+              observer.disconnect();
+            }
           });
         } else {
           // Fallback when ref is not available
-          isIntersecting.value = true;
+          isVisible.value = true;
         }
       } catch (error) {
         console.error("IntersectionObserver error:", error);
         // Fallback - always show image
-        isIntersecting.value = true;
+        isVisible.value = true;
       }
     });
   } else {
     // Fallback for SSR
-    isIntersecting.value = true;
+    isVisible.value = true;
   }
 });
 </script>
@@ -53,16 +55,19 @@ onMounted(() => {
     ref="sectionRef"
     class="about-section relative overflow-hidden"
   >
-    <!-- SVG Background Image -->
-    <div
-      v-if="isIntersecting"
-      class="absolute inset-0 -z-20 w-full h-full opacity-20 dark:opacity-10"
-      :style="{
-        backgroundImage: `url(${bgSvgUrl})`,
-        backgroundSize: '100% 100%',
-        backgroundPosition: 'center',
-      }"
-    ></div>
+    <!-- SVG Background Image with NuxtImg -->
+    <div class="absolute inset-0 -z-20 w-full h-full">
+      <NuxtImg
+        v-if="isVisible"
+        :src="bgSvgUrl"
+        alt="Background pattern"
+        width="1000"
+        height="1000"
+        loading="lazy"
+        class="w-full h-full opacity-0 transition-opacity duration-500 dark:opacity-10"
+        :class="{ 'opacity-20': isVisible }"
+      />
+    </div>
 
     <div class="flex items-center gap-3 mb-12">
       <Icon

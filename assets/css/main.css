@@ -1,45 +1,51 @@
 @import "./theme.css";
 @import "./background-utils.css";
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+@import "./lazy-loading.css";
 
 @layer base {
   :root {
     /* Primary colors */
-    --color-primary-50: 239 246 255; /* blue-50 */
-    --color-primary-100: 219 234 254; /* blue-100 */
-    --color-primary-200: 191 219 254; /* blue-200 */
-    --color-primary-300: 147 197 253; /* blue-300 */
-    --color-primary-400: 96 165 250; /* blue-400 */
-    --color-primary-500: 59 130 246; /* blue-500 */
-    --color-primary-600: 37 99 235; /* blue-600 */
-    --color-primary-700: 29 78 216; /* blue-700 */
-    --color-primary-800: 30 64 175; /* blue-800 */
-    --color-primary-900: 30 58 138; /* blue-900 */
-    --color-primary-950: 23 37 84; /* blue-950 */
+    --color-primary-50: 239, 246, 255; /* blue-50 */
+    --color-primary-100: 219, 234, 254; /* blue-100 */
+    --color-primary-200: 191, 219, 254; /* blue-200 */
+    --color-primary-300: 147, 197, 253; /* blue-300 */
+    --color-primary-400: 96, 165, 250; /* blue-400 */
+    --color-primary-500: 59, 130, 246; /* blue-500 */
+    --color-primary-600: 37, 99, 235; /* blue-600 */
+    --color-primary-700: 29, 78, 216; /* blue-700 */
+    --color-primary-800: 30, 64, 175; /* blue-800 */
+    --color-primary-900: 30, 58, 138; /* blue-900 */
+    --color-primary-950: 23, 37, 84; /* blue-950 */
 
     /* Gray colors */
-    --color-gray-50: 249 250 251; /* gray-50 */
-    --color-gray-100: 243 244 246; /* gray-100 */
-    --color-gray-200: 229 231 235; /* gray-200 */
-    --color-gray-300: 209 213 219; /* gray-300 */
-    --color-gray-400: 156 163 175; /* gray-400 */
-    --color-gray-500: 107 114 128; /* gray-500 */
-    --color-gray-600: 75 85 99; /* gray-600 */
-    --color-gray-700: 55 65 81; /* gray-700 */
-    --color-gray-800: 31 41 55; /* gray-800 */
-    --color-gray-900: 17 24 39; /* gray-900 */
-    --color-gray-950: 3 7 18; /* gray-950 */
+    --color-gray-50: 249, 250, 251; /* gray-50 */
+    --color-gray-100: 243, 244, 246; /* gray-100 */
+    --color-gray-200: 229, 231, 235; /* gray-200 */
+    --color-gray-300: 209, 213, 219; /* gray-300 */
+    --color-gray-400: 156, 163, 175; /* gray-400 */
+    --color-gray-500: 107, 114, 128; /* gray-500 */
+    --color-gray-600: 75, 85, 99; /* gray-600 */
+    --color-gray-700: 55, 65, 81; /* gray-700 */
+    --color-gray-800: 31, 41, 55; /* gray-800 */
+    --color-gray-900: 17, 24, 39; /* gray-900 */
+    --color-gray-950: 3, 7, 18; /* gray-950 */
 
     /* Light mode specific */
-    --color-light-primary: 26 32 44; /* gray-900 */
-    --color-light-secondary: 74 85 104; /* gray-600 */
-    --color-card-light: 255 255 255; /* white */
+    --color-light-primary: 15, 23, 42; /* gray-900 */
+    --color-light-secondary: 71, 85, 105; /* gray-600 */
+    --color-light-tertiary: 148, 163, 184;
+    --color-card-light: 255, 255, 255; /* white */
 
     /* Shadow for light mode */
     --shadow-light-card: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
       0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+    /* Glass properties light mode */
+    --glass-opacity-light: 0.8;
+    --glass-blur-light: 12px;
 
     /* Animation variables */
     --animation-duration-standard: 0.3s;
@@ -50,17 +56,36 @@
         var(--animation-timing-standard),
       opacity var(--animation-duration-standard)
         var(--animation-timing-standard);
+
+    /* Light mode colors */
+    --color-light-background: 255, 255, 255;
+    --color-light-surface: 248, 250, 252;
+    --color-light-primary: 15, 23, 42;
+    --color-light-secondary: 71, 85, 105;
+    --color-light-tertiary: 148, 163, 184;
+
+    /* Dark mode colors */
+    --color-dark-background: 15, 23, 42;
+    --color-dark-surface: 30, 41, 59;
+    --color-dark-primary: 248, 250, 252;
+    --color-dark-secondary: 203, 213, 225;
+    --color-dark-tertiary: 148, 163, 184;
   }
 
-  .dark {
+  /* Dark mode override - this is a critical part for dark mode */
+  html.dark {
     /* Dark mode specific */
-    --color-dark-primary: 247 250 252; /* gray-50 */
-    --color-dark-secondary: 203 213 224; /* gray-300 */
-    --color-card-dark: 45 55 72; /* gray-800 */
+    --color-dark-primary: 247, 250, 252; /* gray-50 */
+    --color-dark-secondary: 203, 213, 224; /* gray-300 */
+    --color-card-dark: 30, 41, 59; /* Adjusted to a slightly lighter shade for better contrast */
 
     /* Shadow for dark mode */
     --shadow-dark-card: 0 10px 15px -3px rgba(0, 0, 0, 0.3),
       0 4px 6px -2px rgba(0, 0, 0, 0.2);
+
+    /* Glass properties dark mode */
+    --glass-opacity-dark: 0.85; /* Increased from 0.7 for better visibility */
+    --glass-blur-dark: 10px;
   }
 
   /* Performance optimizations */
@@ -80,6 +105,28 @@
       scroll-behavior: auto !important;
     }
   }
+
+  /* Typography settings */
+  body {
+    @apply font-sans;
+    color: rgb(var(--color-light-primary));
+    background-color: rgb(var(--color-light-background));
+  }
+
+  /* Dark mode body styles */
+  html.dark body {
+    color: rgb(var(--color-dark-primary));
+    background-color: rgb(var(--color-dark-background));
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display;
+  }
 }
 
 @layer components {
@@ -92,47 +139,47 @@
     box-shadow: var(--shadow-dark-card);
   }
 
-  /* Text colors */
+  /* Text colors - using direct variable references */
   .text-light-primary {
-    color: rgb(var(--color-light-primary) / 1);
+    color: rgb(var(--color-light-primary));
   }
 
   .text-light-secondary {
-    color: rgb(var(--color-light-secondary) / 1);
+    color: rgb(var(--color-light-secondary));
   }
 
   .text-dark-primary {
-    color: rgb(var(--color-dark-primary) / 1);
+    color: rgb(var(--color-dark-primary));
   }
 
   .text-dark-secondary {
-    color: rgb(var(--color-dark-secondary) / 1);
+    color: rgb(var(--color-dark-secondary));
   }
 
   /* Background colors */
   .bg-card-light {
-    background-color: rgb(var(--color-card-light) / 1);
+    background-color: rgb(var(--color-card-light));
   }
 
   .bg-card-dark {
-    background-color: rgb(var(--color-card-dark) / 1);
+    background-color: rgb(var(--color-card-dark));
   }
 
   /* Primary colors utility classes */
   .text-primary-400 {
-    color: rgb(var(--color-primary-400) / 1);
+    color: rgb(var(--color-primary-400));
   }
 
   .text-primary-600 {
-    color: rgb(var(--color-primary-600) / 1);
+    color: rgb(var(--color-primary-600));
   }
 
   .bg-primary-400 {
-    background-color: rgb(var(--color-primary-400) / 1);
+    background-color: rgb(var(--color-primary-400));
   }
 
   .bg-primary-600 {
-    background-color: rgb(var(--color-primary-600) / 1);
+    background-color: rgb(var(--color-primary-600));
   }
 
   /* Glassmorphism utilities */
@@ -142,6 +189,7 @@
     transition: backdrop-filter var(--animation-duration-standard)
       var(--animation-timing-standard);
     will-change: backdrop-filter;
+    border: 1px solid rgba(255, 255, 255, 0.2);
   }
 
   .glass-dark {
@@ -150,12 +198,13 @@
     transition: backdrop-filter var(--animation-duration-standard)
       var(--animation-timing-standard);
     will-change: backdrop-filter;
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   /* Remove blur on hover */
   .glass-light:hover,
   .glass-dark:hover {
-    backdrop-filter: blur(0);
+    backdrop-filter: blur(calc(var(--glass-blur-light) - 2px));
   }
 
   /* Transition utilities */
@@ -205,4 +254,27 @@
   to {
     opacity: 1;
   }
+}
+
+/* Transition for page changes */
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* Transition for layout changes */
+.layout-enter-active,
+.layout-leave-active {
+  transition: opacity 0.3s ease-in-out;
+}
+
+.layout-enter-from,
+.layout-leave-to {
+  opacity: 0;
 }

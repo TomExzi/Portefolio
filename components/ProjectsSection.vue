@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { portfolioConfig } from "~/config/portfolio.config";
-import { ref } from "vue";
+import { ref, computed, onMounted, onUnmounted } from "vue";
 import SectionCard from "~/components/SectionCard.vue";
 
 type ProjectCategory =
@@ -11,6 +11,11 @@ type TabType = ProjectCategory | "all";
 
 const currentIndex = ref(0);
 const currentTab = ref<TabType>("all");
+const sliderRef = ref<HTMLElement | null>(null);
+const isSliding = ref(false);
+const isSwiping = ref(false);
+const isImageExpanded = ref(false);
+const currentExpandedImage = ref<string | null>(null);
 
 interface Project {
   id: string;
@@ -152,19 +157,39 @@ watch(currentTab, () => {
   });
 });
 
+// Enhanced navigation with debouncing to prevent rapid clicks
 const next = () => {
+  if (isSliding.value || filteredProjects.value.length <= 1) return;
+  isSliding.value = true;
+
   currentIndex.value = (currentIndex.value + 1) % filteredProjects.value.length;
+
+  setTimeout(() => {
+    isSliding.value = false;
+  }, 300); // Match this with slide transition duration
 };
 
 const prev = () => {
+  if (isSliding.value || filteredProjects.value.length <= 1) return;
+  isSliding.value = true;
+
   currentIndex.value =
     currentIndex.value === 0
       ? filteredProjects.value.length - 1
       : currentIndex.value - 1;
+
+  setTimeout(() => {
+    isSliding.value = false;
+  }, 300); // Match this with slide transition duration
 };
 
 const goToSlide = (index: number) => {
+  if (isSliding.value) return;
+  isSliding.value = true;
   currentIndex.value = index;
+  setTimeout(() => {
+    isSliding.value = false;
+  }, 300);
 };
 
 // Safely access project category data with type checking
@@ -243,16 +268,310 @@ function onClickOutside(event: MouseEvent) {
   }
 }
 
+// Add automatic image dimension detection
+const loadedImageDimensions = ref(new Map());
+
+function updateImageDimensions(
+  imageUrl: string,
+  width: number,
+  height: number
+) {
+  loadedImageDimensions.value.set(imageUrl, { width, height });
+}
+
+// Calculate appropriate object-fit based on image dimensions
+const getObjectFit = computed(() => {
+  if (filteredProjects.value.length === 0 || currentIndex.value < 0)
+    return "contain";
+
+  const project = filteredProjects.value[currentIndex.value];
+  if (!project) return "contain";
+
+  const dimensions = loadedImageDimensions.value.get(project.imageUrl);
+  if (!dimensions) return "contain"; // Default to contain
+
+  // Use cover for landscape images if they're not too wide
+  const ratio = dimensions.width / dimensions.height;
+  return ratio > 1.5 ? "contain" : "cover";
+});
+
+// Setup swipe handlers manually instead of using VueUse
+let startX = 0;
+let startY = 0;
+
+function handleTouchStart(event: TouchEvent) {
+  startX = event.touches[0].clientX;
+  startY = event.touches[0].clientY;
+  isSwiping.value = true;
+}
+
+function handleTouchEnd(event: TouchEvent) {
+  if (!isSwiping.value) return;
+
+  const endX = event.changedTouches[0].clientX;
+  const endY = event.changedTouches[0].clientY;
+
+  const diffX = startX - endX;
+  const diffY = startY - endY;
+
+  // Check if horizontal swipe is more significant than vertical
+  if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+    if (diffX > 0) {
+      next(); // Swipe left, go next
+    } else {
+      prev(); // Swipe right, go previous
+    }
+  }
+
+  isSwiping.value = false;
+}
+
+// Add keyboard navigation
+function handleKeydown(event: KeyboardEvent) {
+  if (
+    document.activeElement === sliderRef.value ||
+    sliderRef.value?.contains(document.activeElement as Node)
+  ) {
+    if (event.key === "ArrowLeft") {
+      prev();
+    } else if (event.key === "ArrowRight") {
+      next();
+    }
+  }
+}
+
 onMounted(() => {
   document.addEventListener("click", onClickOutside);
+  document.addEventListener("keydown", handleKeydown);
+  document.addEventListener("keydown", handleEscapeKey);
+
+  // Setup swipe detection
+  isTouchDevice.value =
+    "ontouchstart" in window || navigator.maxTouchPoints > 0;
+
+  // Add touch event listeners if slider exists
+  if (sliderRef.value) {
+    sliderRef.value.addEventListener("touchstart", handleTouchStart, {
+      passive: true,
+    });
+    sliderRef.value.addEventListener("touchend", handleTouchEnd, {
+      passive: true,
+    });
+  }
 });
 
 onUnmounted(() => {
   document.removeEventListener("click", onClickOutside);
+  document.removeEventListener("keydown", handleKeydown);
+  document.removeEventListener("keydown", handleEscapeKey);
+
+  // Clean up touch event listeners
+  if (sliderRef.value) {
+    sliderRef.value.removeEventListener("touchstart", handleTouchStart);
+    sliderRef.value.removeEventListener("touchend", handleTouchEnd);
+  }
 });
+
+// Add detection for touch devices
+const isTouchDevice = ref(false);
+
+// Check if it's a touch device
+onMounted(() => {
+  isTouchDevice.value =
+    "ontouchstart" in window || navigator.maxTouchPoints > 0;
+});
+
+// Fix event handling by using a proper TypeScript cast for event target
+function handleImageLoad(event: Event, imageUrl: string) {
+  const img = event.target as HTMLImageElement;
+  if (img && img.naturalWidth) {
+    updateImageDimensions(imageUrl, img.naturalWidth, img.naturalHeight);
+  }
+}
+
+// Add a function to open the expanded image view
+function expandImage(imageUrl: string) {
+  currentExpandedImage.value = imageUrl;
+  isImageExpanded.value = true;
+  // Prevent scrolling on the body when modal is open
+  document.body.style.overflow = "hidden";
+}
+
+// Reimplement the closeExpandedImage function to be more reliable
+function closeExpandedImage(event?: Event) {
+  console.log("Closing image view");
+  isImageExpanded.value = false;
+  currentExpandedImage.value = null;
+  imageScale.value = 1;
+  document.body.style.overflow = "";
+
+  // Prevent any potential event conflicts
+  if (event) {
+    event.stopPropagation();
+  }
+}
+
+// Close expanded image on escape key
+function handleEscapeKey(event: KeyboardEvent) {
+  if (event.key === "Escape" && isImageExpanded.value) {
+    closeExpandedImage();
+  }
+}
+
+// Add zoom functionality state variables
+const imageScale = ref(1);
+const startDistance = ref(0);
+const isZooming = ref(false);
+
+// Update the pinch-to-zoom functions to avoid preventDefault on passive events
+function handleTouchStartZoom(event: TouchEvent) {
+  if (event.touches.length === 2) {
+    startDistance.value = getDistanceBetweenTouches(event);
+    isZooming.value = true;
+    // Don't call preventDefault on passive events
+  }
+}
+
+function handleTouchMoveZoom(event: TouchEvent) {
+  if (isZooming.value && event.touches.length === 2) {
+    const currentDistance = getDistanceBetweenTouches(event);
+    const scaleFactor = currentDistance / startDistance.value;
+
+    // Limit scale between 1 and 3
+    imageScale.value = Math.max(1, Math.min(3, scaleFactor));
+    // Don't call preventDefault on passive events
+  }
+}
+
+function handleTouchEndZoom() {
+  // Reset zoom if scale is close to 1
+  if (imageScale.value < 1.1) {
+    imageScale.value = 1;
+  }
+  isZooming.value = false;
+}
+
+// Helper function to calculate distance between touches
+function getDistanceBetweenTouches(event: TouchEvent) {
+  const touch1 = event.touches[0];
+  const touch2 = event.touches[1];
+  return Math.sqrt(
+    Math.pow(touch2.clientX - touch1.clientX, 2) +
+      Math.pow(touch2.clientY - touch1.clientY, 2)
+  );
+}
+
+// Add double-tap zoom functionality
+const lastTapTime = ref(0);
+const doubleTapPosition = ref({ x: 0, y: 0 });
+
+function handleImageTouch(event: TouchEvent) {
+  // Handle single touch only (not during pinch zoom)
+  if (event.touches.length === 1) {
+    const now = new Date().getTime();
+    const timeDiff = now - lastTapTime.value;
+
+    // Detect double tap (time difference less than 300ms)
+    if (timeDiff < 300 && timeDiff > 0) {
+      // Toggle zoom on double tap
+      if (imageScale.value === 1) {
+        // Save tap position for centered zoom
+        const touch = event.touches[0];
+        doubleTapPosition.value = { x: touch.clientX, y: touch.clientY };
+        imageScale.value = 2;
+      } else {
+        // Reset zoom
+        imageScale.value = 1;
+      }
+    }
+
+    lastTapTime.value = now;
+  }
+}
+
+// Add zoom reset function for double-click on desktop
+function handleImageDoubleClick(event: MouseEvent) {
+  if (imageScale.value === 1) {
+    doubleTapPosition.value = { x: event.clientX, y: event.clientY };
+    imageScale.value = 2;
+  } else {
+    imageScale.value = 1;
+  }
+}
 </script>
 
 <template>
+  <!-- Complete modal redesign for better close behavior -->
+  <Teleport to="body">
+    <transition name="fade">
+      <div
+        v-if="isImageExpanded && currentExpandedImage"
+        class="fixed inset-0 z-50 bg-black/80 touch-manipulation flex items-center justify-center"
+        @click="closeExpandedImage"
+      >
+        <!-- Content wrapper with a fixed size -->
+        <div
+          class="relative max-w-[92%] sm:max-w-[80%] md:max-w-[70%] lg:max-w-[60%] max-h-[90vh] rounded-lg overflow-hidden"
+          @click.stop
+        >
+          <!-- Close button positioned at corner of the wrapper -->
+          <button
+            class="absolute top-2 right-2 p-2 text-white bg-black/60 hover:bg-[#1a202c]/90 rounded-full z-50"
+            @click="closeExpandedImage"
+            aria-label="Close expanded image"
+          >
+            <Icon name="heroicons:x-mark" class="w-5 h-5" aria-hidden="true" />
+          </button>
+
+          <!-- Image container -->
+          <div
+            class="relative w-full h-full bg-[#1a202c]/40 flex items-center justify-center"
+            @touchstart="handleTouchStartZoom"
+            @touchmove="handleTouchMoveZoom"
+            @touchend="handleTouchEndZoom"
+          >
+            <NuxtImg
+              :src="currentExpandedImage"
+              alt="Expanded project image"
+              class="max-w-full max-h-[80vh] object-contain modal-image"
+              :style="{ transform: `scale(${imageScale})` }"
+              loading="eager"
+              format="webp"
+              quality="95"
+              @touchstart="handleImageTouch"
+              @dblclick="handleImageDoubleClick"
+            />
+          </div>
+        </div>
+
+        <!-- Instructions (pointer-events-none ensures they don't interfere) -->
+        <div
+          v-if="isTouchDevice"
+          class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-[#1a202c]/50 backdrop-blur-sm text-white py-1 px-3 rounded-full text-xs pointer-events-none"
+        >
+          <div class="flex items-center gap-3">
+            <span>
+              <Icon
+                name="heroicons:arrows-pointing-out"
+                class="w-3 h-3 inline mr-1"
+                aria-hidden="true"
+              />
+              Pinch to zoom
+            </span>
+            <span>
+              <Icon
+                name="heroicons:hand-raised"
+                class="w-3 h-3 inline mr-1"
+                aria-hidden="true"
+              />
+              Double-tap to zoom
+            </span>
+          </div>
+        </div>
+      </div>
+    </transition>
+  </Teleport>
+
   <SectionCard id="projects" class="relative overflow-hidden hw-accelerated">
     <!-- Background Image with blur (direct style approach) -->
     <div
@@ -273,12 +592,12 @@ onUnmounted(() => {
 
     <!-- Solid overlay to prevent text blur -->
     <div
-      class="absolute inset-0 bg-white/97 dark:bg-gray-800/97"
+      class="absolute inset-0 bg-white/97 dark:bg-[#1a202c]/97"
       style="z-index: 0; border-radius: inherit"
     ></div>
 
     <!-- Content -->
-    <div class="container mx-auto relative" style="z-index: 5">
+    <div class="container mx-auto relative px-4" style="z-index: 5">
       <div class="flex items-center gap-3 mb-6">
         <Icon
           name="heroicons:rectangle-stack"
@@ -296,7 +615,7 @@ onUnmounted(() => {
         <div class="md:hidden px-2 tabs-menu">
           <button
             @click="isTabsMenuOpen = !isTabsMenuOpen"
-            class="w-full flex items-center justify-between px-4 py-2 bg-gray-100/90 dark:bg-gray-800/90 rounded-xl text-gray-700 dark:text-gray-300 shadow-sm backdrop-blur-sm"
+            class="w-full flex items-center justify-between px-4 py-2 bg-gray-100/90 dark:bg-[#1a202c]/90 rounded-xl text-gray-700 dark:text-gray-300 shadow-sm backdrop-blur-sm"
           >
             <div class="flex items-center gap-2">
               <Icon
@@ -333,7 +652,7 @@ onUnmounted(() => {
           <!-- Mobile dropdown menu -->
           <div
             v-if="isTabsMenuOpen"
-            class="mt-2 bg-white/95 dark:bg-gray-800/95 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden"
+            class="mt-2 bg-white/95 dark:bg-[#1a202c]/95 rounded-xl shadow-lg overflow-hidden"
           >
             <button
               v-for="tab in tabs"
@@ -377,7 +696,7 @@ onUnmounted(() => {
         <!-- Desktop tabs (visible on medium screens and up) -->
         <div class="hidden md:flex justify-center">
           <div
-            class="inline-flex p-1 space-x-1 bg-gray-100/95 dark:bg-gray-800/95 rounded-xl shadow-md"
+            class="inline-flex p-1 space-x-1 bg-gray-100/95 dark:bg-[#1a202c]/95 rounded-xl shadow-md"
           >
             <button
               v-for="tab in tabs"
@@ -387,7 +706,7 @@ onUnmounted(() => {
               class="px-3 py-2 text-sm rounded-lg transition-colors whitespace-nowrap flex-shrink-0 flex items-center gap-1.5"
               :class="[
                 currentTab === tab.id
-                  ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm'
+                  ? 'bg-white dark:bg-[#1a202c] text-blue-600 dark:text-blue-400 shadow-sm'
                   : 'text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400',
               ]"
             >
@@ -418,8 +737,23 @@ onUnmounted(() => {
       </div>
 
       <div class="relative max-w-6xl mx-auto space-y-8">
-        <!-- Slider -->
-        <div class="overflow-hidden relative rounded-xl">
+        <!-- Slider - Enhanced with swipe support and better mobile display -->
+        <div
+          ref="sliderRef"
+          tabindex="0"
+          class="overflow-hidden relative rounded-xl outline-none"
+          aria-roledescription="carousel"
+          aria-label="Project gallery"
+        >
+          <div
+            class="absolute inset-0 flex items-center justify-center"
+            v-if="filteredProjects.length === 0"
+          >
+            <p class="text-gray-500 dark:text-gray-400">
+              No projects to display
+            </p>
+          </div>
+
           <NuxtTransitionGroup
             name="slide"
             tag="div"
@@ -452,43 +786,77 @@ onUnmounted(() => {
 
               <!-- Overlay to ensure content readability -->
               <div
-                class="absolute inset-0 bg-white/97 dark:bg-gray-800/97"
+                class="absolute inset-0 bg-white/97 dark:bg-[#1a202c]/97"
                 style="z-index: 0; border-radius: inherit"
               ></div>
 
               <!-- Project Title -->
               <div
-                class="relative p-6 border-b border-gray-100 dark:border-gray-700"
+                class="relative p-4 sm:p-6 border-b border-gray-100 dark:border-gray-700"
                 style="z-index: 10"
               >
                 <div class="flex items-center justify-between select-none">
                   <button
                     @click="currentTab = project.category"
                     tabindex="-1"
-                    class="text-xl md:text-2xl font-semibold dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-left flex items-center gap-2"
+                    class="text-lg sm:text-xl md:text-2xl font-semibold dark:text-black hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-left flex items-center gap-2"
                   >
                     <Icon
                       :name="
                         portfolioConfig.projectCategories[project.category].icon
                       "
-                      class="w-6 h-6 text-blue-600 dark:text-blue-400 pointer-events-none"
+                      class="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 dark:text-blue-400 pointer-events-none flex-shrink-0"
                       aria-hidden="true"
                     />
-                    <span class="pointer-events-none">{{ project.title }}</span>
+                    <span class="pointer-events-none truncate">{{
+                      project.title
+                    }}</span>
                   </button>
                 </div>
               </div>
 
-              <!-- Project Image -->
+              <!-- Project Image - Complete redesign of image container -->
               <div class="relative select-none" style="z-index: 10">
-                <img
-                  :src="project.imageUrl"
-                  :alt="project.title"
-                  class="w-full h-[300px] md:h-[500px] object-contain bg-transparent pointer-events-none"
-                  style="position: relative; z-index: 5"
-                />
                 <div
-                  class="absolute bottom-3 right-3 bg-white/95 dark:bg-gray-800/95 rounded-full p-2 shadow-md"
+                  class="w-full aspect-video bg-gray-50 dark:bg-gray-900/30 overflow-hidden relative"
+                >
+                  <button
+                    class="w-full h-full flex items-center justify-center focus:outline-none"
+                    @click="expandImage(project.imageUrl)"
+                    :aria-label="`Expand ${project.title} image`"
+                  >
+                    <!-- Use a div wrapper with absolute positioning -->
+                    <div
+                      class="absolute inset-0 flex items-center justify-center"
+                    >
+                      <NuxtImg
+                        :src="project.imageUrl"
+                        :alt="project.title"
+                        class="max-h-full max-w-full w-auto h-auto object-contain"
+                        loading="lazy"
+                        format="webp"
+                        quality="90"
+                        @load="(e) => handleImageLoad(e, project.imageUrl)"
+                      />
+                    </div>
+
+                    <!-- Zoom indicator overlay for mobile -->
+                    <div
+                      class="absolute bottom-12 right-12 bg-white/80 dark:bg-[#1a202c]/80 rounded-full p-2 shadow-md sm:hidden"
+                      style="z-index: 6"
+                    >
+                      <Icon
+                        name="heroicons:magnifying-glass-plus"
+                        class="w-5 h-5 text-blue-600 dark:text-blue-400"
+                        aria-hidden="true"
+                      />
+                    </div>
+                  </button>
+                </div>
+
+                <!-- Category icon remains unchanged -->
+                <div
+                  class="absolute bottom-3 right-3 bg-white/95 dark:bg-[#1a202c]/95 rounded-full p-2 shadow-md"
                   style="z-index: 6"
                 >
                   <Icon
@@ -503,7 +871,7 @@ onUnmounted(() => {
             </article>
           </NuxtTransitionGroup>
 
-          <!-- Navigation Buttons -->
+          <!-- Navigation Buttons - Enhanced for mobile -->
           <div
             class="absolute inset-0 flex items-center justify-between pointer-events-none z-30"
           >
@@ -511,13 +879,12 @@ onUnmounted(() => {
               v-if="filteredProjects.length > 1"
               @click="prev"
               tabindex="-1"
-              class="pointer-events-auto ml-1 sm:ml-2 md:ml-4 p-2 md:p-3 rounded-full glass-light dark:glass-dark shadow-light-card dark:shadow-dark-card transition-card hover:transform hover:scale-110"
-              style="-webkit-font-smoothing: antialiased"
+              class="pointer-events-auto ml-1 sm:ml-2 md:ml-4 p-2.5 md:p-3 rounded-full glass-light dark:glass-dark shadow-light-card dark:shadow-dark-card transition-card hover:transform hover:scale-110"
               aria-label="Previous project"
             >
               <Icon
                 name="heroicons:chevron-left"
-                class="w-4 h-4 md:w-5 md:h-5 dark:text-white"
+                class="w-4 h-4 md:w-5 md:h-5 dark:text-black"
                 aria-hidden="true"
               />
             </button>
@@ -526,34 +893,51 @@ onUnmounted(() => {
               v-if="filteredProjects.length > 1"
               @click="next"
               tabindex="-1"
-              class="pointer-events-auto mr-1 sm:mr-2 md:mr-4 p-2 md:p-3 rounded-full glass-light dark:glass-dark shadow-light-card dark:shadow-dark-card transition-card hover:transform hover:scale-110"
-              style="-webkit-font-smoothing: antialiased"
+              class="pointer-events-auto mr-1 sm:mr-2 md:mr-4 p-2.5 md:p-3 rounded-full glass-light dark:glass-dark shadow-light-card dark:shadow-dark-card transition-card hover:transform hover:scale-110"
               aria-label="Next project"
             >
               <Icon
                 name="heroicons:chevron-right"
-                class="w-4 h-4 md:w-5 md:h-5 dark:text-white"
+                class="w-4 h-4 md:w-5 md:h-5 dark:text-black"
                 aria-hidden="true"
               />
             </button>
+          </div>
+
+          <!-- Update the swipe indicator to only show on touch devices -->
+          <div
+            v-if="isTouchDevice && filteredProjects.length > 1"
+            class="absolute bottom-3 left-1/2 transform -translate-x-1/2 bg-white/80 dark:bg-[#1a202c]/80 rounded-full py-1 px-3 text-xs text-gray-600 shadow-sm sm:hidden flex items-center gap-1.5 opacity-80 z-30"
+          >
+            <Icon
+              name="heroicons:arrow-left"
+              class="w-3 h-3 text-black"
+              aria-hidden="true"
+            />
+            <span>Swipe</span>
+            <Icon
+              name="heroicons:arrow-right"
+              class="w-3 h-3 text-black"
+              aria-hidden="true"
+            />
           </div>
         </div>
 
         <!-- Dots Navigation -->
         <div
           v-if="filteredProjects.length > 1"
-          class="flex justify-center gap-1 md:gap-2 mb-4"
+          class="flex justify-center gap-2 md:gap-4 mb-4"
         >
           <button
             v-for="(_, index) in filteredProjects"
             :key="index"
             @click="goToSlide(index)"
             tabindex="-1"
-            class="w-2 h-2 md:w-3 md:h-3 rounded-full transition-all duration-300"
+            class="w-4 h-4 md:w-5 md:h-5 rounded-full transition-all duration-300 shadow-md"
             :class="[
               index === currentIndex
-                ? 'bg-gradient-to-r from-blue-700 to-blue-500 w-4 md:w-6'
-                : 'bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500',
+                ? 'bg-gradient-to-r from-blue-600 to-purple-500 w-6 md:w-8 dark:from-blue-400 dark:to-purple-400'
+                : 'bg-blue-400 dark:bg-blue-300 hover:bg-blue-500 dark:hover:bg-blue-200',
             ]"
             :aria-label="`Go to project ${index + 1}`"
           />
@@ -573,7 +957,9 @@ onUnmounted(() => {
                   aria-hidden="true"
                 />
               </div>
-              <h3 class="text-xl font-semibold pointer-events-none">
+              <h3
+                class="text-xl dark:text-black font-semibold pointer-events-none"
+              >
                 {{
                   $t(
                     `projects.${
@@ -590,7 +976,7 @@ onUnmounted(() => {
               </h3>
             </div>
 
-            <div class="text-gray-600 mb-5">
+            <div class="text-black mb-5">
               <div class="flex items-start gap-2">
                 <p class="pointer-events-none">
                   {{ $t(`projects.${currentTab.toLowerCase()}Description`) }}
@@ -606,7 +992,7 @@ onUnmounted(() => {
                   aria-hidden="true"
                 />
                 <h4
-                  class="text-sm font-medium text-gray-700 pointer-events-none"
+                  class="text-sm font-medium text-gray-700 dark:text-black pointer-events-none"
                 >
                   {{ $t("projects.technologies") }}
                 </h4>
@@ -614,7 +1000,7 @@ onUnmounted(() => {
               <div
                 v-for="tech in currentCategoryData.technologies"
                 :key="tech"
-                class="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full flex items-center gap-1"
+                class="px-3 py-1 text-sm bg-gray-100 dark:bg-[#1a202c] text-gray-700 dark:text-gray-300 rounded-full flex items-center gap-1"
               >
                 <span class="flex-shrink-0"> </span>
                 <span class="pointer-events-none">{{ tech }}</span>
@@ -675,7 +1061,7 @@ onUnmounted(() => {
                   />
                 </div>
                 <h3
-                  class="text-lg font-semibold mb-2 dark:text-white pointer-events-none"
+                  class="text-lg font-semibold mb-2 dark:text-black pointer-events-none"
                 >
                   {{
                     $t(
@@ -692,7 +1078,7 @@ onUnmounted(() => {
                   }}
                 </h3>
                 <p
-                  class="text-sm text-gray-600 dark:text-gray-400 line-clamp-3 pointer-events-none"
+                  class="text-sm text-gray-600 dark:text-black line-clamp-3 pointer-events-none"
                 >
                   {{ $t(`projects.${key.toLowerCase()}Description`) }}
                 </p>
@@ -725,17 +1111,50 @@ onUnmounted(() => {
   overflow: hidden;
 }
 
+/* Project card styling */
+.project-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Use a better solution for image display */
+.max-h-full.max-w-full {
+  object-fit: contain !important;
+  max-height: 100% !important;
+  max-width: 100% !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 auto;
+}
+
 /* Text shadow for better visibility on blurred backgrounds */
 .text-shadow-lg {
-  /* Remove excessive text shadow */
   text-shadow: none;
   color: white;
 }
 
 .dark .text-shadow-lg {
-  /* Remove excessive text shadow */
   text-shadow: none;
   color: white;
+}
+
+/* Basic image styling */
+.object-cover {
+  object-fit: cover;
+  transition: opacity 0.15s ease;
+}
+
+.object-contain {
+  object-fit: contain;
+}
+
+/* Modal image styles */
+.modal-image {
+  transition: transform 0.05s linear;
+  will-change: transform;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 /* Slide transition animations */
@@ -757,15 +1176,77 @@ onUnmounted(() => {
   transform: translateX(-30px);
 }
 
-/* Add responsive styles for navigation */
+/* Improved mobile swipe transitions */
 @media (max-width: 640px) {
   .slide-enter-active,
   .slide-leave-active {
-    transition: opacity 0.2s ease, transform 0.2s ease;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+
+  .slide-enter-from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+
+  .slide-leave-to {
+    opacity: 0;
+    transform: translateX(-20px);
   }
 }
 
-/* Enhanced text contrast for better readability with blurred backgrounds */
+/* Add visual feedback for touch interactions */
+[ref="sliderRef"] {
+  user-select: none;
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Add focus and keyboard navigation improvements */
+button:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Prevent text selection */
+.select-none * {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Add fade transition for the modal */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* Add subtle zoom effect for clickable images */
+[aria-label^="Expand"] {
+  transition: transform 0.2s ease;
+}
+
+[aria-label^="Expand"]:active {
+  transform: scale(0.98);
+}
+
+/* Make the modal feel more responsive */
+.fixed.inset-0.z-50 {
+  overscroll-behavior: none;
+}
+
+/* Optimize modal for touch interaction */
+.touch-manipulation {
+  touch-action: manipulation;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Enhanced text contrast */
 h2,
 h3,
 h4 {
@@ -798,180 +1279,7 @@ a {
   text-rendering: optimizeLegibility !important;
 }
 
-/* Remove focus outline for mouse users but keep it for keyboard navigation */
-button:focus {
-  outline: none;
-}
-
-button:focus-visible {
-  outline: 2px solid #3b82f6;
-  outline-offset: 2px;
-}
-
-/* Prevent text selection on buttons and icons */
-button,
-.icon,
-[class*="heroicons"],
-[class*="mdi"] {
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-/* Fix for icon positioning */
-.flex.items-start {
-  align-items: flex-start;
-}
-
-/* Ensure proper text wrapping */
-p {
-  word-break: normal;
-  overflow-wrap: break-word;
-}
-
-/* Prevent cursor issues */
-::selection {
-  background: transparent;
-}
-
-/* Fix icon display issues */
-.pointer-events-none {
-  pointer-events: none;
-}
-
-/* Ensure all icons are properly displayed */
-svg {
-  display: inline-block;
-  vertical-align: middle;
-}
-
-/* Hide icon names from screen readers and selection */
-[aria-hidden="true"] {
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-}
-
-/* Prevent selection of icon elements */
-.select-none * {
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-/* Ensure icons don't show their names when selected */
-.icon,
-svg {
-  font-size: 0;
-  line-height: 0;
-}
-
-/* Fix for z-index issues */
-.relative {
-  position: relative;
-}
-
-/* Ensure content is above the background */
-.rounded-xl {
-  position: relative;
-}
-
-/* Tab text visibility enhancement */
-.project-menu button {
-  /* Remove text shadow causing blur effect */
-  text-shadow: none;
-}
-
-.dark .project-menu button {
-  /* Remove text shadow causing blur effect */
-  text-shadow: none;
-}
-
-/* Project backdrop styling */
-.bg-blur-backdrop {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  filter: blur(30px);
-  z-index: 0;
-  border-radius: inherit;
-}
-
-/* Ensure all absolute positioned elements inherit border radius */
-.rounded-xl > .absolute {
-  border-radius: inherit;
-}
-
-/* Ensure proper background image fitting for all card backgrounds */
-[class*="bg-cover"] {
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
-/* Text content readability enhancement */
-p,
-span,
-button {
-  font-weight: normal;
-  transition: none; /* Prevent any transition that might cause blur */
-}
-
-/* Ensure text is always sharp even during transform animations */
-.hover\:translate-y-\[-4px\]:hover {
-  backface-visibility: hidden;
-  -webkit-font-smoothing: subpixel-antialiased;
-}
-
-/* Make sure hover states don't cause any blur */
-button:hover,
-a:hover,
-.hover\:text-blue-600:hover,
-.hover\:underline:hover {
-  transition: color 0.15s ease, background-color 0.15s ease;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
-
-/* Enhance all button rendering */
-button {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  transition: none;
-}
-
-/* Ensure smooth transform animations */
-.transform {
-  transform: translateZ(0);
-  will-change: transform;
-  backface-visibility: hidden;
-}
-
-/* Prevent FOUT (Flash of Unstyled Text) and blurring */
-* {
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Remove animations that might cause blurring */
-.transition-all {
-  transition-property: color, background-color, border-color, box-shadow !important;
-  transition-duration: 0.15s !important;
-  transition-timing-function: ease !important;
-}
-
-/* Disable transitions on hover for text clarity */
-*:hover {
-  transform: none !important;
-  transition: background-color 0.15s ease, color 0.15s ease !important;
-}
-
+/* Hardware acceleration */
 .hw-accelerated {
   transform: translateZ(0);
   backface-visibility: hidden;
@@ -1058,6 +1366,25 @@ button {
       opacity: 1;
       transform: translateY(0);
     }
+  }
+}
+
+/* Ensure proper aspect ratio for image containers */
+.aspect-video {
+  aspect-ratio: 16/9;
+  height: auto;
+  overflow: hidden;
+}
+
+@media (min-width: 640px) {
+  .aspect-video {
+    height: 300px;
+  }
+}
+
+@media (min-width: 768px) {
+  .aspect-video {
+    height: 500px;
   }
 }
 </style>

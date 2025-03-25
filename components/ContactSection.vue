@@ -4,13 +4,13 @@ import { portfolioConfig } from "~/config/portfolio.config";
 const { contact } = portfolioConfig;
 const { t } = useI18n();
 const contactBgUrl = "/assets/images/krakenimages-376KN_ISplE-unsplash.jpg";
-const isIntersecting = ref(false);
+const isVisible = ref(false);
 
 // Lazy loading setup - fix by using template ref
 const sectionRef = ref<HTMLElement | null>(null);
 
 onMounted(() => {
-  // Delay the initialization to ensure the DOM is ready
+  // Ensure we're on client-side
   if (process.client) {
     nextTick(() => {
       try {
@@ -18,31 +18,33 @@ onMounted(() => {
           const observer = new IntersectionObserver(
             (entries) => {
               entries.forEach((entry) => {
-                isIntersecting.value = entry.isIntersecting;
+                isVisible.value = entry.isIntersecting;
               });
             },
-            { threshold: 0.1 }
+            { threshold: 0.1, rootMargin: "200px" }
           );
 
           observer.observe(sectionRef.value);
 
           // Cleanup
           onBeforeUnmount(() => {
-            observer.disconnect();
+            if (observer) {
+              observer.disconnect();
+            }
           });
         } else {
           // Fallback when ref is not available
-          isIntersecting.value = true;
+          isVisible.value = true;
         }
       } catch (error) {
         console.error("IntersectionObserver error:", error);
         // Fallback - always show image
-        isIntersecting.value = true;
+        isVisible.value = true;
       }
     });
   } else {
     // Fallback for SSR
-    isIntersecting.value = true;
+    isVisible.value = true;
   }
 });
 
@@ -77,32 +79,40 @@ const contactItems = [
     class="contact-section relative overflow-hidden"
     ref="sectionRef"
   >
-    <!-- Full-width/height wrapper with direct img tag -->
+    <!-- Full-width/height wrapper with NuxtImg -->
     <div class="absolute inset-0 w-full h-full -z-30">
-      <!-- Background Image (Direct Img Approach) -->
-      <img
-        src="/assets/images/krakenimages-376KN_ISplE-unsplash.jpg"
+      <!-- Background Image using NuxtImg for optimization -->
+      <NuxtImg
+        :src="contactBgUrl"
+        format="webp"
+        width="1920"
+        height="1080"
+        loading="lazy"
+        quality="80"
+        placeholder
         alt="Contact background"
-        class="absolute inset-0 w-full h-full object-cover -z-20 opacity-80 dark:opacity-70 contrast-120 saturate-120 brightness-105"
+        class="absolute inset-0 w-full h-full object-cover -z-20 opacity-0 transition-opacity duration-500 dark:opacity-70 contrast-120 saturate-120 brightness-105"
+        :class="{ 'opacity-80': isVisible, 'dark:opacity-70': isVisible }"
       />
 
-      <!-- Overlay for better readability -->
+      <!-- Background overlay for better readability, especially in dark mode -->
+      <div class="absolute inset-0 dark:bg-dark-background/70 -z-10"></div>
     </div>
 
     <div class="flex items-center gap-3 mb-8 relative z-10">
       <Icon name="mdi:email" class="w-7 h-7 text-blue-600 dark:text-blue-400" />
-      <h2 class="text-3xl font-bold dark:text-white">
+      <h2 class="text-3xl font-bold dark:text-black">
         {{ t("contact.title") }}
       </h2>
     </div>
 
     <div class="max-w-3xl mx-auto relative z-10">
       <div
-        class="bg-white/90 dark:bg-gray-800/90 rounded-2xl shadow-xl overflow-hidden"
+        class="bg-white/90 dark:bg-[#1a202c]/95 rounded-2xl shadow-xl overflow-hidden"
       >
         <div class="p-8">
           <p
-            class="text-lg text-gray-700 dark:text-gray-400 mb-8 flex items-start gap-3"
+            class="text-lg text-gray-700 dark:text-gray-200 mb-8 flex items-start gap-3"
           >
             <Icon
               name="heroicons:chat-bubble-left-right"
@@ -128,7 +138,7 @@ const contactItems = [
               :to="item.link"
               :external="item.external"
               target="_blank"
-              class="flex flex-col items-center text-center hover:translate-y-[-2px] transition-transform group py-4 cursor-pointer bg-white/90 dark:bg-gray-900/60 rounded-xl hover:shadow-md"
+              class="flex flex-col items-center text-center hover:translate-y-[-2px] transition-transform group py-4 cursor-pointer bg-white/90 dark:bg-[#1a202c]/95 rounded-xl hover:shadow-md"
             >
               <Icon
                 :name="item.icon"

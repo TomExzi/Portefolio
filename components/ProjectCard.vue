@@ -16,15 +16,16 @@ defineProps<{
   >
     <!-- Project Image with improved background handling -->
     <div class="relative h-56 overflow-hidden">
-      <div
-        class="absolute inset-0 w-full h-full bg-cover bg-center object-cover"
-        :style="{
-          backgroundImage: `url(${project.imageUrl})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center center',
-        }"
-        aria-hidden="true"
-      ></div>
+      <OptimizedImage
+        :src="project.imageUrl"
+        :alt="project.title"
+        :width="400"
+        :height="224"
+        format="webp"
+        :quality="85"
+        sizes="sm:100vw md:50vw lg:400px"
+        className="transform transition-transform duration-300 hover:scale-105"
+      />
       <div
         class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"
       ></div>
@@ -67,15 +68,5 @@ defineProps<{
 /* Ensure the image fills the card properly */
 .relative.h-56 {
   min-height: 14rem; /* 56px in rem units */
-}
-
-/* Add smooth transition for image background */
-[aria-hidden="true"] {
-  transition: transform 0.3s ease;
-}
-
-/* Add subtle zoom effect on hover */
-div:hover [aria-hidden="true"] {
-  transform: scale(1.05);
 }
 </style>

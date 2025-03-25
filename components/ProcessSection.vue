@@ -16,11 +16,11 @@ const backgroundImageUrl =
   "/assets/images/daniel-mccullough-HtBlQdxfG9k-unsplash.jpg";
 
 // Lazy loading setup
-const isIntersecting = ref(false);
+const isVisible = ref(false);
 const sectionRef = ref<HTMLElement | null>(null);
 
 onMounted(() => {
-  // Delay the initialization to ensure the DOM is ready
+  // Ensure we're on client-side
   if (process.client) {
     nextTick(() => {
       try {
@@ -28,31 +28,33 @@ onMounted(() => {
           const observer = new IntersectionObserver(
             (entries) => {
               entries.forEach((entry) => {
-                isIntersecting.value = entry.isIntersecting;
+                isVisible.value = entry.isIntersecting;
               });
             },
-            { threshold: 0.1 }
+            { threshold: 0.1, rootMargin: "200px" }
           );
 
           observer.observe(sectionRef.value);
 
           // Cleanup
           onBeforeUnmount(() => {
-            observer.disconnect();
+            if (observer) {
+              observer.disconnect();
+            }
           });
         } else {
           // Fallback when ref is not available
-          isIntersecting.value = true;
+          isVisible.value = true;
         }
       } catch (error) {
         console.error("IntersectionObserver error:", error);
         // Fallback - always show image
-        isIntersecting.value = true;
+        isVisible.value = true;
       }
     });
   } else {
     // Fallback for SSR
-    isIntersecting.value = true;
+    isVisible.value = true;
   }
 });
 </script>
@@ -63,29 +65,31 @@ onMounted(() => {
     class="py-16 process-section relative overflow-hidden"
     ref="sectionRef"
   >
-    <!-- Optimized Background Image -->
-    <ClientOnly>
-      <div class="absolute inset-0 -z-20">
-        <NuxtImg
-          :src="backgroundImageUrl"
-          format="webp"
-          width="1920"
-          height="1080"
-          loading="lazy"
-          quality="80"
-          class="w-full h-full object-cover hw-accelerated lazy-fade-in"
-          :class="{ loaded: isIntersecting }"
-        />
-      </div>
-    </ClientOnly>
+    <!-- Optimized Background Image with improved lazy loading -->
+    <div class="absolute inset-0 -z-20">
+      <NuxtImg
+        :src="backgroundImageUrl"
+        format="webp"
+        width="1920"
+        height="1080"
+        loading="lazy"
+        quality="80"
+        placeholder
+        class="w-full h-full object-cover opacity-0 transition-opacity duration-500"
+        :class="{ 'opacity-100': isVisible }"
+        alt="Process background"
+      />
+    </div>
 
     <!-- Background overlay for better readability -->
-    <div class="absolute inset-0 bg-gray-50/75 dark:bg-gray-900/85 -z-10"></div>
+    <div
+      class="absolute inset-0 bg-light-background/75 dark:bg-dark-background/85 -z-10"
+    ></div>
 
     <div class="container mx-auto px-4 relative z-10">
       <div class="max-w-3xl mx-auto text-center mb-12">
         <h2
-          class="text-3xl md:text-4xl font-bold mb-6 font-display process-title"
+          class="text-3xl md:text-4xl font-bold mb-6 font-display process-title dark:process-title-light"
         >
           {{ sectionTitle }}
         </h2>
@@ -96,7 +100,7 @@ onMounted(() => {
       >
         <!-- Plan Card -->
         <div
-          class="bg-white/90 dark:bg-gray-800/90 rounded-xl shadow-md p-6 process-card plan-card"
+          class="bg-white/90 dark:bg-[#1a202c]/95 rounded-xl shadow-md p-6 process-card plan-card"
         >
           <div
             class="flex items-center justify-center w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full mb-4 mx-auto process-icon"
@@ -106,7 +110,7 @@ onMounted(() => {
               class="w-6 h-6 text-blue-600 dark:text-blue-400"
             />
           </div>
-          <h3 class="text-xl font-bold text-center mb-4">
+          <h3 class="text-xl font-bold text-center mb-4 dark:text-white">
             {{ planTitle }}
           </h3>
           <p class="text-gray-800 dark:text-gray-200 text-center">
@@ -116,7 +120,7 @@ onMounted(() => {
 
         <!-- Build Card -->
         <div
-          class="bg-white/90 dark:bg-gray-800/90 rounded-xl shadow-md p-6 process-card build-card"
+          class="bg-white/90 dark:bg-[#1a202c]/95 rounded-xl shadow-md p-6 process-card build-card"
         >
           <div
             class="flex items-center justify-center w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full mb-4 mx-auto process-icon"
@@ -126,7 +130,7 @@ onMounted(() => {
               class="w-6 h-6 text-blue-600 dark:text-blue-400"
             />
           </div>
-          <h3 class="text-xl font-bold text-center mb-4">
+          <h3 class="text-xl font-bold text-center mb-4 dark:text-white">
             {{ buildTitle }}
           </h3>
           <p class="text-gray-800 dark:text-gray-200 text-center">
@@ -136,7 +140,7 @@ onMounted(() => {
 
         <!-- Scale Card -->
         <div
-          class="bg-white/90 dark:bg-gray-800/90 rounded-xl shadow-md p-6 process-card scale-card"
+          class="bg-white/90 dark:bg-[#1a202c]/95 rounded-xl shadow-md p-6 process-card scale-card"
         >
           <div
             class="flex items-center justify-center w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full mb-4 mx-auto process-icon"
@@ -146,7 +150,7 @@ onMounted(() => {
               class="w-6 h-6 text-blue-600 dark:text-blue-400"
             />
           </div>
-          <h3 class="text-xl font-bold text-center mb-4">
+          <h3 class="text-xl font-bold text-center mb-4 dark:text-white">
             {{ scaleTitle }}
           </h3>
           <p class="text-gray-800 dark:text-gray-200 text-center">
@@ -332,5 +336,14 @@ onMounted(() => {
   .process-cards::before {
     display: none;
   }
+}
+
+.dark .process-title-light {
+  color: #1e40af !important;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.7) !important;
+}
+
+.dark .process-title-light::after {
+  background: #3b82f6 !important;
 }
 </style>

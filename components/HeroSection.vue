@@ -20,10 +20,60 @@ const lightArrowImage =
 const arrowImage = computed(() =>
   isDarkMode.value ? darkArrowImage : lightArrowImage
 );
+
+// Visibility state for lazy loading
+const titleArrowVisible = ref(false);
+const descArrowVisible = ref(false);
+const heroSectionRef = ref<HTMLElement | null>(null);
+
+// Setup lazy loading for arrows
+onMounted(() => {
+  if (process.client) {
+    nextTick(() => {
+      try {
+        if (heroSectionRef.value) {
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  titleArrowVisible.value = true;
+                  descArrowVisible.value = true;
+                }
+              });
+            },
+            { threshold: 0.1 }
+          );
+
+          observer.observe(heroSectionRef.value);
+
+          // Cleanup
+          onBeforeUnmount(() => {
+            if (observer) {
+              observer.disconnect();
+            }
+          });
+        } else {
+          // Fallback when ref is not available
+          titleArrowVisible.value = true;
+          descArrowVisible.value = true;
+        }
+      } catch (error) {
+        console.error("IntersectionObserver error:", error);
+        // Fallback
+        titleArrowVisible.value = true;
+        descArrowVisible.value = true;
+      }
+    });
+  } else {
+    // Fallback for SSR
+    titleArrowVisible.value = true;
+    descArrowVisible.value = true;
+  }
+});
 </script>
 
 <template>
-  <section class="py-16 md:py-24 hero-section">
+  <section class="py-16 md:py-24 hero-section" ref="heroSectionRef">
     <div class="container mx-auto px-4 text-center">
       <div class="max-w-3xl mx-auto relative">
         <!-- Title with arrow pointing to it -->
@@ -33,24 +83,33 @@ const arrowImage = computed(() =>
           >
             {{ heroTitle }}
           </h1>
-          <ClientOnly>
-            <div
-              class="title-arrow-container"
-              :class="{ 'dark-mode': isDarkMode }"
+          <div
+            class="title-arrow-container"
+            :class="{ 'dark-mode': isDarkMode }"
+          >
+            <NuxtImg
+              :src="arrowImage"
+              format="webp"
+              loading="lazy"
+              placeholder
+              alt="Curved arrow"
+              class="arrow-image title-arrow opacity-0 transition-opacity duration-500"
+              :class="{
+                'dark-mode': isDarkMode,
+                'opacity-100': titleArrowVisible,
+              }"
+              width="180"
+              height="120"
+            />
+            <span
+              class="arrow-text title-arrow-text opacity-0 transition-opacity duration-500"
+              :class="{
+                'dark-mode': isDarkMode,
+                'opacity-100': titleArrowVisible,
+              }"
+              >Us</span
             >
-              <img
-                :src="arrowImage"
-                alt="Curved arrow"
-                class="arrow-image title-arrow"
-                :class="{ 'dark-mode': isDarkMode }"
-              />
-              <span
-                class="arrow-text title-arrow-text"
-                :class="{ 'dark-mode': isDarkMode }"
-                >Us</span
-              >
-            </div>
-          </ClientOnly>
+          </div>
         </div>
 
         <!-- Description with arrow pointing to it -->
@@ -60,24 +119,33 @@ const arrowImage = computed(() =>
           >
             {{ heroDescription }}
           </p>
-          <ClientOnly>
-            <div
-              class="description-arrow-container"
-              :class="{ 'dark-mode': isDarkMode }"
+          <div
+            class="description-arrow-container"
+            :class="{ 'dark-mode': isDarkMode }"
+          >
+            <NuxtImg
+              :src="arrowImage"
+              format="webp"
+              loading="lazy"
+              placeholder
+              alt="Curved arrow"
+              class="arrow-image description-arrow opacity-0 transition-opacity duration-500"
+              :class="{
+                'dark-mode': isDarkMode,
+                'opacity-100': descArrowVisible,
+              }"
+              width="180"
+              height="120"
+            />
+            <span
+              class="arrow-text description-arrow-text opacity-0 transition-opacity duration-500"
+              :class="{
+                'dark-mode': isDarkMode,
+                'opacity-100': descArrowVisible,
+              }"
+              >Me</span
             >
-              <img
-                :src="arrowImage"
-                alt="Curved arrow"
-                class="arrow-image description-arrow"
-                :class="{ 'dark-mode': isDarkMode }"
-              />
-              <span
-                class="arrow-text description-arrow-text"
-                :class="{ 'dark-mode': isDarkMode }"
-                >Me</span
-              >
-            </div>
-          </ClientOnly>
+          </div>
         </div>
 
         <NuxtLink
@@ -182,7 +250,8 @@ const arrowImage = computed(() =>
 .arrow-text.dark-mode {
   color: #fff;
   font-size: 2rem;
-  text-shadow: 1px 1px 2px black; /* Make text more visible in dark mode */
+  text-shadow: 1px 1px 2px black; /*
+ Make text more visible in dark mode */
 }
 
 /* Title arrow positioning */
@@ -213,7 +282,8 @@ const arrowImage = computed(() =>
 }
 
 .title-arrow-text.dark-mode {
-  top: 60%;
+  top: 90%;
+  right: 120px;
 }
 
 /* Description arrow positioning */
@@ -244,8 +314,8 @@ const arrowImage = computed(() =>
 }
 
 .description-arrow-text.dark-mode {
-  top: 60%;
-  right: 50px;
+  top: 90%;
+  right: 30px;
 }
 
 /* Animations */

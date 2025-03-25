@@ -30,7 +30,7 @@ const backgroundSvgUrl = computed(() =>
     }"
   >
     <!-- Overlay for content readability -->
-    <div class="absolute inset-0 bg-white/90 dark:bg-gray-800/95 -z-10"></div>
+    <div class="absolute inset-0 bg-white/90 dark:bg-[#1a202c]/95 -z-10"></div>
 
     <!-- Your existing AboutSection content goes here -->
     <div class="flex items-center gap-3 mb-12">

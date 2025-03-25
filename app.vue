@@ -10,6 +10,9 @@
 // Get i18n instance at the top level of setup function
 const { locale } = useI18n();
 
+// Setup color mode
+const colorMode = useColorMode();
+
 // Update HTML lang attribute when language changes
 watch(locale, (newLang) => {
   document.documentElement.lang = newLang;

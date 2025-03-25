@@ -10,14 +10,13 @@ export default defineNuxtConfig({
     "@nuxtjs/i18n",
   ],
   colorMode: {
-    preference: "system",
+    classSuffix: "",
     fallback: "light",
+    preference: "system",
+    dataValue: "theme",
     hid: "nuxt-color-mode-script",
     globalName: "__NUXT_COLOR_MODE__",
     componentName: "ColorScheme",
-    classPrefix: "",
-    classSuffix: "",
-    storageKey: "nuxt-color-mode",
   },
   app: {
     head: {
@@ -40,6 +39,24 @@ export default defineNuxtConfig({
       meta: [
         { charset: "utf-8" },
         { name: "viewport", content: "width=device-width, initial-scale=1" },
+        { name: "description", content: "Personal Portfolio Website" },
+        { name: "format-detection", content: "telephone=no" },
+        {
+          name: "theme-color",
+          content: "#ffffff",
+          media: "(prefers-color-scheme: light)",
+        },
+        {
+          name: "theme-color",
+          content: "#1e293b",
+          media: "(prefers-color-scheme: dark)",
+        },
+        // Open Graph tags for better social sharing
+        { property: "og:type", content: "website" },
+        { property: "og:title", content: "Portfolio Website" },
+        { property: "og:description", content: "Personal Portfolio Website" },
+        { property: "og:image", content: "/public/assets/images/og-image.jpg" },
+        { property: "og:url", content: "https://yourwebsite.com" },
       ],
     },
     pageTransition: { name: "page", mode: "out-in" },
@@ -55,7 +72,7 @@ export default defineNuxtConfig({
   },
   image: {
     quality: 80,
-    format: ["webp", "png", "jpg"],
+    format: ["webp", "jpg", "png"],
     screens: {
       xs: 320,
       sm: 640,
@@ -73,6 +90,37 @@ export default defineNuxtConfig({
           quality: 80,
         },
       },
+      avatar: {
+        modifiers: {
+          format: "webp",
+          width: 400,
+          height: 400,
+          quality: 85,
+        },
+      },
+      project: {
+        modifiers: {
+          format: "webp",
+          width: 800,
+          height: 600,
+          quality: 85,
+        },
+      },
+    },
+    providers: {
+      // Set default provider
+      default: {
+        provider: "ipx",
+        options: {
+          // Set default quality for all images
+          quality: 80,
+        },
+      },
+    },
+    domains: ["localhost"],
+    // Add default placeholders for faster loading experience
+    placeholder: {
+      enabled: true,
     },
   },
   i18n: {
@@ -97,10 +145,12 @@ export default defineNuxtConfig({
   },
   nitro: {
     prerender: {
-      concurrency: 10,
+      crawlLinks: true, // Automatically detect and prerender all pages
       routes: ["/"],
+      ignore: ["/api/**"], // Don't prerender API routes
     },
     compressPublicAssets: true,
+    minify: true, // Minify all HTML/JS/CSS
   },
   build: {
     transpile: [],
@@ -109,6 +159,14 @@ export default defineNuxtConfig({
     build: {
       chunkSizeWarningLimit: 1000,
       cssCodeSplit: true,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vue: ["vue", "vue-router"],
+            ui: ["@headlessui/vue"],
+          },
+        },
+      },
     },
     optimizeDeps: {
       include: ["vue", "vue-router"],
@@ -125,10 +183,14 @@ export default defineNuxtConfig({
     asyncEntry: true,
     viewTransition: true,
     headNext: true,
+    payloadExtraction: true, // Extract payloads for faster static site generation
   },
   routeRules: {
     "/assets/**": {
       headers: { "cache-control": "public, max-age=31536000, immutable" },
+      prerender: true,
     },
+    // Prerender all static routes
+    "/**": { prerender: true },
   },
 });
