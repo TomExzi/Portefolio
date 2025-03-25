@@ -24,6 +24,7 @@
     "@tailwindcss/typography": "^0.5.16",
     "nuxt": "^3.10.3",
     "nuxt-icon": "^0.6.10",
+    "sharp": "^0.33.5",
     "typescript": "^5.3.3",
     "vue": "^3.4.19",
     "vue-router": "^4.3.0",
