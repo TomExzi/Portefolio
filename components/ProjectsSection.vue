@@ -615,7 +615,7 @@ function handleImageDoubleClick(event: MouseEvent) {
         <div class="md:hidden px-2 tabs-menu">
           <button
             @click="isTabsMenuOpen = !isTabsMenuOpen"
-            class="w-full flex items-center justify-between px-4 py-2 bg-gray-100/90 dark:bg-[#1a202c]/90 rounded-xl text-gray-700 dark:text-gray-300 shadow-sm backdrop-blur-sm"
+            class="w-full flex items-center justify-between px-4 py-2.5 bg-white dark:bg-[#1a202c]/90 rounded-xl text-gray-700 dark:text-gray-300 shadow-sm backdrop-blur-sm border border-gray-200 dark:border-transparent"
           >
             <div class="flex items-center gap-2">
               <Icon
@@ -652,7 +652,7 @@ function handleImageDoubleClick(event: MouseEvent) {
           <!-- Mobile dropdown menu -->
           <div
             v-if="isTabsMenuOpen"
-            class="mt-2 bg-white/95 dark:bg-[#1a202c]/95 rounded-xl shadow-lg overflow-hidden"
+            class="mt-2 bg-white dark:bg-[#1a202c]/95 rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-transparent"
           >
             <button
               v-for="tab in tabs"
@@ -664,8 +664,8 @@ function handleImageDoubleClick(event: MouseEvent) {
               class="w-full px-4 py-3 text-left text-sm transition-colors flex items-center gap-2"
               :class="[
                 currentTab === tab.id
-                  ? 'bg-gray-100 dark:bg-gray-700 text-blue-600 dark:text-blue-400'
-                  : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-750',
+                  ? 'bg-blue-50 dark:bg-gray-700 text-blue-600 dark:text-blue-400 font-medium'
+                  : 'text-gray-700 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-750',
               ]"
             >
               <Icon
@@ -1421,5 +1421,48 @@ a {
 html:not(.dark) .project-menu button.text-gray-600:hover {
   background-color: rgba(249, 250, 251, 0.8);
   color: #3b82f6;
+}
+
+/* Mobile tab menu styling for light mode */
+html:not(.dark) .tabs-menu button {
+  transition: all 0.2s ease;
+}
+
+html:not(.dark) .tabs-menu > button {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.98),
+    rgba(250, 251, 252, 0.98)
+  );
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+html:not(.dark) .tabs-menu > button:active {
+  transform: scale(0.98);
+  background-color: #f9fafb;
+}
+
+/* Selected item in mobile dropdown menu */
+html:not(.dark) .tabs-menu .bg-blue-50 {
+  border-left: 3px solid #3b82f6;
+}
+
+/* Animation for mobile dropdown menu in light mode */
+html:not(.dark) .tabs-menu > div {
+  animation: slideInDown 0.2s ease-out;
+  transform-origin: top center;
+  box-shadow: 0 4px 10px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -1px rgba(0, 0, 0, 0.02);
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 </style>
