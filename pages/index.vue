@@ -130,7 +130,7 @@ watch(
 );
 
 useHead({
-  title: "Tom Rogiers - Full Stack Development at ExiSoftware",
+  title: "Tom Rogiers - Full Stack Developer at ExiSoft",
   meta: [
     {
       name: "description",
@@ -139,7 +139,7 @@ useHead({
     },
     {
       property: "og:title",
-      content: "Tom Rogiers - Full Stack Development at ExiSoftware",
+      content: "Tom Rogiers - Full Stack Developer at ExiSoft",
     },
     {
       property: "og:description",
