@@ -130,21 +130,21 @@ watch(
 );
 
 useHead({
-  title: "Tom Rogiers - Full Stack Developer at ExiSoft",
+  title: "Tom Rogiers - Full Stack Developer at ExziTech",
   meta: [
     {
       name: "description",
       content:
-        "Full Stack Developer at ExiSoftware specializing in Vue.js, Nuxt, and TypeScript",
+        "Full Stack Developer at ExziTech specializing in Vue.js, Nuxt, and TypeScript",
     },
     {
       property: "og:title",
-      content: "Tom Rogiers - Full Stack Developer at ExiSoft",
+      content: "Tom Rogiers - Full Stack Developer at ExziTech",
     },
     {
       property: "og:description",
       content:
-        "Full Stack Developer at ExiSoft specializing in Vue.js, Nuxt, and TypeScript",
+        "Full Stack Developer at ExziTech specializing in Vue.js, Nuxt, and TypeScript",
     },
     //{ property: "og:image", content: "/og-image.webp" },
     //{ name: "twitter:card", content: "summary_large_image" },

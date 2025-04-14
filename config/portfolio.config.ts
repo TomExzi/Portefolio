@@ -126,9 +126,9 @@ export const portfolioConfig = {
     linkedin: "https://www.linkedin.com/in/tom-rogiers-290655221/",
   },
   seo: {
-    title: "Tom Rogiers - Full Stack Developer at ExziSoft",
+    title: "Tom Rogiers - Full Stack Developer at ExziTech",
     description:
-      "Full Stack Developer at ExziSoft specializing in Vue.js, Nuxt, Node.js, and cloud architecture",
+      "Full Stack Developer at ExziTech specializing in Vue.js, Nuxt, Node.js, and cloud architecture",
     ogImage: "/og-image.webp",
   },
   projectCategories: {

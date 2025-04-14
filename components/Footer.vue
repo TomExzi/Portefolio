@@ -22,7 +22,7 @@ const localePrefix = computed(() => {
             name="heroicons:shield-check"
             class="w-5 h-5 text-blue-600 dark:text-blue-400"
           />
-          {{ new Date().getFullYear() }} ExziSoft. All rights reserved.
+          {{ new Date().getFullYear() }} ExziTech. All rights reserved.
         </p>
         <div class="flex items-center space-x-4">
           <NuxtLink

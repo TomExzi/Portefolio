@@ -16,7 +16,7 @@ const termsContent = `
 
 ## Introduction
 
-These Terms of Service ("Terms") govern your access to and use of the services provided by ExziSoft ("we", "us", or "our") through our website [Your Website URL] (the "Site"). By using our Site and Services, you agree to these Terms.
+These Terms of Service ("Terms") govern your access to and use of the services provided by ExziTech ("we", "us", or "our") through our website [Your Website URL] (the "Site"). By using our Site and Services, you agree to these Terms.
 
 ## Services
 

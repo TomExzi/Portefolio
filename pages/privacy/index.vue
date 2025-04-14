@@ -16,7 +16,7 @@ const privacyContent = `
 
 ## Introduction
 
-This Privacy Policy explains how ExziSoft ("we", "us", or "our") collects, uses, and discloses information about you when you visit our website [Your Website URL] (the "Site") or use our services (the "Services").
+This Privacy Policy explains how ExziTech ("we", "us", or "our") collects, uses, and discloses information about you when you visit our website [Your Website URL] (the "Site") or use our services (the "Services").
 
 ## Information We Collect
 
