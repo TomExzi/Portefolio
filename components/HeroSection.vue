@@ -1,142 +1,92 @@
 <script setup lang="ts">
-// Import i18n composable to properly handle language changes
-const { t, locale } = useI18n();
+const emit = defineEmits<{
+  (e: "scroll-to", section: string): void;
+}>();
 
-// Add reactivity to ensure component updates when language changes
-const heroTitle = computed(() => t("hero.title"));
-const heroDescription = computed(() => t("hero.description"));
-const ctaText = computed(() => t("hero.ctaText"));
-
-// Import dark mode composable
-const colorMode = useColorMode();
-const isDarkMode = computed(() => colorMode.value === "dark");
-
-// Single arrow image path
-const arrowImage =
-  "/Curved-arrow-doodle-Hand-drawn-brush-st-Graphics-70917217-1-1-580x387.png";
-
-// Visibility state for lazy loading
-const titleArrowVisible = ref(false);
-const descArrowVisible = ref(false);
-const heroSectionRef = ref<HTMLElement | null>(null);
-
-// Setup lazy loading for arrows
-onMounted(() => {
-  // Ensure we're on client-side
-  if (process.client) {
-    nextTick(() => {
-      try {
-        if (heroSectionRef.value) {
-          const observer = new IntersectionObserver(
-            (entries) => {
-              entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                  titleArrowVisible.value = true;
-                  descArrowVisible.value = true;
-                }
-              });
-            },
-            { threshold: 0.1 }
-          );
-
-          observer.observe(heroSectionRef.value);
-
-          // Cleanup
-          onBeforeUnmount(() => {
-            if (observer) {
-              observer.disconnect();
-            }
-          });
-        } else {
-          // Fallback when ref is not available
-          titleArrowVisible.value = true;
-          descArrowVisible.value = true;
-        }
-      } catch (error) {
-        console.error("IntersectionObserver error:", error);
-        // Fallback
-        titleArrowVisible.value = true;
-        descArrowVisible.value = true;
-      }
-    });
-  } else {
-    // Fallback for SSR
-    titleArrowVisible.value = true;
-    descArrowVisible.value = true;
-  }
-});
+const handleGetStarted = () => {
+  emit("scroll-to", "services");
+};
 </script>
 
 <template>
-  <section class="py-16 md:py-24 hero-section" ref="heroSectionRef">
-    <div class="container mx-auto px-4 text-center">
-      <div class="max-w-3xl mx-auto relative">
-        <!-- Title with arrow pointing to it -->
-        <div class="relative">
-          <h1
-            class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-display hero-title"
-          >
-            {{ heroTitle }}
-          </h1>
-          <div class="title-arrow-container">
-            <client-only>
-              <img
-                :src="arrowImage"
-                alt="Curved arrow"
-                class="arrow-image title-arrow opacity-0 transition-opacity duration-500"
-                :class="{ 'opacity-100': titleArrowVisible }"
-                width="180"
-                height="120"
-              />
-              <template #fallback>
-                <!-- Fallback during SSR -->
-                <div class="w-[180px] h-[120px]"></div>
-              </template>
-            </client-only>
-            <span
-              class="arrow-text title-arrow-text opacity-0 transition-opacity duration-500"
-              :class="{ 'opacity-100': titleArrowVisible }"
-              >Us</span
-            >
-          </div>
-        </div>
-
-        <!-- Description with arrow pointing to it -->
-        <div class="relative">
-          <p
-            class="text-xl text-gray-600 dark:text-gray-400 mb-8 hero-description mx-auto"
-          >
-            {{ heroDescription }}
-          </p>
-          <div class="description-arrow-container">
-            <client-only>
-              <img
-                :src="arrowImage"
-                alt="Curved arrow"
-                class="arrow-image description-arrow opacity-0 transition-opacity duration-500"
-                :class="{ 'opacity-100': descArrowVisible }"
-                width="180"
-                height="120"
-              />
-              <template #fallback>
-                <!-- Fallback during SSR -->
-                <div class="w-[180px] h-[120px]"></div>
-              </template>
-            </client-only>
-            <span
-              class="arrow-text description-arrow-text opacity-0 transition-opacity duration-500"
-              :class="{ 'opacity-100': descArrowVisible }"
-              >Me</span
-            >
-          </div>
-        </div>
-
-        <NuxtLink
-          to="#contact"
-          class="inline-flex items-center px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-lg font-medium transition-colors hero-cta"
+  <section
+    id="hero"
+    class="relative min-h-[calc(100vh-4rem)] w-full flex flex-col items-center justify-center px-4 py-16 hero-section"
+  >
+    <div class="max-w-4xl mx-auto text-center space-y-6">
+      <div class="relative">
+        <h1
+          class="text-4xl md:text-5xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-300 hero-title"
         >
-          {{ ctaText }}
-          <Icon name="heroicons:arrow-right" class="ml-2 w-5 h-5" />
+          Software Engineering & AI Solutions
+        </h1>
+        <div class="title-arrow-container">
+          <client-only>
+            <img
+              src="/arrows/curved-arrow.webp"
+              alt="Curved arrow"
+              class="arrow-image title-arrow opacity-0 transition-opacity duration-500"
+              :class="{ 'opacity-100': true }"
+              width="180"
+              height="120"
+            />
+            <template #fallback>
+              <!-- Fallback during SSR -->
+              <div class="w-[180px] h-[120px]"></div>
+            </template>
+          </client-only>
+          <span
+            class="arrow-text title-arrow-text opacity-0 transition-opacity duration-500"
+            :class="{ 'opacity-100': true }"
+            >Us</span
+          >
+        </div>
+      </div>
+
+      <div class="relative">
+        <p
+          class="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto hero-description"
+        >
+          Building scalable, innovative solutions with modern technologies.
+          Specializing in AI integration, web development, and enterprise
+          software.
+        </p>
+        <div class="description-arrow-container">
+          <client-only>
+            <img
+              src="/arrows/curved-arrow.webp"
+              alt="Curved arrow"
+              class="arrow-image description-arrow opacity-0 transition-opacity duration-500"
+              :class="{ 'opacity-100': true }"
+              width="180"
+              height="120"
+            />
+            <template #fallback>
+              <!-- Fallback during SSR -->
+              <div class="w-[180px] h-[120px]"></div>
+            </template>
+          </client-only>
+          <span
+            class="arrow-text description-arrow-text opacity-0 transition-opacity duration-500"
+            :class="{ 'opacity-100': true }"
+            >Me</span
+          >
+        </div>
+      </div>
+      <div class="flex flex-wrap justify-center gap-4 pt-4">
+        <button
+          @click="handleGetStarted"
+          class="px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors duration-200 flex items-center gap-2 hero-cta"
+        >
+          <span>Get Started</span>
+          <Icon name="heroicons:arrow-right" class="w-5 h-5" />
+        </button>
+        <NuxtLink
+          to="/software-engineering"
+          class="px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors duration-200 flex items-center gap-2 hero-cta"
+        >
+          <span>View Software Engineering</span>
+          <Icon name="heroicons:arrow-right" class="w-5 h-5" />
         </NuxtLink>
       </div>
     </div>

@@ -76,7 +76,7 @@ const contactItems = [
 <template>
   <SectionCard
     id="contact"
-    class="contact-section relative overflow-hidden"
+    class="contact-section relative overflow-hidden py-12"
     ref="sectionRef"
   >
     <!-- Full-width/height wrapper with NuxtImg -->
@@ -85,10 +85,10 @@ const contactItems = [
       <NuxtImg
         :src="contactBgUrl"
         format="webp"
-        width="1920"
-        height="1080"
+        width="1200"
+        height="675"
         loading="lazy"
-        quality="80"
+        quality="75"
         placeholder
         alt="Contact background"
         class="absolute inset-0 w-full h-full object-cover -z-20 opacity-0 transition-opacity duration-500 dark:opacity-70 contrast-120 saturate-120 brightness-105"
@@ -99,10 +99,10 @@ const contactItems = [
       <div class="absolute inset-0 dark:bg-dark-background/70 -z-10"></div>
     </div>
 
-    <div class="flex items-center gap-3 mb-8 relative z-10">
-      <Icon name="mdi:email" class="w-7 h-7 text-blue-600 dark:text-blue-400" />
+    <div class="flex items-center gap-3 mb-6 relative z-10">
+      <Icon name="mdi:email" class="w-6 h-6 text-blue-600 dark:text-blue-400" />
       <h2
-        class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent px-2 rounded-full hover:bg-gray-100/20 dark:hover:bg-gray-800/20 transition-colors"
+        class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent px-2 rounded-full hover:bg-gray-100/20 dark:hover:bg-gray-800/20 transition-colors"
       >
         {{ t("contact.title") }}
       </h2>
@@ -112,39 +112,39 @@ const contactItems = [
       <div
         class="bg-white/90 dark:bg-[#1a202c]/95 rounded-2xl shadow-xl overflow-hidden"
       >
-        <div class="p-8">
+        <div class="p-6">
           <p
-            class="text-lg text-gray-700 dark:text-gray-200 mb-8 flex items-start gap-3"
+            class="text-base text-gray-700 dark:text-gray-200 mb-6 flex items-start gap-3"
           >
             <Icon
               name="heroicons:chat-bubble-left-right"
-              class="w-6 h-6 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-1"
+              class="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-1"
             />
             <span>{{ t("contact.intro") }}</span>
           </p>
 
           <h3
-            class="text-xl font-semibold mb-6 dark:text-white flex items-center gap-2"
+            class="text-lg font-semibold mb-4 dark:text-white flex items-center gap-2"
           >
             <Icon
               name="heroicons:link"
-              class="w-5 h-5 text-blue-600 dark:text-blue-400"
+              class="w-4 h-4 text-blue-600 dark:text-blue-400"
             />
             {{ t("contact.social") }}
           </h3>
 
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 select-none">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 select-none">
             <NuxtLink
               v-for="item in contactItems"
               :key="item.link"
               :to="item.link"
               :external="item.external"
               target="_blank"
-              class="flex flex-col items-center text-center hover:translate-y-[-2px] transition-transform group py-4 cursor-pointer bg-white/90 dark:bg-[#1a202c]/95 rounded-xl hover:shadow-md"
+              class="flex flex-col items-center text-center hover:translate-y-[-2px] transition-transform group py-3 cursor-pointer bg-white/90 dark:bg-[#1a202c]/95 rounded-xl hover:shadow-md"
             >
               <Icon
                 :name="item.icon"
-                class="w-10 h-10 text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-all duration-200 mb-3 pointer-events-none"
+                class="w-8 h-8 text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-all duration-200 mb-2 pointer-events-none"
                 :class="{
                   'group-hover:text-red-500': item.icon === 'mdi:email',
                   'group-hover:text-purple-500': item.icon === 'mdi:github',
@@ -152,7 +152,7 @@ const contactItems = [
                 }"
               />
               <span
-                class="text-lg font-medium text-gray-700 dark:text-gray-200 pointer-events-none"
+                class="text-base font-medium text-gray-700 dark:text-gray-200 pointer-events-none"
                 >{{ item.text }}</span
               >
             </NuxtLink>
@@ -170,7 +170,7 @@ const contactItems = [
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: 100%;
+  min-height: auto;
 }
 
 /* Prevent text selection and cursor issues */
