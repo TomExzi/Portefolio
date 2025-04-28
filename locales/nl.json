@@ -3,12 +3,76 @@
     "home": "Home",
     "projects": "Projecten",
     "about": "Over",
-    "contact": "Contact"
+    "contact": "Contact",
+    "process": "Proces",
+    "services": "Diensten"
   },
   "hero": {
     "title": "De Toekomst Bouwen met AI, Automatisering en Schaalbare Oplossingen",
     "description": "Passievolle Full Stack Developer, gespecialiseerd in prestaties, SEO, schaalbare architecturen en AI-oplossingen. Ik ontwikkel slimme, efficiënte en gebruiksvriendelijke digitale ervaringen voor web, mobiel en meer.",
     "ctaText": "Neem contact op"
+  },
+  "ai": {
+    "heroTitle": "Uw Bedrijf Versterken met AI-oplossingen",
+    "heroDescription": "Schaalbare, innovatieve oplossingen bouwen met moderne technologieën. Gespecialiseerd in AI-integratie, webontwikkeling en bedrijfssoftware.",
+    "getStarted": "Beginnen",
+    "viewSoftwareEngineering": "Bekijk Software Engineering",
+    "servicesTitle": "AI-diensten",
+    "servicesDescription": "Professionele AI-oplossingen op maat voor moderne bedrijfsbehoeften",
+    "automationTitle": "AI-automatiseringsvoorbeelden",
+    "automationDescription": "Ontdek hoe AI uw bedrijfsprocessen kan transformeren",
+    "services": [
+      {
+        "title": "AI-ontwikkeling & Integratie",
+        "description": "Aangepaste AI-oplossingen gebouwd en geïntegreerd in uw bestaande systemen, gebruikmakend van state-of-the-art machine learning-modellen en neurale netwerken."
+      },
+      {
+        "title": "Natuurlijke Taalverwerking",
+        "description": "Implementatie van intelligente chatbots, contentgeneratie en tekstanalysesystemen met behulp van geavanceerde NLP-modellen en transformers."
+      },
+      {
+        "title": "Document-AI & Automatisering",
+        "description": "Automatiseer documentverwerking, informatie-extractie en contentanalyse met AI-gestuurde OCR en document-begripssystemen."
+      },
+      {
+        "title": "Voorspellende Analyse",
+        "description": "Benut AI voor business intelligence, voorspellingen en besluitvorming door geavanceerde data-analyse en machine learning-modellen."
+      }
+    ],
+    "examples": [
+      {
+        "title": "E-mailbeheer",
+        "features": [
+          "Automatische e-mailcategorisatie en prioriteitsortering",
+          "Slimme reactiesuggesties op basis van e-mailinhoud",
+          "Geautomatiseerde vergaderplanning en follow-ups"
+        ]
+      },
+      {
+        "title": "Documentverwerking",
+        "features": [
+          "Geautomatiseerde gegevensextractie uit facturen en bonnen",
+          "Contractanalyse en markering van belangrijke informatie",
+          "PDF-verwerking en gegevensstructurering"
+        ]
+      },
+      {
+        "title": "Klantenservice",
+        "features": [
+          "24/7 AI-aangedreven chatbot-ondersteuning",
+          "Automatische ticketcategorisatie en routering",
+          "Sentimentanalyse voor klantfeedback"
+        ]
+      },
+      {
+        "title": "Contentgeneratie",
+        "features": [
+          "Geautomatiseerd schrijven van blogposts en artikelen",
+          "Sociale media content creatie en planning",
+          "Genereren van productbeschrijvingen en marketingteksten"
+        ]
+      }
+    ]
   },
   "projects": {
     "title": "Projecten",

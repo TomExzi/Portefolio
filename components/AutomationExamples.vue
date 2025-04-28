@@ -1,49 +1,83 @@
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+
 interface Example {
   title: string;
   features: string[];
   icon: string;
 }
 
-// Enhanced examples with icons for better visual cues
-const examples = [
+const { t } = useI18n();
+
+// Enhanced examples with icons for better visual cues and translations
+const examples = computed(() => [
   {
-    title: "Email Management",
+    title: t("ai.examples[0].title", "Email Management"),
     icon: "heroicons:envelope",
     features: [
-      "Automatic email categorization and priority sorting",
-      "Smart response suggestions based on email content",
-      "Automated meeting scheduling and follow-ups",
+      t(
+        "ai.examples[0].features[0]",
+        "Automatic email categorization and priority sorting"
+      ),
+      t(
+        "ai.examples[0].features[1]",
+        "Smart response suggestions based on email content"
+      ),
+      t(
+        "ai.examples[0].features[2]",
+        "Automated meeting scheduling and follow-ups"
+      ),
     ],
   },
   {
-    title: "Document Processing",
+    title: t("ai.examples[1].title", "Document Processing"),
     icon: "heroicons:document-duplicate",
     features: [
-      "Automated data extraction from invoices and receipts",
-      "Contract analysis and key information highlighting",
-      "PDF processing and data structuring",
+      t(
+        "ai.examples[1].features[0]",
+        "Automated data extraction from invoices and receipts"
+      ),
+      t(
+        "ai.examples[1].features[1]",
+        "Contract analysis and key information highlighting"
+      ),
+      t("ai.examples[1].features[2]", "PDF processing and data structuring"),
     ],
   },
   {
-    title: "Customer Service",
+    title: t("ai.examples[2].title", "Customer Service"),
     icon: "heroicons:chat-bubble-bottom-center-text",
     features: [
-      "24/7 AI-powered chatbot support",
-      "Automatic ticket categorization and routing",
-      "Sentiment analysis for customer feedback",
+      t("ai.examples[2].features[0]", "24/7 AI-powered chatbot support"),
+      t(
+        "ai.examples[2].features[1]",
+        "Automatic ticket categorization and routing"
+      ),
+      t(
+        "ai.examples[2].features[2]",
+        "Sentiment analysis for customer feedback"
+      ),
     ],
   },
   {
-    title: "Content Generation",
+    title: t("ai.examples[3].title", "Content Generation"),
     icon: "heroicons:pencil-square",
     features: [
-      "Automated blog post and article writing",
-      "Social media content creation and scheduling",
-      "Product description and marketing copy generation",
+      t(
+        "ai.examples[3].features[0]",
+        "Automated blog post and article writing"
+      ),
+      t(
+        "ai.examples[3].features[1]",
+        "Social media content creation and scheduling"
+      ),
+      t(
+        "ai.examples[3].features[2]",
+        "Product description and marketing copy generation"
+      ),
     ],
   },
-];
+]);
 
 // Intersection observer for reveal animation
 const examplesSection = ref<HTMLElement | null>(null);
@@ -78,12 +112,17 @@ onMounted(() => {
         />
       </div>
       <h2 id="examples-heading" class="text-2xl font-bold text-white">
-        AI Automation Examples
+        {{ t("ai.automationTitle", "AI Automation Examples") }}
       </h2>
     </div>
 
     <p class="text-lg text-gray-300 max-w-2xl mb-12">
-      Discover how AI can transform your business operations
+      {{
+        t(
+          "ai.automationDescription",
+          "Discover how AI can transform your business operations"
+        )
+      }}
     </p>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">

@@ -9,13 +9,13 @@
       @scroll="checkScrollPosition"
     >
       <div class="space-y-16">
-        <HeroSection />
-        <ProjectsSection />
-        <ProcessSection />
-        <AboutSection />
+        <HeroSection :key="`hero-${timestamp}`" />
+        <ProjectsSection :key="`projects-${timestamp}`" />
+        <ProcessSection :key="`process-${timestamp}`" />
+        <AboutSection :key="`about-${timestamp}`" />
         <!-- Engineering-specific contact section with larger sizing -->
-        <div class="my-16 w-full">
-          <LazyEngineeringContactSection />
+        <div id="contact" class="my-16 w-full">
+          <LazyEngineeringContactSection :key="`contact-${timestamp}`" />
         </div>
         <!-- Add padding at bottom to ensure space for footer -->
         <div class="pb-24"></div>
@@ -33,10 +33,13 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, nextTick, watch, provide } from "vue";
+import { useRoute } from "vue-router";
 
 // Track scroll position to show/hide footer
 const mainContent = ref<HTMLElement | null>(null);
 const showFooter = ref(false);
+const route = useRoute();
+const timestamp = ref(Date.now()); // Use timestamp for component keys
 
 // Custom page configuration
 provide("customArrowPositions", {
@@ -104,6 +107,9 @@ function handleHashNavigation() {
 
 // Set up scroll event monitoring
 onMounted(() => {
+  // Update timestamp when mounted to ensure components reload
+  timestamp.value = Date.now();
+
   nextTick(() => {
     // Check initial position
     checkScrollPosition();

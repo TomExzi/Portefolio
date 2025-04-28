@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+
 interface Service {
   icon: string;
   title: string;
@@ -10,39 +12,49 @@ const props = defineProps<{
   services?: Service[];
 }>();
 
-// Default services if none provided
-const defaultServices = [
+const { t } = useI18n();
+
+// Use translated services
+const defaultServices = computed(() => [
   {
     icon: "heroicons:cpu-chip",
-    title: "AI Development & Integration",
-    description:
-      "Custom AI solutions built and integrated into your existing systems, leveraging state-of-the-art machine learning models and neural networks.",
+    title: t("ai.services[0].title", "AI Development & Integration"),
+    description: t(
+      "ai.services[0].description",
+      "Custom AI solutions built and integrated into your existing systems, leveraging state-of-the-art machine learning models and neural networks."
+    ),
     color: "blue",
   },
   {
     icon: "heroicons:chat-bubble-left-right",
-    title: "Natural Language Processing",
-    description:
-      "Implement intelligent chatbots, content generation, and text analysis systems using advanced NLP models and transformers.",
+    title: t("ai.services[1].title", "Natural Language Processing"),
+    description: t(
+      "ai.services[1].description",
+      "Implement intelligent chatbots, content generation, and text analysis systems using advanced NLP models and transformers."
+    ),
     color: "purple",
   },
   {
     icon: "heroicons:document-text",
-    title: "Document AI & Automation",
-    description:
-      "Automate document processing, extract information, and analyze content using AI-powered OCR and document understanding systems.",
+    title: t("ai.services[2].title", "Document AI & Automation"),
+    description: t(
+      "ai.services[2].description",
+      "Automate document processing, extract information, and analyze content using AI-powered OCR and document understanding systems."
+    ),
     color: "indigo",
   },
   {
     icon: "heroicons:presentation-chart-line",
-    title: "Predictive Analytics",
-    description:
-      "Leverage AI for business intelligence, forecasting, and decision-making through advanced data analysis and machine learning models.",
+    title: t("ai.services[3].title", "Predictive Analytics"),
+    description: t(
+      "ai.services[3].description",
+      "Leverage AI for business intelligence, forecasting, and decision-making through advanced data analysis and machine learning models."
+    ),
     color: "cyan",
   },
-];
+]);
 
-const servicesList = computed(() => props.services || defaultServices);
+const servicesList = computed(() => props.services || defaultServices.value);
 
 // Define icon class based on service color
 function getIconClass(color?: string) {
@@ -87,12 +99,17 @@ onMounted(() => {
         <Icon name="heroicons:cpu-chip" class="w-6 h-6 text-blue-400" />
       </div>
       <h2 id="services-heading" class="text-2xl font-bold text-white">
-        AI Services
+        {{ t("ai.servicesTitle", "AI Services") }}
       </h2>
     </div>
 
     <p class="text-lg text-gray-300 max-w-2xl mb-12">
-      Professional AI solutions tailored for modern business needs
+      {{
+        t(
+          "ai.servicesDescription",
+          "Professional AI solutions tailored for modern business needs"
+        )
+      }}
     </p>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">

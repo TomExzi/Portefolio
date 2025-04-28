@@ -3,12 +3,76 @@
     "home": "Accueil",
     "projects": "Projets",
     "about": "À propos",
-    "contact": "Contact"
+    "contact": "Contact",
+    "process": "Processus",
+    "services": "Services"
   },
   "hero": {
-    "title": "Construire l’Avenir avec l’IA, l’Automatisation et des Solutions Évolutives",
-    "description": "Développeur Full Stack, spécialisé dans la performance, le SEO, les architectures évolutives et les solutions basées sur l’IA. Je conçois des expériences numériques intelligentes, performantes et intuitives, du web au mobile et bien plus encore.",
+    "title": "Construire l'Avenir avec l'IA, l'Automatisation et des Solutions Évolutives",
+    "description": "Développeur Full Stack, spécialisé dans la performance, le SEO, les architectures évolutives et les solutions basées sur l'IA. Je conçois des expériences numériques intelligentes, performantes et intuitives, du web au mobile et bien plus encore.",
     "ctaText": "Me contacter"
+  },
+  "ai": {
+    "heroTitle": "Optimiser Votre Entreprise avec des Solutions d'IA",
+    "heroDescription": "Construction de solutions innovantes et évolutives avec des technologies modernes. Spécialisation dans l'intégration d'IA, le développement web et les logiciels d'entreprise.",
+    "getStarted": "Commencer",
+    "viewSoftwareEngineering": "Voir Ingénierie Logicielle",
+    "servicesTitle": "Services d'IA",
+    "servicesDescription": "Solutions professionnelles d'IA adaptées aux besoins des entreprises modernes",
+    "automationTitle": "Exemples d'Automatisation IA",
+    "automationDescription": "Découvrez comment l'IA peut transformer vos opérations commerciales",
+    "services": [
+      {
+        "title": "Développement & Intégration d'IA",
+        "description": "Solutions d'IA personnalisées construites et intégrées dans vos systèmes existants, exploitant des modèles de machine learning et des réseaux neuronaux de pointe."
+      },
+      {
+        "title": "Traitement du Langage Naturel",
+        "description": "Implémentation de chatbots intelligents, génération de contenu et systèmes d'analyse de texte utilisant des modèles NLP avancés et des transformers."
+      },
+      {
+        "title": "IA Documentaire & Automatisation",
+        "description": "Automatisation du traitement des documents, extraction d'informations et analyse de contenu à l'aide de systèmes OCR et de compréhension de documents alimentés par l'IA."
+      },
+      {
+        "title": "Analyse Prédictive",
+        "description": "Exploitation de l'IA pour l'intelligence d'affaires, les prévisions et la prise de décision grâce à l'analyse avancée des données et aux modèles de machine learning."
+      }
+    ],
+    "examples": [
+      {
+        "title": "Gestion des Emails",
+        "features": [
+          "Catégorisation automatique des emails et tri par priorité",
+          "Suggestions de réponses intelligentes basées sur le contenu de l'email",
+          "Planification automatisée de réunions et suivis"
+        ]
+      },
+      {
+        "title": "Traitement de Documents",
+        "features": [
+          "Extraction automatisée de données à partir de factures et reçus",
+          "Analyse de contrats et mise en évidence des informations clés",
+          "Traitement de PDF et structuration des données"
+        ]
+      },
+      {
+        "title": "Service Client",
+        "features": [
+          "Support chatbot alimenté par l'IA 24/7",
+          "Catégorisation et routage automatiques des tickets",
+          "Analyse de sentiment pour les retours clients"
+        ]
+      },
+      {
+        "title": "Génération de Contenu",
+        "features": [
+          "Rédaction automatisée d'articles de blog",
+          "Création de contenu pour les réseaux sociaux et planification",
+          "Génération de descriptions de produits et de textes marketing"
+        ]
+      }
+    ]
   },
   "projects": {
     "title": "Projets",
@@ -85,7 +149,7 @@
     "title": "Contactez-moi",
     "email": "Email",
     "social": "Profils sociaux",
-    "intro": "Tu as une idée géniale ? Un projet cool ? Ou tu veux simplement discuter ? Je suis tout ouïe, contacte-moi par l’un de ces canaux !"
+    "intro": "Tu as une idée géniale ? Un projet cool ? Ou tu veux simplement discuter ? Je suis tout ouïe, contacte-moi par l'un de ces canaux !"
   },
   "legal": {
     "privacy": {

@@ -37,6 +37,7 @@ const customArrowPositions = inject("customArrowPositions", {
               :class="{ 'opacity-100': true }"
               width="180"
               height="120"
+              loading="lazy"
             />
             <template #fallback>
               <!-- Fallback during SSR -->
@@ -68,6 +69,7 @@ const customArrowPositions = inject("customArrowPositions", {
               :class="{ 'opacity-100': true }"
               width="180"
               height="120"
+              loading="lazy"
             />
             <template #fallback>
               <!-- Fallback during SSR -->

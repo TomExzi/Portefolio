@@ -4,12 +4,75 @@
     "projects": "Projects",
     "about": "About",
     "contact": "Contact",
-    "process": "Process"
+    "process": "Process",
+    "services": "Services"
   },
   "hero": {
     "title": "Building the Future of Tech with AI, Automation, and Scalable Solutions",
     "description": "Passionate Full Stack Developer specializing in performance, SEO, scalable architecture, and AI-driven solutions. I build high-performing, intelligent, and user-friendly digital experiences across web, mobile, and beyond.",
     "ctaText": "Get in touch"
+  },
+  "ai": {
+    "heroTitle": "Empowering Your Business with AI Solutions",
+    "heroDescription": "Building scalable, innovative solutions with modern technologies. Specializing in AI integration, web development, and enterprise software.",
+    "getStarted": "Get Started",
+    "viewSoftwareEngineering": "View Software Engineering",
+    "servicesTitle": "AI Services",
+    "servicesDescription": "Professional AI solutions tailored for modern business needs",
+    "automationTitle": "AI Automation Examples",
+    "automationDescription": "Discover how AI can transform your business operations",
+    "services": [
+      {
+        "title": "AI Development & Integration",
+        "description": "Custom AI solutions built and integrated into your existing systems, leveraging state-of-the-art machine learning models and neural networks."
+      },
+      {
+        "title": "Natural Language Processing",
+        "description": "Implement intelligent chatbots, content generation, and text analysis systems using advanced NLP models and transformers."
+      },
+      {
+        "title": "Document AI & Automation",
+        "description": "Automate document processing, extract information, and analyze content using AI-powered OCR and document understanding systems."
+      },
+      {
+        "title": "Predictive Analytics",
+        "description": "Leverage AI for business intelligence, forecasting, and decision-making through advanced data analysis and machine learning models."
+      }
+    ],
+    "examples": [
+      {
+        "title": "Email Management",
+        "features": [
+          "Automatic email categorization and priority sorting",
+          "Smart response suggestions based on email content",
+          "Automated meeting scheduling and follow-ups"
+        ]
+      },
+      {
+        "title": "Document Processing",
+        "features": [
+          "Automated data extraction from invoices and receipts",
+          "Contract analysis and key information highlighting",
+          "PDF processing and data structuring"
+        ]
+      },
+      {
+        "title": "Customer Service",
+        "features": [
+          "24/7 AI-powered chatbot support",
+          "Automatic ticket categorization and routing",
+          "Sentiment analysis for customer feedback"
+        ]
+      },
+      {
+        "title": "Content Generation",
+        "features": [
+          "Automated blog post and article writing",
+          "Social media content creation and scheduling",
+          "Product description and marketing copy generation"
+        ]
+      }
+    ]
   },
   "projects": {
     "title": "Projects",
@@ -86,7 +149,7 @@
     "title": "Get in Touch",
     "email": "Email",
     "social": "Social Profiles",
-    "intro": "Got an awesome idea? A cool project? Or just want to chat? I’m all ears, hit me up through any of these channels!"
+    "intro": "Got an awesome idea? A cool project? Or just want to chat? I'm all ears, hit me up through any of these channels!"
   },
   "legal": {
     "privacy": {

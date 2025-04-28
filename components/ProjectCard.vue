@@ -16,8 +16,14 @@ defineProps<{
   >
     <!-- Project Image with improved background handling -->
     <div class="relative h-56 overflow-hidden">
-      <img :src="'/' + projealt="project.title" h"400" "24" "ansform transitionm
-      du ver:scale-105"
+      <img
+        :src="project.imageUrl"
+        :alt="project.title"
+        width="400"
+        height="240"
+        loading="lazy"
+        class="w-full h-full object-cover transform transition-transform duration-500 hover:scale-105"
+      />
       <div
         class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"
       ></div>

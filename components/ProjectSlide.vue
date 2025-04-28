@@ -24,6 +24,7 @@ defineProps<{
           :src="project.image"
           alt="Project image"
           class="rounded-lg shadow-md"
+          loading="lazy"
         />
       </div>
     </div>

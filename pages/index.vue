@@ -39,6 +39,8 @@ useHead({
 // Scroll handling with better performance
 const mainContent = ref<HTMLElement | null>(null);
 const { updateScrollPosition, scrollToSection, showFooter } = useScroll();
+const route = useRoute();
+const timestamp = ref(Date.now()); // Use timestamp for component keys
 
 // Provide scroll functionality to child components (for NavBar)
 provide("scrollToSection", scrollToSection);
@@ -57,6 +59,9 @@ function checkScrollHeight() {
 // Setup scroll monitoring with proper event cleanup
 onMounted(() => {
   if (mainContent.value) {
+    // Update timestamp when mounted to ensure components reload
+    timestamp.value = Date.now();
+
     const handleScroll = () => {
       if (mainContent.value) updateScrollPosition(mainContent.value);
     };
@@ -99,7 +104,9 @@ onMounted(() => {
             <h1
               class="text-4xl md:text-5xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-300 hero-title"
             >
-              Software Engineering & AI Solutions
+              {{
+                $t("ai.heroTitle", "Empowering Your Business with AI Solutions")
+              }}
             </h1>
             <div class="title-arrow-container">
               <client-only>
@@ -130,9 +137,12 @@ onMounted(() => {
             <p
               class="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto hero-description"
             >
-              Building scalable, innovative solutions with modern technologies.
-              Specializing in AI integration, web development, and enterprise
-              software.
+              {{
+                $t(
+                  "ai.heroDescription",
+                  "Building scalable, innovative solutions with modern technologies. Specializing in AI integration, web development, and enterprise software."
+                )
+              }}
             </p>
             <div class="description-arrow-container">
               <client-only>
@@ -163,7 +173,7 @@ onMounted(() => {
               @click="scrollToSection('services')"
               class="px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors duration-200 flex items-center gap-2 hero-cta"
             >
-              <span>Get Started</span>
+              <span>{{ $t("ai.getStarted", "Get Started") }}</span>
               <Icon name="heroicons:arrow-right" class="w-5 h-5" />
             </button>
             <NuxtLink
@@ -171,7 +181,9 @@ onMounted(() => {
               class="px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors duration-200 flex items-center gap-2 hero-cta"
               prefetch
             >
-              <span>View Software Engineering</span>
+              <span>{{
+                $t("ai.viewSoftwareEngineering", "View Software Engineering")
+              }}</span>
               <Icon name="heroicons:arrow-right" class="w-5 h-5" />
             </NuxtLink>
           </div>
@@ -180,21 +192,21 @@ onMounted(() => {
 
       <!-- Services Section with SectionCard -->
       <SectionCard id="services" type="ai">
-        <lazy-component>
+        <lazy-component :key="`services-${route.path}-${timestamp}`">
           <ServicesSection />
         </lazy-component>
       </SectionCard>
 
       <!-- AI Automation Examples with SectionCard -->
       <SectionCard id="automation" type="ai">
-        <lazy-component>
+        <lazy-component :key="`automation-${route.path}-${timestamp}`">
           <AutomationExamples />
         </lazy-component>
       </SectionCard>
 
       <!-- Contact Section - Directly placed without using SectionCard -->
       <section id="contact" class="my-20">
-        <LazyContactSection />
+        <LazyContactSection :key="`contact-${route.path}-${timestamp}`" />
       </section>
 
       <!-- Bottom padding for footer -->

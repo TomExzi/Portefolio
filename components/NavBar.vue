@@ -142,8 +142,19 @@ function smoothScrollToSection(sectionId: string, event: Event) {
     isMobileMenuOpen.value = false;
   }
 
-  // Use the injected scroll function from the parent
-  scrollToSection(sectionId);
+  // Try to use the injected scroll function from the parent
+  if (typeof scrollToSection === "function") {
+    scrollToSection(sectionId);
+  } else {
+    // Direct implementation as fallback
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }
 
   // Update URL without causing a scroll
   history.pushState(null, "", `#${sectionId}`);
@@ -296,32 +307,13 @@ watchEffect(() => {
       >
         <div class="flex flex-col w-full">
           <NuxtLink
-            href="#projects"
-            @click.prevent="smoothScrollToSection('projects', $event)"
-            class="px-4 py-4 text-sm text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-blue-400 dark:hover:bg-gray-800/50 transition-colors flex items-center gap-1.5 active:bg-gray-200 dark:active:bg-gray-700"
-          >
-            <Icon name="heroicons:rectangle-stack" class="w-4 h-4" />
-            {{ $t("navigation.projects") }}
-          </NuxtLink>
-
-          <NuxtLink
             href="#process"
             @click.prevent="smoothScrollToSection('process', $event)"
             class="px-4 py-4 text-sm text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-blue-400 dark:hover:bg-gray-800/50 transition-colors flex items-center gap-1.5 active:bg-gray-200 dark:active:bg-gray-700"
           >
-            <Icon name="heroicons:arrow-path" class="w-4 h-4" />
+            <Icon name="heroicons:arrow-trending-up" class="w-4 h-4" />
             {{ $t("navigation.process") }}
           </NuxtLink>
-
-          <NuxtLink
-            href="#about"
-            @click.prevent="smoothScrollToSection('about', $event)"
-            class="px-4 py-4 text-sm text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-blue-400 dark:hover:bg-gray-800/50 transition-colors flex items-center gap-1.5 active:bg-gray-200 dark:active:bg-gray-700"
-          >
-            <Icon name="heroicons:user" class="w-4 h-4" />
-            {{ $t("navigation.about") }}
-          </NuxtLink>
-
           <NuxtLink
             href="#contact"
             @click.prevent="smoothScrollToSection('contact', $event)"
@@ -336,32 +328,13 @@ watchEffect(() => {
       <!-- Desktop Menu (visible on medium screens and up) -->
       <div class="hidden md:flex items-center space-x-1 sm:space-x-2">
         <NuxtLink
-          href="#projects"
-          @click.prevent="smoothScrollToSection('projects', $event)"
-          class="px-3 py-2 text-sm rounded-full text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-blue-400 dark:hover:bg-gray-800/50 transition-colors flex items-center gap-1.5"
-        >
-          <Icon name="heroicons:rectangle-stack" class="w-4 h-4" />
-          {{ $t("navigation.projects") }}
-        </NuxtLink>
-
-        <NuxtLink
           href="#process"
           @click.prevent="smoothScrollToSection('process', $event)"
           class="px-3 py-2 text-sm rounded-full text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-blue-400 dark:hover:bg-gray-800/50 transition-colors flex items-center gap-1.5"
         >
-          <Icon name="heroicons:arrow-path" class="w-4 h-4" />
+          <Icon name="heroicons:arrow-trending-up" class="w-4 h-4" />
           {{ $t("navigation.process") }}
         </NuxtLink>
-
-        <NuxtLink
-          href="#about"
-          @click.prevent="smoothScrollToSection('about', $event)"
-          class="px-3 py-2 text-sm rounded-full text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-blue-400 dark:hover:bg-gray-800/50 transition-colors flex items-center gap-1.5"
-        >
-          <Icon name="heroicons:user" class="w-4 h-4" />
-          {{ $t("navigation.about") }}
-        </NuxtLink>
-
         <NuxtLink
           href="#contact"
           @click.prevent="smoothScrollToSection('contact', $event)"
