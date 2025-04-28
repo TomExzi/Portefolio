@@ -13,10 +13,12 @@
         <ProjectsSection />
         <ProcessSection />
         <AboutSection />
-        <!-- Lazy load Contact Section -->
-        <LazyContactSection />
+        <!-- Engineering-specific contact section with larger sizing -->
+        <div class="my-16 w-full">
+          <LazyEngineeringContactSection />
+        </div>
         <!-- Add padding at bottom to ensure space for footer -->
-        <div class="pb-40"></div>
+        <div class="pb-24"></div>
       </div>
       <!-- Footer only appears when scrolled to bottom -->
       <div
@@ -35,6 +37,12 @@ import { ref, onMounted, onUnmounted, nextTick, watch, provide } from "vue";
 // Track scroll position to show/hide footer
 const mainContent = ref<HTMLElement | null>(null);
 const showFooter = ref(false);
+
+// Custom page configuration
+provide("customArrowPositions", {
+  titleArrowTop: -15,
+  descriptionArrowTop: -10,
+});
 
 function checkScrollPosition() {
   if (!mainContent.value) return;
@@ -151,4 +159,6 @@ useHead({
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+/* Remove the styles that weren't working */
 </style>

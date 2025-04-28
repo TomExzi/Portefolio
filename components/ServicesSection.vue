@@ -44,17 +44,17 @@ const defaultServices = [
 
 const servicesList = computed(() => props.services || defaultServices);
 
-// Define background color classes based on service color
-function getBackgroundClass(color?: string) {
+// Define icon class based on service color
+function getIconClass(color?: string) {
   switch (color) {
     case "purple":
-      return "bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400";
+      return "bg-purple-900/30 text-purple-400";
     case "indigo":
-      return "bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400";
+      return "bg-indigo-900/30 text-indigo-400";
     case "cyan":
-      return "bg-cyan-100 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400";
+      return "bg-cyan-900/30 text-cyan-400";
     default:
-      return "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400";
+      return "bg-blue-900/30 text-blue-400";
   }
 }
 
@@ -79,82 +79,80 @@ onMounted(() => {
 </script>
 
 <template>
-  <section
-    id="services"
-    ref="servicesSection"
-    class="w-full px-4 py-16 bg-white dark:bg-gray-800"
-    aria-labelledby="services-heading"
-  >
-    <div class="max-w-6xl mx-auto">
+  <div ref="servicesSection" class="w-full" aria-labelledby="services-heading">
+    <div class="flex items-center gap-3 mb-8">
       <div
-        class="text-center mb-16 transform transition-all duration-700"
-        :class="
-          isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-        "
+        class="p-2 rounded-lg bg-blue-600/20 flex items-center justify-center"
       >
-        <h2
-          id="services-heading"
-          class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4"
-        >
-          AI Services
-        </h2>
-        <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-          Professional AI solutions tailored for modern business needs
-        </p>
+        <Icon name="heroicons:cpu-chip" class="w-6 h-6 text-blue-400" />
       </div>
+      <h2 id="services-heading" class="text-2xl font-bold text-white">
+        AI Services
+      </h2>
+    </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-        <div
-          v-for="(service, index) in servicesList"
-          :key="service.title"
-          class="p-6 rounded-2xl bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg"
-          :class="
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          "
-          :style="{ transitionDelay: `${index * 100}ms` }"
-        >
-          <div class="flex items-start gap-4">
-            <div
-              class="p-3 rounded-xl flex items-center justify-center"
-              :class="getBackgroundClass(service.color)"
-            >
-              <Icon :name="service.icon" class="w-6 h-6" aria-hidden="true" />
-            </div>
-            <div>
-              <h3
-                class="text-xl font-semibold text-gray-900 dark:text-white mb-2"
-              >
-                {{ service.title }}
-              </h3>
-              <p class="text-gray-600 dark:text-gray-300">
-                {{ service.description }}
-              </p>
-            </div>
+    <p class="text-lg text-gray-300 max-w-2xl mb-12">
+      Professional AI solutions tailored for modern business needs
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+      <div
+        v-for="(service, index) in servicesList"
+        :key="service.title"
+        class="service-card"
+        :class="
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        "
+        :style="{ transitionDelay: `${index * 100}ms` }"
+      >
+        <div class="flex items-start gap-5">
+          <div
+            class="p-3 rounded-xl flex items-center justify-center service-icon"
+            :class="getIconClass(service.color)"
+          >
+            <Icon :name="service.icon" class="w-6 h-6" aria-hidden="true" />
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold text-white mb-3">
+              {{ service.title }}
+            </h3>
+            <p class="text-gray-300 leading-relaxed">
+              {{ service.description }}
+            </p>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <style scoped>
-/* Using CSS variables for better performance and customization */
-:root {
-  --card-transition-duration: 300ms;
-  --card-hover-scale: 1.02;
-  --card-shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+.service-card {
+  padding: 1.5rem;
+  border-radius: 1rem;
+  background-color: rgba(37, 43, 69, 0.6);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* Performance optimization with hardware acceleration */
-.transform {
-  will-change: transform, opacity;
-  backface-visibility: hidden;
+.service-card:hover {
+  background-color: rgba(37, 43, 69, 0.9);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+.service-icon {
+  transition: all 0.3s ease;
+}
+
+.service-card:hover .service-icon {
+  transform: scale(1.1);
 }
 
 /* Reduce motion if user prefers reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .transform {
+  .service-card,
+  .service-icon {
     transition-duration: 0.01ms !important;
     transform: none !important;
   }

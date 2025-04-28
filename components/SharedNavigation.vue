@@ -8,11 +8,10 @@
         <NuxtLink to="/" class="hover:text-blue-400 transition-colors"
           >AI Solutions</NuxtLink
         >
-        <NuxtLink to="/portfolio" class="hover:text-blue-400 transition-colors"
+        <NuxtLink
+          to="/software-engineering"
+          class="hover:text-blue-400 transition-colors"
           >Software Portfolio</NuxtLink
-        >
-        <a href="#contact" class="hover:text-blue-400 transition-colors"
-          >Contact</a
         >
       </div>
     </div>

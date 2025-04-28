@@ -67,121 +67,106 @@ onMounted(() => {
 </script>
 
 <template>
-  <section
-    id="automation-examples"
-    ref="examplesSection"
-    class="w-full px-4 py-16 bg-gray-50 dark:bg-gray-900"
-    aria-labelledby="examples-heading"
-  >
-    <div class="max-w-4xl mx-auto">
+  <div ref="examplesSection" class="w-full" aria-labelledby="examples-heading">
+    <div class="flex items-center gap-3 mb-8">
       <div
-        class="text-center mb-16 transform transition-all duration-700"
-        :class="
-          isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-        "
+        class="p-2 rounded-lg bg-blue-600/20 flex items-center justify-center"
       >
-        <h2
-          id="examples-heading"
-          class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4"
-        >
-          AI Automation Examples
-        </h2>
-        <p class="text-lg text-gray-600 dark:text-gray-300">
-          Discover how AI can transform your business operations
-        </p>
+        <Icon
+          name="heroicons:document-chart-bar"
+          class="w-6 h-6 text-blue-400"
+        />
       </div>
+      <h2 id="examples-heading" class="text-2xl font-bold text-white">
+        AI Automation Examples
+      </h2>
+    </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div
-          v-for="(example, index) in examples"
-          :key="example.title"
-          class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow-sm hover:shadow-lg transform transition-all duration-300 hover:scale-[1.02] relative overflow-hidden group"
-          :class="
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          "
-          :style="{ transitionDelay: `${index * 150}ms` }"
-        >
-          <!-- Background decoration -->
+    <p class="text-lg text-gray-300 max-w-2xl mb-12">
+      Discover how AI can transform your business operations
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+      <div
+        v-for="(example, index) in examples"
+        :key="example.title"
+        class="example-card"
+        :class="
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        "
+        :style="{ transitionDelay: `${index * 150}ms` }"
+      >
+        <!-- Header with icon -->
+        <div class="flex items-center gap-4 mb-5">
           <div
-            class="absolute top-0 right-0 w-32 h-32 -mr-10 -mt-10 opacity-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 group-hover:opacity-20 transition-opacity"
-          ></div>
-
-          <!-- Icon header -->
-          <div class="flex items-center gap-3 mb-4 relative">
-            <div
-              class="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
-            >
-              <Icon :name="example.icon" class="w-5 h-5" aria-hidden="true" />
-            </div>
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-              {{ example.title }}
-            </h3>
+            class="p-3 rounded-lg bg-blue-900/30 text-blue-400 flex-shrink-0 example-icon"
+          >
+            <Icon :name="example.icon" class="w-5 h-5" aria-hidden="true" />
           </div>
-
-          <!-- Features list -->
-          <ul class="space-y-3 text-gray-600 dark:text-gray-300 relative">
-            <li
-              v-for="(feature, featureIndex) in example.features"
-              :key="feature"
-              class="flex items-start gap-2 transition-all duration-300"
-              :class="
-                isVisible
-                  ? 'opacity-100 translate-x-0'
-                  : 'opacity-0 -translate-x-4'
-              "
-              :style="{
-                transitionDelay: `${index * 150 + featureIndex * 100}ms`,
-              }"
-            >
-              <Icon
-                name="heroicons:check-circle"
-                class="w-5 h-5 text-green-500 mt-1 flex-shrink-0"
-                aria-hidden="true"
-              />
-              <span>{{ feature }}</span>
-            </li>
-          </ul>
+          <h3 class="text-xl font-semibold text-white">
+            {{ example.title }}
+          </h3>
         </div>
+
+        <!-- Features list -->
+        <ul class="space-y-4 pl-2">
+          <li
+            v-for="(feature, featureIndex) in example.features"
+            :key="feature"
+            class="flex items-start gap-3 transition-all duration-300"
+            :class="
+              isVisible
+                ? 'opacity-100 translate-x-0'
+                : 'opacity-0 -translate-x-4'
+            "
+            :style="{
+              transitionDelay: `${index * 150 + featureIndex * 100}ms`,
+            }"
+          >
+            <Icon
+              name="heroicons:check-circle"
+              class="w-5 h-5 text-green-500 mt-1 flex-shrink-0"
+              aria-hidden="true"
+            />
+            <span class="text-gray-300">{{ feature }}</span>
+          </li>
+        </ul>
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <style scoped>
-/* Modern animation helpers */
-.transform {
-  will-change: transform, opacity;
-  backface-visibility: hidden;
+.example-card {
+  padding: 1.5rem;
+  border-radius: 1rem;
+  background-color: rgba(37, 43, 69, 0.6);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  height: 100%;
 }
 
-/* Gradient animation for the decorative background */
-@keyframes gradientShift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+.example-card:hover {
+  background-color: rgba(37, 43, 69, 0.9);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
 }
 
-.bg-gradient-to-br {
-  background-size: 200% 200%;
-  animation: gradientShift 15s ease infinite;
+.example-icon {
+  transition: all 0.3s ease;
+}
+
+.example-card:hover .example-icon {
+  transform: scale(1.1);
 }
 
 /* Accessibility: Reduce motion if user prefers */
 @media (prefers-reduced-motion: reduce) {
-  .transform,
+  .example-card,
+  .example-icon,
   .transition-all {
     transition-duration: 0.01ms !important;
     transform: none !important;
-  }
-
-  .bg-gradient-to-br {
-    animation: none !important;
   }
 }
 </style>

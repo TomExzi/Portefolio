@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import SharedNavigation from "~/components/SharedNavigation.vue";
+
 definePageMeta({
-  layout: "default",
   name: "home",
 });
 
@@ -38,6 +39,9 @@ useHead({
 // Scroll handling with better performance
 const mainContent = ref<HTMLElement | null>(null);
 const { updateScrollPosition, scrollToSection, showFooter } = useScroll();
+
+// Provide scroll functionality to child components (for NavBar)
+provide("scrollToSection", scrollToSection);
 
 // Watch for changes in scroll height with proper cleanup
 let lastScrollHeight = 0;
@@ -77,7 +81,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="page-wrapper">
+  <div
+    class="h-screen w-screen bg-white dark:bg-[#1a202c] flex flex-col overflow-hidden"
+  >
+    <SharedNavigation />
     <main
       ref="mainContent"
       class="h-screen w-full overflow-y-auto overflow-x-hidden scroll-smooth"
@@ -101,14 +108,14 @@ onMounted(() => {
                   alt="Curved arrow"
                   class="arrow-image title-arrow opacity-0 transition-opacity duration-500"
                   :class="{ 'opacity-100': true }"
-                  width="150"
-                  height="100"
+                  width="180"
+                  height="120"
                   loading="lazy"
                   fetchpriority="low"
                 />
                 <template #fallback>
                   <!-- Fallback during SSR -->
-                  <div class="w-[150px] h-[100px]"></div>
+                  <div class="w-[180px] h-[120px]"></div>
                 </template>
               </client-only>
               <span
@@ -134,14 +141,14 @@ onMounted(() => {
                   alt="Curved arrow"
                   class="arrow-image description-arrow opacity-0 transition-opacity duration-500"
                   :class="{ 'opacity-100': true }"
-                  width="150"
-                  height="100"
+                  width="180"
+                  height="120"
                   loading="lazy"
                   fetchpriority="low"
                 />
                 <template #fallback>
                   <!-- Fallback during SSR -->
-                  <div class="w-[150px] h-[100px]"></div>
+                  <div class="w-[180px] h-[120px]"></div>
                 </template>
               </client-only>
               <span
@@ -171,71 +178,42 @@ onMounted(() => {
         </div>
       </section>
 
-      <!-- Services Section - Load as needed with adjusted spacing -->
-      <section class="py-6 md:py-10">
+      <!-- Services Section with SectionCard -->
+      <SectionCard id="services" type="ai">
         <lazy-component>
           <ServicesSection />
         </lazy-component>
-      </section>
+      </SectionCard>
 
-      <!-- AI Automation Examples - Load as needed with adjusted spacing -->
-      <section class="py-6 md:py-10">
+      <!-- AI Automation Examples with SectionCard -->
+      <SectionCard id="automation" type="ai">
         <lazy-component>
           <AutomationExamples />
         </lazy-component>
-      </section>
+      </SectionCard>
 
-      <!-- Contact Section - Lazy loaded with adjusted spacing -->
-      <section class="py-6 md:py-10">
+      <!-- Contact Section - Directly placed without using SectionCard -->
+      <section id="contact" class="my-20">
         <LazyContactSection />
       </section>
 
       <!-- Bottom padding for footer -->
-      <div class="h-24"></div>
-    </main>
+      <div class="h-36"></div>
 
-    <!-- Footer (appears when scrolled to bottom) -->
-    <footer
-      class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-4 transition-opacity duration-200 z-10"
-      :class="{
-        'opacity-0 pointer-events-none': !showFooter,
-        'opacity-100': showFooter,
-      }"
-    >
-      <div class="container mx-auto px-4">
-        <div class="flex justify-between items-center">
-          <p class="text-sm text-gray-600 dark:text-gray-400">
-            {{ new Date().getFullYear() }} ExziTech. All rights reserved.
-          </p>
-          <div class="flex items-center space-x-4">
-            <a
-              href="https://github.com/TomExzi"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors"
-              aria-label="GitHub"
-            >
-              <Icon name="mdi:github" class="w-5 h-5" aria-hidden="true" />
-            </a>
-            <a
-              href="https://www.linkedin.com/in/tom-rogiers-290655221/"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors"
-              aria-label="LinkedIn"
-            >
-              <Icon name="mdi:linkedin" class="w-5 h-5" aria-hidden="true" />
-            </a>
-          </div>
-        </div>
+      <!-- Footer (appears when scrolled to bottom) -->
+      <div
+        class="transition-opacity duration-500 w-full"
+        :class="showFooter ? 'opacity-100' : 'opacity-0 pointer-events-none'"
+      >
+        <Footer />
       </div>
-    </footer>
+    </main>
   </div>
 </template>
 
 <style lang="postcss">
 .page-wrapper {
-  @apply relative min-h-screen w-full bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800;
+  @apply relative min-h-screen w-full bg-white dark:bg-[#1a202c];
 }
 
 .loading-placeholder {
@@ -304,7 +282,7 @@ onMounted(() => {
 
 /* Arrow styling */
 .arrow-image {
-  width: 150px;
+  width: 180px;
   height: auto;
   position: absolute;
   z-index: 2;
@@ -334,9 +312,9 @@ onMounted(() => {
 /* Title arrow positioning */
 .title-arrow-container {
   position: absolute;
-  width: 150px;
-  height: 100px;
-  top: 20px;
+  width: 180px;
+  height: 120px;
+  top: -15px;
   left: -160px;
 }
 
@@ -354,9 +332,9 @@ onMounted(() => {
 /* Description arrow positioning */
 .description-arrow-container {
   position: absolute;
-  width: 150px;
-  height: 100px;
-  top: 30px;
+  width: 180px;
+  height: 120px;
+  top: -10px;
   right: -160px;
 }
 

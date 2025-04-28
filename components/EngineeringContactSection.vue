@@ -79,9 +79,7 @@ const contactItems = [
     :class="{ 'opacity-0': !isVisible }"
     class="transition-opacity duration-1000"
   >
-    <div
-      class="relative rounded-3xl overflow-hidden max-w-[1380px] mx-auto shadow-2xl"
-    >
+    <div class="relative rounded-3xl overflow-hidden w-full shadow-2xl">
       <!-- Background image -->
       <img
         v-if="isVisible"
@@ -96,40 +94,38 @@ const contactItems = [
       <div class="absolute inset-0 bg-black/60"></div>
 
       <!-- Content -->
-      <div class="relative z-10 py-24 px-8 md:px-12 lg:px-20">
-        <div class="text-center mb-16">
-          <h2 class="text-4xl md:text-5xl font-bold text-white mb-8">
+      <div class="relative z-10 py-28 px-8 md:px-16 lg:px-24">
+        <div class="text-center mb-20">
+          <h2 class="text-4xl md:text-6xl font-bold text-white mb-10">
             {{ t("contact.title") }}
           </h2>
-          <p class="text-xl md:text-2xl text-gray-100 max-w-4xl mx-auto">
+          <p class="text-xl md:text-2xl text-gray-100 max-w-5xl mx-auto">
             {{ t("contact.intro") }}
           </p>
         </div>
 
         <!-- Contact items -->
-        <div
-          class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 max-w-6xl mx-auto"
-        >
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-16 mx-auto">
           <!-- Email -->
           <NuxtLink
             :to="`mailto:${contact.email}`"
             external
             target="_blank"
-            class="bg-gray-900/60 hover:bg-gray-800/80 text-white p-8 rounded-xl flex flex-col items-center text-center transform hover:scale-105 transition-transform duration-300 group"
+            class="bg-gray-900/60 hover:bg-gray-800/80 text-white p-10 rounded-xl flex flex-col items-center text-center transform hover:scale-105 transition-transform duration-300 group"
           >
             <div
-              class="bg-gradient-to-br from-indigo-600 to-purple-700 p-5 rounded-lg mb-5 shadow-lg"
+              class="bg-gradient-to-br from-indigo-600 to-purple-700 p-6 rounded-lg mb-6 shadow-lg"
             >
               <Icon
                 name="mdi:email"
-                class="h-10 w-10 text-white group-hover:scale-110 transition-all duration-200"
+                class="h-12 w-12 text-white group-hover:scale-110 transition-all duration-200"
                 :class="{ 'group-hover:text-red-400': true }"
               />
             </div>
-            <h3 class="text-2xl font-semibold mb-2">
+            <h3 class="text-2xl md:text-3xl font-semibold mb-3">
               {{ t("contact.email") }}
             </h3>
-            <p class="text-gray-300">{{ contact.email }}</p>
+            <p class="text-gray-300 text-lg">{{ contact.email }}</p>
           </NuxtLink>
 
           <!-- LinkedIn -->
@@ -137,19 +133,19 @@ const contactItems = [
             :to="contact.linkedin"
             external
             target="_blank"
-            class="bg-gray-900/60 hover:bg-gray-800/80 text-white p-8 rounded-xl flex flex-col items-center text-center transform hover:scale-105 transition-transform duration-300 group"
+            class="bg-gray-900/60 hover:bg-gray-800/80 text-white p-10 rounded-xl flex flex-col items-center text-center transform hover:scale-105 transition-transform duration-300 group"
           >
             <div
-              class="bg-gradient-to-br from-blue-600 to-cyan-600 p-5 rounded-lg mb-5 shadow-lg"
+              class="bg-gradient-to-br from-blue-600 to-cyan-600 p-6 rounded-lg mb-6 shadow-lg"
             >
               <Icon
                 name="mdi:linkedin"
-                class="h-10 w-10 text-white group-hover:scale-110 transition-all duration-200"
+                class="h-12 w-12 text-white group-hover:scale-110 transition-all duration-200"
                 :class="{ 'group-hover:text-blue-300': true }"
               />
             </div>
-            <h3 class="text-2xl font-semibold mb-2">LinkedIn</h3>
-            <p class="text-gray-300">Connect with me</p>
+            <h3 class="text-2xl md:text-3xl font-semibold mb-3">LinkedIn</h3>
+            <p class="text-gray-300 text-lg">Connect with me</p>
           </NuxtLink>
 
           <!-- GitHub -->
@@ -157,19 +153,19 @@ const contactItems = [
             :to="contact.github"
             external
             target="_blank"
-            class="bg-gray-900/60 hover:bg-gray-800/80 text-white p-8 rounded-xl flex flex-col items-center text-center transform hover:scale-105 transition-transform duration-300 group"
+            class="bg-gray-900/60 hover:bg-gray-800/80 text-white p-10 rounded-xl flex flex-col items-center text-center transform hover:scale-105 transition-transform duration-300 group"
           >
             <div
-              class="bg-gradient-to-br from-purple-700 to-indigo-900 p-5 rounded-lg mb-5 shadow-lg"
+              class="bg-gradient-to-br from-purple-700 to-indigo-900 p-6 rounded-lg mb-6 shadow-lg"
             >
               <Icon
                 name="mdi:github"
-                class="h-10 w-10 text-white group-hover:scale-110 transition-all duration-200"
+                class="h-12 w-12 text-white group-hover:scale-110 transition-all duration-200"
                 :class="{ 'group-hover:text-purple-300': true }"
               />
             </div>
-            <h3 class="text-2xl font-semibold mb-2">GitHub</h3>
-            <p class="text-gray-300">View my repositories</p>
+            <h3 class="text-2xl md:text-3xl font-semibold mb-3">GitHub</h3>
+            <p class="text-gray-300 text-lg">View my repositories</p>
           </NuxtLink>
         </div>
       </div>
@@ -194,48 +190,28 @@ const contactItems = [
   background: transparent;
 }
 
-.opacity-80 {
-  opacity: 0.8;
-}
-
-.opacity-70 {
-  opacity: 0.7;
-}
-
-.contrast-120 {
-  filter: contrast(1.2);
-}
-
-.saturate-120 {
-  filter: saturate(1.2);
-}
-
-.brightness-105 {
-  filter: brightness(1.05);
-}
-
 /* Glow effects for icons */
 .from-indigo-600 {
-  box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.6);
 }
 
 .from-blue-600 {
-  box-shadow: 0 0 15px rgba(37, 99, 235, 0.5);
+  box-shadow: 0 0 20px rgba(37, 99, 235, 0.6);
 }
 
 .from-purple-700 {
-  box-shadow: 0 0 15px rgba(126, 34, 206, 0.5);
+  box-shadow: 0 0 20px rgba(126, 34, 206, 0.6);
 }
 
 .group:hover .from-indigo-600 {
-  box-shadow: 0 0 25px rgba(129, 140, 248, 0.6);
+  box-shadow: 0 0 30px rgba(129, 140, 248, 0.8);
 }
 
 .group:hover .from-blue-600 {
-  box-shadow: 0 0 25px rgba(59, 130, 246, 0.6);
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.8);
 }
 
 .group:hover .from-purple-700 {
-  box-shadow: 0 0 25px rgba(147, 51, 234, 0.7);
+  box-shadow: 0 0 30px rgba(147, 51, 234, 0.8);
 }
 </style>

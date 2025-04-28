@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { inject } from "vue";
+
 const emit = defineEmits<{
   (e: "scroll-to", section: string): void;
 }>();
@@ -6,19 +8,25 @@ const emit = defineEmits<{
 const handleGetStarted = () => {
   emit("scroll-to", "services");
 };
+
+// Check for custom arrow positions from parent page
+const customArrowPositions = inject("customArrowPositions", {
+  titleArrowTop: 20, // default value
+  descriptionArrowTop: 30, // default value
+});
 </script>
 
 <template>
   <section
     id="hero"
-    class="relative min-h-[calc(100vh-4rem)] w-full flex flex-col items-center justify-center px-4 py-16 hero-section"
+    class="relative min-h-[80vh] w-full flex flex-col items-center justify-center px-4 py-10 md:py-14 hero-section"
   >
     <div class="max-w-4xl mx-auto text-center space-y-6">
       <div class="relative">
         <h1
           class="text-4xl md:text-5xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-300 hero-title"
         >
-          Software Engineering & AI Solutions
+          Building Great Software Together
         </h1>
         <div class="title-arrow-container">
           <client-only>
@@ -47,8 +55,8 @@ const handleGetStarted = () => {
         <p
           class="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto hero-description"
         >
-          Building scalable, innovative solutions with modern technologies.
-          Specializing in AI integration, web development, and enterprise
+          I develop scalable, innovative solutions with modern technologies,
+          specializing in AI integration, web applications, and enterprise
           software.
         </p>
         <div class="description-arrow-container">
@@ -191,7 +199,7 @@ const handleGetStarted = () => {
   position: absolute;
   width: 180px;
   height: 120px;
-  top: 20px;
+  top: v-bind('customArrowPositions.titleArrowTop + "px"');
   left: -160px;
 }
 
@@ -211,7 +219,7 @@ const handleGetStarted = () => {
   position: absolute;
   width: 180px;
   height: 120px;
-  top: 30px;
+  top: v-bind('customArrowPositions.descriptionArrowTop + "px"');
   right: -160px;
 }
 
