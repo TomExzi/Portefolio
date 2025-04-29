@@ -23,9 +23,10 @@ interface Project {
   type: string;
   imageUrl: string;
   category: ProjectCategory;
-  // For future use:
-  // description?: string;
-  // technologies?: string[];
+  webpUrl?: string;
+  thumbUrl?: string;
+  width?: number;
+  height?: number;
 }
 
 const tabs = [
@@ -107,7 +108,7 @@ onMounted(async () => {
       Object.keys(informationProviderFiles)
     );
 
-    // Simplify the path handling in project creation
+    // Simplify the path handling in project creation with optimized image paths
     const dataRemediationProjects = Object.keys(dataRemediationFiles).map(
       (path, index) => {
         const filename = path.split("/").pop() || "";
@@ -116,7 +117,12 @@ onMounted(async () => {
           title: "Data Remediation",
           type: "Project",
           imageUrl: `/projects/DataRemediation/${filename}`,
+          // Don't use WebP paths until they're actually generated
+          webpUrl: `/projects/DataRemediation/${filename}`,
+          thumbUrl: `/projects/DataRemediation/${filename}`,
           category: "DataRemediation" as const,
+          width: 800,
+          height: 600,
         };
       }
     );
@@ -129,7 +135,12 @@ onMounted(async () => {
           title: "Infrastructure Portal",
           type: "Project",
           imageUrl: `/projects/InfrastructurePortal/${filename}`,
+          // Don't use WebP paths until they're actually generated
+          webpUrl: `/projects/InfrastructurePortal/${filename}`,
+          thumbUrl: `/projects/InfrastructurePortal/${filename}`,
           category: "InfrastructurePortal" as const,
+          width: 800,
+          height: 600,
         };
       }
     );
@@ -143,7 +154,12 @@ onMounted(async () => {
         title: "Information Provider",
         type: "Project",
         imageUrl: `/projects/InformationProvider/${filename}`,
+        // Don't use WebP paths until they're actually generated
+        webpUrl: `/projects/InformationProvider/${filename}`,
+        thumbUrl: `/projects/InformationProvider/${filename}`,
         category: "InformationProvider" as const,
+        width: 800,
+        height: 600,
       };
     });
 
@@ -444,11 +460,18 @@ onMounted(() => {
     "ontouchstart" in window || navigator.maxTouchPoints > 0;
 });
 
-// Fix event handling by using a proper TypeScript cast for event target
-function handleImageLoad(event: Event, imageUrl: string) {
+// Modify the handleImageLoad function to record image dimensions
+function handleImageLoad(event: Event, url: string) {
   const img = event.target as HTMLImageElement;
-  if (img && img.naturalWidth) {
-    updateImageDimensions(imageUrl, img.naturalWidth, img.naturalHeight);
+  if (img) {
+    // Store the actual dimensions for proper aspect ratio
+    loadedImageDimensions.value.set(url, {
+      width: img.naturalWidth,
+      height: img.naturalHeight,
+    });
+
+    // Add the image to preloaded set
+    preloadedImages.value.add(url);
   }
 }
 
@@ -595,7 +618,7 @@ function handleImageDoubleClick(event: MouseEvent) {
           >
             <img
               :src="currentExpandedImage"
-              alt="Expanded project image"
+              alt="Expanded project"
               class="max-w-full max-h-[85vh] object-contain modal-image"
               :style="{ transform: `scale(${imageScale})` }"
               loading="lazy"
@@ -813,8 +836,8 @@ function handleImageDoubleClick(event: MouseEvent) {
         <!-- Slider - Enhanced with swipe support and better mobile display -->
         <div
           ref="sliderRef"
-          tabindex="0"
           class="overflow-hidden relative rounded-xl outline-none"
+          role="region"
           aria-roledescription="carousel"
           aria-label="Project gallery"
         >
@@ -918,6 +941,8 @@ function handleImageDoubleClick(event: MouseEvent) {
                             :alt="filteredProjects[safeCurrentIndex].title"
                             class="w-full h-full object-contain"
                             loading="lazy"
+                            :width="filteredProjects[safeCurrentIndex].width"
+                            :height="filteredProjects[safeCurrentIndex].height"
                             @load="
                               (e) =>
                                 handleImageLoad(
@@ -934,6 +959,16 @@ function handleImageDoubleClick(event: MouseEvent) {
                                 )
                             "
                           />
+
+                          <!-- Image loading placeholder -->
+                          <div
+                            v-if="
+                              !preloadedImages.has(
+                                filteredProjects[safeCurrentIndex].imageUrl
+                              )
+                            "
+                            class="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded-lg"
+                          ></div>
                         </div>
 
                         <!-- Zoom indicator overlay for mobile -->
@@ -1015,7 +1050,6 @@ function handleImageDoubleClick(event: MouseEvent) {
             v-for="(_, index) in filteredProjects"
             :key="index"
             @click="goToSlide(index)"
-            tabindex="-1"
             class="w-4 h-4 md:w-5 md:h-5 rounded-full transition-all duration-300 shadow-md"
             :class="[
               index === currentIndex
@@ -1365,11 +1399,13 @@ html:not(.dark) .project-menu button.bg-white {
 .aspect-video img,
 .modal-image {
   -webkit-transform: translateZ(0);
+  transform: translateZ(0);
   -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
   image-rendering: high-quality;
 }
 
-/* Override default transitions when hardware acceleration is needed */
+/* z-index setting for transitions */
 .slide-enter-active,
 .slide-leave-active {
   z-index: 1;

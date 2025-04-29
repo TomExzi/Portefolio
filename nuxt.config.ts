@@ -30,10 +30,25 @@ export default defineNuxtConfig({
           type: "image/x-icon",
           href: "/favicon.ico",
         },
-        // Google Fonts
+        // Google Fonts with display=swap for better performance
         {
           rel: "stylesheet",
           href: "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap",
+          crossorigin: "anonymous",
+        },
+        // Preload critical fonts to improve First Contentful Paint
+        {
+          rel: "preload",
+          as: "font",
+          href: "https://fonts.gstatic.com/s/playfairdisplay/v30/nuFvD-vYSZviVYUb_rj3ij__anPXJzDwcbmjWBN2PKdFvXDXbtXK-F7Uq9s.woff2",
+          type: "font/woff2",
+          crossorigin: "anonymous",
+        },
+        {
+          rel: "preload",
+          as: "font",
+          href: "https://fonts.gstatic.com/s/montserrat/v25/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtr6Hw5aXx-p7K4KLg.woff2",
+          type: "font/woff2",
           crossorigin: "anonymous",
         },
       ],
@@ -107,6 +122,14 @@ export default defineNuxtConfig({
           quality: 85,
         },
       },
+      thumbnail: {
+        modifiers: {
+          format: "webp",
+          width: 300,
+          height: 200,
+          quality: 70, // Lower quality for thumbnails
+        },
+      },
     },
     providers: {
       // Set default provider
@@ -150,7 +173,11 @@ export default defineNuxtConfig({
       routes: ["/"],
       ignore: ["/api/**"], // Don't prerender API routes
     },
-    compressPublicAssets: true,
+    compressPublicAssets: {
+      // Enable Brotli and Gzip compression for better performance
+      gzip: true,
+      brotli: true,
+    },
     minify: true, // Minify all HTML/JS/CSS
   },
   build: {
@@ -162,7 +189,12 @@ export default defineNuxtConfig({
       cssCodeSplit: true,
       rollupOptions: {
         output: {
-          manualChunks: {},
+          // Add optimized chunking strategy
+          manualChunks: {
+            vue: ["vue", "vue-router", "@vue/shared"],
+            nuxt: ["nuxt"],
+            vendor: ["@vueuse/core"],
+          },
         },
       },
     },
@@ -182,8 +214,15 @@ export default defineNuxtConfig({
     viewTransition: true,
     headNext: true,
     payloadExtraction: true, // Extract payloads for faster static site generation
+    renderJsonPayloads: true, // More efficient payload rendering
+    typedPages: true, // Type checked pages
   },
   routeRules: {
+    // Cache assets with long expiry for better performance
+    "/img/**": {
+      headers: { "cache-control": "public, max-age=31536000, immutable" },
+      prerender: true,
+    },
     "/assets/**": {
       headers: { "cache-control": "public, max-age=31536000, immutable" },
       prerender: true,

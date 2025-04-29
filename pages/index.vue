@@ -327,7 +327,7 @@ onMounted(() => {
   width: 180px;
   height: 120px;
   top: -15px;
-  left: -160px;
+  left: -170px;
 }
 
 .title-arrow {

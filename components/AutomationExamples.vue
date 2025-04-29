@@ -104,19 +104,22 @@ onMounted(() => {
   <div ref="examplesSection" class="w-full" aria-labelledby="examples-heading">
     <div class="flex items-center gap-3 mb-8">
       <div
-        class="p-2 rounded-lg bg-blue-600/20 flex items-center justify-center"
+        class="p-2 rounded-lg bg-blue-500/20 dark:bg-blue-500/20 flex items-center justify-center"
       >
         <Icon
           name="heroicons:document-chart-bar"
-          class="w-6 h-6 text-blue-400"
+          class="w-6 h-6 text-blue-600 dark:text-blue-400"
         />
       </div>
-      <h2 id="examples-heading" class="text-2xl font-bold text-white">
+      <h2
+        id="examples-heading"
+        class="text-2xl font-bold text-slate-800 dark:text-white"
+      >
         {{ t("ai.automationTitle", "AI Automation Examples") }}
       </h2>
     </div>
 
-    <p class="text-lg text-gray-300 max-w-2xl mb-12">
+    <p class="text-lg text-slate-600 dark:text-gray-300 max-w-2xl mb-12">
       {{
         t(
           "ai.automationDescription",
@@ -138,11 +141,11 @@ onMounted(() => {
         <!-- Header with icon -->
         <div class="flex items-center gap-4 mb-5">
           <div
-            class="p-3 rounded-lg bg-blue-900/30 text-blue-400 flex-shrink-0 example-icon"
+            class="p-3 rounded-lg bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 flex-shrink-0 example-icon"
           >
             <Icon :name="example.icon" class="w-5 h-5" aria-hidden="true" />
           </div>
-          <h3 class="text-xl font-semibold text-white">
+          <h3 class="text-xl font-semibold text-slate-800 dark:text-white">
             {{ example.title }}
           </h3>
         </div>
@@ -164,10 +167,10 @@ onMounted(() => {
           >
             <Icon
               name="heroicons:check-circle"
-              class="w-5 h-5 text-green-500 mt-1 flex-shrink-0"
+              class="w-5 h-5 text-emerald-500 dark:text-emerald-400 mt-1 flex-shrink-0"
               aria-hidden="true"
             />
-            <span class="text-gray-300">{{ feature }}</span>
+            <span class="text-slate-700 dark:text-gray-300">{{ feature }}</span>
           </li>
         </ul>
       </div>
@@ -177,22 +180,45 @@ onMounted(() => {
 
 <style scoped>
 .example-card {
-  padding: 1.5rem;
+  padding: 1.75rem;
   border-radius: 1rem;
-  background-color: rgba(37, 43, 69, 0.6);
+  background-color: rgba(255, 255, 255, 0.9);
   transition: all 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(226, 232, 240, 0.8);
   height: 100%;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+.dark .example-card {
+  background-color: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(51, 65, 85, 0.7);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2),
+    0 2px 4px -1px rgba(0, 0, 0, 0.1);
 }
 
 .example-card:hover {
-  background-color: rgba(37, 43, 69, 0.9);
+  background-color: rgba(255, 255, 255, 1);
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.08),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border-color: rgba(226, 232, 240, 1);
+}
+
+.dark .example-card:hover {
+  background-color: rgba(30, 41, 59, 0.9);
+  box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.3),
+    0 4px 6px -2px rgba(0, 0, 0, 0.2);
+  border-color: rgba(51, 65, 85, 0.9);
 }
 
 .example-icon {
   transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.dark .example-icon {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .example-card:hover .example-icon {

@@ -307,14 +307,6 @@ watchEffect(() => {
       >
         <div class="flex flex-col w-full">
           <NuxtLink
-            href="#process"
-            @click.prevent="smoothScrollToSection('process', $event)"
-            class="px-4 py-4 text-sm text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-blue-400 dark:hover:bg-gray-800/50 transition-colors flex items-center gap-1.5 active:bg-gray-200 dark:active:bg-gray-700"
-          >
-            <Icon name="heroicons:arrow-trending-up" class="w-4 h-4" />
-            {{ $t("navigation.process") }}
-          </NuxtLink>
-          <NuxtLink
             href="#contact"
             @click.prevent="smoothScrollToSection('contact', $event)"
             class="px-4 py-4 text-sm text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-blue-400 dark:hover:bg-gray-800/50 transition-colors flex items-center gap-1.5 active:bg-gray-200 dark:active:bg-gray-700"
@@ -327,14 +319,6 @@ watchEffect(() => {
 
       <!-- Desktop Menu (visible on medium screens and up) -->
       <div class="hidden md:flex items-center space-x-1 sm:space-x-2">
-        <NuxtLink
-          href="#process"
-          @click.prevent="smoothScrollToSection('process', $event)"
-          class="px-3 py-2 text-sm rounded-full text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-blue-400 dark:hover:bg-gray-800/50 transition-colors flex items-center gap-1.5"
-        >
-          <Icon name="heroicons:arrow-trending-up" class="w-4 h-4" />
-          {{ $t("navigation.process") }}
-        </NuxtLink>
         <NuxtLink
           href="#contact"
           @click.prevent="smoothScrollToSection('contact', $event)"

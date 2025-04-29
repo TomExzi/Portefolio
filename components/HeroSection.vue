@@ -26,7 +26,7 @@ const customArrowPositions = inject("customArrowPositions", {
         <h1
           class="text-4xl md:text-5xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-300 hero-title"
         >
-          Building Great Software Together
+          Crafting Exceptional Software Solutions
         </h1>
         <div class="title-arrow-container">
           <client-only>
@@ -56,9 +56,9 @@ const customArrowPositions = inject("customArrowPositions", {
         <p
           class="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto hero-description"
         >
-          I develop scalable, innovative solutions with modern technologies,
-          specializing in AI integration, web applications, and enterprise
-          software.
+          Cutting-edge enterprise solutions powered by AI and modern
+          technologies, transforming businesses through innovative web
+          applications and scalable software architecture
         </p>
         <div class="description-arrow-container">
           <client-only>
@@ -202,7 +202,7 @@ const customArrowPositions = inject("customArrowPositions", {
   width: 180px;
   height: 120px;
   top: v-bind('customArrowPositions.titleArrowTop + "px"');
-  left: -160px;
+  left: -80px;
 }
 
 .title-arrow {
@@ -222,7 +222,7 @@ const customArrowPositions = inject("customArrowPositions", {
   width: 180px;
   height: 120px;
   top: v-bind('customArrowPositions.descriptionArrowTop + "px"');
-  right: -160px;
+  right: -140px;
 }
 
 .description-arrow {

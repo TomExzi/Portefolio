@@ -1,3 +1,9 @@
+<!-- 
+  THIS COMPONENT IS NO LONGER USED IN THE APPLICATION.
+  It has been removed from navigation and page layouts.
+  It can be safely deleted if no longer needed.
+-->
+
 <script setup lang="ts">
 // Use the preferred translation composable for consistency
 const { t } = useI18n();
@@ -11,12 +17,23 @@ const buildDescription = computed(() => t("process.build.description"));
 const scaleTitle = computed(() => t("process.scale.title"));
 const scaleDescription = computed(() => t("process.scale.description"));
 
-// Background image path - use an absolute path from the root
-const backgroundImageUrl = "/daniel-mccullough-HtBlQdxfG9k-unsplash.jpg";
+// Background image paths with WebP format for better performance
+const backgroundImageUrl = "/img/optimized/background.webp";
+const backgroundFallbackUrl = "/daniel-mccullough-HtBlQdxfG9k-unsplash.jpg";
 
 // Lazy loading setup
 const isVisible = ref(false);
 const sectionRef = ref<HTMLElement | null>(null);
+const imageLoaded = ref(false);
+
+// Preload the background image
+if (process.client) {
+  const imagePreload = new Image();
+  imagePreload.src = backgroundImageUrl;
+  imagePreload.onload = () => {
+    imageLoaded.value = true;
+  };
+}
 
 onMounted(() => {
   // Ensure we're on client-side
@@ -66,15 +83,24 @@ onMounted(() => {
   >
     <!-- Optimized Background Image with improved lazy loading -->
     <div class="absolute inset-0 -z-20">
-      <img
-        :src="backgroundImageUrl"
-        class="w-full h-full object-cover opacity-0 transition-opacity duration-500"
-        :class="{ 'opacity-100': isVisible }"
-        alt="Process background"
-        loading="lazy"
-        width="1920"
-        height="1080"
-      />
+      <picture>
+        <source :srcset="backgroundImageUrl" type="image/webp" />
+        <img
+          :src="backgroundFallbackUrl"
+          class="w-full h-full object-cover opacity-0 transition-opacity duration-500"
+          :class="{ 'opacity-100': isVisible && imageLoaded }"
+          alt="Process background"
+          loading="lazy"
+          width="1920"
+          height="1080"
+          fetchpriority="low"
+        />
+      </picture>
+      <!-- Low-quality placeholder during loading -->
+      <div
+        v-if="!imageLoaded"
+        class="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse"
+      ></div>
     </div>
 
     <!-- Background overlay for better readability -->

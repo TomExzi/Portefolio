@@ -101,7 +101,7 @@ const contactItems = [
           <h2 class="text-4xl md:text-5xl font-bold text-white mb-8">
             {{ t("contact.title") }}
           </h2>
-          <p class="text-xl md:text-2xl text-gray-100 max-w-4xl mx-auto">
+          <p class="text-xl md:text-2xl text-white max-w-4xl mx-auto">
             {{ t("contact.intro") }}
           </p>
         </div>

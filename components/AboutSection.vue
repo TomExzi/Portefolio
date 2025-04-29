@@ -70,7 +70,6 @@ onMounted(() => {
     </div>
 
     <!-- Add semi-transparent overlay for better text contrast -->
-    <div class="absolute inset-0 -z-10 bg-white/70 dark:bg-slate-900/70"></div>
 
     <div class="flex items-center gap-3 mb-12">
       <Icon
