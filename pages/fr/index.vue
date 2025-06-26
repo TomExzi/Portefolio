@@ -2,26 +2,26 @@
 import SharedNavigation from "~/components/SharedNavigation.vue";
 
 definePageMeta({
-  name: "home",
+  name: "home-fr",
 });
 
-// SEO optimization using Nuxt's composables with enhanced metadata
+// SEO optimization for French
 useHead({
-  title: "Software Engineering & AI Solutions - Tom Rogiers",
+  title: "Ingénierie Logicielle & Solutions IA - Tom Rogiers",
   meta: [
     {
       name: "description",
       content:
-        "Expert software engineering and AI solutions by Tom Rogiers. Specializing in AI integration, machine learning, and enterprise software solutions.",
+        "Solutions d'ingénierie logicielle et d'IA expertes par Tom Rogiers. Spécialisé en intégration IA, apprentissage automatique et solutions logicielles d'entreprise.",
     },
     {
       property: "og:title",
-      content: "Software Engineering & AI Solutions - Tom Rogiers",
+      content: "Ingénierie Logicielle & Solutions IA - Tom Rogiers",
     },
     {
       property: "og:description",
       content:
-        "Expert AI solutions with custom development, NLP, document automation, and predictive analytics.",
+        "Solutions IA expertes avec développement personnalisé, NLP, automatisation de documents et analyses prédictives.",
     },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
@@ -29,20 +29,16 @@ useHead({
     { property: "og:image", content: "/og-image.jpg" },
     { name: "theme-color", content: "#3b82f6" },
   ],
-  link: [
-    { rel: "canonical", href: "https://tomRogiers.com" },
-    { rel: "preconnect", href: "https://fonts.googleapis.com" },
-    { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "" },
-  ],
+  link: [{ rel: "canonical", href: "https://tomRogiers.com/fr" }],
 });
 
 // Scroll handling with better performance
 const mainContent = ref<HTMLElement | null>(null);
 const { updateScrollPosition, scrollToSection, showFooter } = useScroll();
 const route = useRoute();
-const timestamp = ref(Date.now()); // Use timestamp for component keys
+const timestamp = ref(Date.now());
 
-// Provide scroll functionality to child components (for NavBar)
+// Provide scroll functionality to child components
 provide("scrollToSection", scrollToSection);
 
 // Watch for changes in scroll height with proper cleanup
@@ -69,7 +65,6 @@ function handleHashNavigation() {
 // Setup scroll monitoring with proper event cleanup
 onMounted(() => {
   if (mainContent.value) {
-    // Update timestamp when mounted to ensure components reload
     timestamp.value = Date.now();
 
     const handleScroll = () => {
@@ -82,15 +77,12 @@ onMounted(() => {
     window.addEventListener("resize", checkScrollHeight, { passive: true });
     window.addEventListener("hashchange", handleHashNavigation);
 
-    // Initial check
     checkScrollHeight();
 
-    // Handle hash navigation if present
     if (window.location.hash) {
       handleHashNavigation();
     }
 
-    // Clean up event listeners properly
     onUnmounted(() => {
       if (mainContent.value) {
         mainContent.value.removeEventListener("scroll", handleScroll);
@@ -122,32 +114,12 @@ onMounted(() => {
               class="text-4xl md:text-5xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-300 hero-title"
             >
               {{
-                $t("ai.heroTitle", "Empowering Your Business with AI Solutions")
+                $t(
+                  "ai.heroTitle",
+                  "Autonomiser Votre Entreprise avec des Solutions IA"
+                )
               }}
             </h1>
-            <div class="title-arrow-container">
-              <client-only>
-                <img
-                  src="/arrows/curved-arrow.webp"
-                  alt="Curved arrow"
-                  class="arrow-image title-arrow opacity-0 transition-opacity duration-500"
-                  :class="{ 'opacity-100': true }"
-                  width="180"
-                  height="120"
-                  loading="lazy"
-                  fetchpriority="low"
-                />
-                <template #fallback>
-                  <!-- Fallback during SSR -->
-                  <div class="w-[180px] h-[120px]"></div>
-                </template>
-              </client-only>
-              <span
-                class="arrow-text title-arrow-text opacity-0 transition-opacity duration-500"
-                :class="{ 'opacity-100': true }"
-                >Us</span
-              >
-            </div>
           </div>
 
           <div class="relative">
@@ -157,51 +129,26 @@ onMounted(() => {
               {{
                 $t(
                   "ai.heroDescription",
-                  "Building scalable, innovative solutions with modern technologies. Specializing in AI integration, web development, and enterprise software."
+                  "Construire des solutions évolutives et innovantes avec des technologies modernes. Spécialisé dans l'intégration IA, le développement web et les logiciels d'entreprise."
                 )
               }}
             </p>
-            <div class="description-arrow-container">
-              <client-only>
-                <img
-                  src="/arrows/curved-arrow.webp"
-                  alt="Curved arrow"
-                  class="arrow-image description-arrow opacity-0 transition-opacity duration-500"
-                  :class="{ 'opacity-100': true }"
-                  width="180"
-                  height="120"
-                  loading="lazy"
-                  fetchpriority="low"
-                />
-                <template #fallback>
-                  <!-- Fallback during SSR -->
-                  <div class="w-[180px] h-[120px]"></div>
-                </template>
-              </client-only>
-              <span
-                class="arrow-text description-arrow-text opacity-0 transition-opacity duration-500"
-                :class="{ 'opacity-100': true }"
-                >Me</span
-              >
-            </div>
           </div>
           <div class="flex flex-wrap justify-center gap-4 pt-4">
             <button
               @click="scrollToSection('contact')"
               class="px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors duration-200 flex items-center gap-2 hero-cta"
             >
-              <span>{{ $t("ai.getStarted", "Get Started") }}</span>
+              <span>{{ $t("ai.getStarted", "Commencer") }}</span>
               <Icon name="heroicons:arrow-right" class="w-5 h-5" />
             </button>
-            <NuxtLink
-              to="/software-engineering"
+            <button
+              @click="scrollToSection('projects')"
               class="px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors duration-200 flex items-center gap-2 hero-cta"
             >
-              <span>{{
-                $t("ai.viewSoftwareEngineering", "View Software Engineering")
-              }}</span>
+              <span>{{ $t("projects.viewProjects", "Voir les projets") }}</span>
               <Icon name="heroicons:arrow-right" class="w-5 h-5" />
-            </NuxtLink>
+            </button>
           </div>
         </div>
       </section>
@@ -224,7 +171,12 @@ onMounted(() => {
         <AutomationExamples />
       </SectionCard>
 
-      <!-- Contact Section - Directly placed without using SectionCard -->
+      <!-- Projects Section -->
+      <section id="projects" class="my-20">
+        <ProjectsSection :key="`projects-${route.path}-${timestamp}`" />
+      </section>
+
+      <!-- Contact Section -->
       <section id="contact" class="my-20">
         <ContactSection :key="`contact-${route.path}-${timestamp}`" />
       </section>
@@ -232,7 +184,7 @@ onMounted(() => {
       <!-- Bottom padding for footer -->
       <div class="h-36"></div>
 
-      <!-- Footer (appears when scrolled to bottom) -->
+      <!-- Footer -->
       <div
         class="transition-opacity duration-500 w-full"
         :class="showFooter ? 'opacity-100' : 'opacity-0 pointer-events-none'"
@@ -304,84 +256,6 @@ onMounted(() => {
   transform: translateY(-2px);
 }
 
-/* Add transitions for smoother changes */
-.arrow-image,
-.arrow-text,
-.title-arrow-container,
-.description-arrow-container {
-  transition: all;
-}
-
-/* Arrow styling */
-.arrow-image {
-  width: 180px;
-  height: auto;
-  position: absolute;
-  z-index: 2;
-  filter: none;
-  mix-blend-mode: multiply;
-}
-
-.dark .arrow-image {
-  filter: invert(1);
-  mix-blend-mode: screen;
-}
-
-.arrow-text {
-  position: absolute;
-  font-family: "Permanent Marker", cursive, sans-serif;
-  font-size: 1.8rem;
-  color: #000;
-  z-index: 3;
-  text-shadow: 1px 1px 2px white;
-}
-
-.dark .arrow-text {
-  color: #fff;
-  text-shadow: 1px 1px 2px black;
-}
-
-/* Title arrow positioning */
-.title-arrow-container {
-  position: absolute;
-  width: 180px;
-  height: 120px;
-  top: -15px;
-  left: -170px;
-}
-
-.title-arrow {
-  top: 0;
-  left: 0;
-  transform: rotate(-30deg);
-}
-
-.title-arrow-text {
-  top: 80%;
-  left: 50px;
-}
-
-/* Description arrow positioning */
-.description-arrow-container {
-  position: absolute;
-  width: 180px;
-  height: 120px;
-  top: -10px;
-  right: -160px;
-}
-
-.description-arrow {
-  top: 0;
-  right: 0;
-  transform: scaleX(-1) rotate(-40deg);
-}
-
-.description-arrow-text {
-  top: 85%;
-  right: 60px;
-}
-
-/* Animations */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -398,14 +272,6 @@ onMounted(() => {
   .hero-description,
   .hero-cta {
     animation: none;
-  }
-}
-
-/* Hide arrows on screens under 1200px */
-@media (max-width: 1199px) {
-  .title-arrow-container,
-  .description-arrow-container {
-    display: none;
   }
 }
 

@@ -7,8 +7,6 @@ export default defineNuxtConfig({
     "@nuxtjs/color-mode",
     "nuxt-icon",
     "@nuxt/image",
-    "@nuxtjs/i18n",
-    "~/modules/i18n-module",
   ],
   colorMode: {
     classSuffix: "",
@@ -75,8 +73,14 @@ export default defineNuxtConfig({
         { property: "og:url", content: "https://yourwebsite.com" },
       ],
     },
-    pageTransition: { name: "page", mode: "out-in" },
-    layoutTransition: { name: "layout", mode: "out-in" },
+    pageTransition: {
+      name: "page",
+      mode: "out-in",
+    },
+    layoutTransition: {
+      name: "layout",
+      mode: "out-in",
+    },
   },
   components: {
     dirs: ["~/components"],
@@ -147,30 +151,11 @@ export default defineNuxtConfig({
       enabled: true,
     },
   },
-  i18n: {
-    lazy: true,
-    langDir: "locales",
-    defaultLocale: "en",
-    locales: [
-      {
-        code: "en",
-        file: "en.json",
-      },
-      {
-        code: "fr",
-        file: "fr.json",
-      },
-      {
-        code: "nl",
-        file: "nl.json",
-      },
-    ],
-    strategy: "prefix_except_default",
-  },
+
   nitro: {
     prerender: {
-      crawlLinks: true, // Automatically detect and prerender all pages
-      routes: ["/"],
+      crawlLinks: false, // Disable automatic crawling
+      routes: [], // Don't prerender any routes for now
       ignore: ["/api/**"], // Don't prerender API routes
     },
     compressPublicAssets: {
@@ -187,16 +172,6 @@ export default defineNuxtConfig({
     build: {
       chunkSizeWarningLimit: 1000,
       cssCodeSplit: true,
-      rollupOptions: {
-        output: {
-          // Add optimized chunking strategy
-          manualChunks: {
-            vue: ["vue", "vue-router", "@vue/shared"],
-            nuxt: ["nuxt"],
-            vendor: ["@vueuse/core"],
-          },
-        },
-      },
     },
     optimizeDeps: {
       include: ["vue", "vue-router"],
@@ -216,6 +191,7 @@ export default defineNuxtConfig({
     payloadExtraction: true, // Extract payloads for faster static site generation
     renderJsonPayloads: true, // More efficient payload rendering
     typedPages: true, // Type checked pages
+    scanPageMeta: true, // Required for i18n route localization features
   },
   routeRules: {
     // Cache assets with long expiry for better performance

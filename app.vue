@@ -1,26 +1,18 @@
 <template>
-  <div>
+  <div class="app-wrapper">
     <NuxtLayout>
-      <NuxtPage :key="locale" />
+      <NuxtPage />
     </NuxtLayout>
   </div>
 </template>
 
 <script setup lang="ts">
-// Get i18n instance at the top level of setup function
-const { locale } = useI18n();
-
 // Setup color mode
 const colorMode = useColorMode();
 
-// Update HTML lang attribute when language changes
-watch(locale, (newLang) => {
-  document.documentElement.lang = newLang;
-});
-
 // Set initial language attribute
 onMounted(() => {
-  document.documentElement.lang = locale.value;
+  document.documentElement.lang = "en";
 });
 </script>
 
@@ -28,15 +20,21 @@ onMounted(() => {
 html,
 body {
   scroll-behavior: smooth;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden;
-  position: fixed;
+  overflow-x: hidden;
 }
 
 body {
+  display: flex;
+  flex-direction: column;
+}
+
+.app-wrapper {
+  height: 100vh;
+  width: 100vw;
   display: flex;
   flex-direction: column;
 }
@@ -63,5 +61,16 @@ body,
 .dark-mode-transition * {
   transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out,
     border-color 0.3s ease-in-out;
+}
+
+/* Page transition animations */
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
 }
 </style>

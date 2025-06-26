@@ -5,11 +5,11 @@
     <SharedNavigation />
     <main
       ref="mainContent"
-      class="container mx-auto px-4 py-8 pt-20 flex-grow overflow-auto no-scrollbar"
+      class="h-screen w-full overflow-y-auto overflow-x-hidden scroll-smooth"
       @scroll="checkScrollPosition"
     >
-      <div class="space-y-16">
-        <HeroSection :key="`hero-${timestamp}`" />
+      <div class="space-y-16 container mx-auto px-4 py-8 pt-20">
+        <HeroSection :key="`hero-${timestamp}`" @scroll-to="scrollToSection" />
         <ProjectsSection :key="`projects-${timestamp}`" />
         <ProcessSection :key="`process-${timestamp}`" />
         <AboutSection :key="`about-${timestamp}`" />
@@ -35,9 +35,13 @@
 import { ref, onMounted, onUnmounted, nextTick, watch, provide } from "vue";
 import { useRoute } from "vue-router";
 
-// Track scroll position to show/hide footer
+// Use shared scroll composable for consistency
+const {
+  updateScrollPosition,
+  scrollToSection: scrollToSectionComposable,
+  showFooter,
+} = useScroll();
 const mainContent = ref<HTMLElement | null>(null);
-const showFooter = ref(false);
 const route = useRoute();
 const timestamp = ref(Date.now()); // Use timestamp for component keys
 
@@ -49,45 +53,28 @@ provide("customArrowPositions", {
 
 function checkScrollPosition() {
   if (!mainContent.value) return;
-
-  const element = mainContent.value;
-  const scrollPosition = element.scrollTop;
-  const maxScroll = element.scrollHeight - element.clientHeight;
-
-  // Show footer when within 250px of bottom
-  showFooter.value = maxScroll - scrollPosition < 250;
+  updateScrollPosition(mainContent.value);
 }
 
-// Function to handle navigation to sections
+// Custom scroll function with proper offset handling
 function scrollToSection(sectionId: string) {
   if (!mainContent.value) return;
 
   nextTick(() => {
-    const targetElement = document.getElementById(sectionId);
-    if (targetElement) {
-      // Calculate position, accounting for any fixed headers/navbars
+    const section = document.getElementById(sectionId);
+
+    if (section && mainContent.value) {
+      // Calculate position with header offset
       const headerOffset = 80;
+      const offset = section.offsetTop - headerOffset;
 
-      // Option 1: Using offset calculation
-      const containerRect = mainContent.value!.getBoundingClientRect();
-      const elementRect = targetElement.getBoundingClientRect();
-      const offsetPosition =
-        elementRect.top -
-        containerRect.top +
-        mainContent.value!.scrollTop -
-        headerOffset;
-
-      // Scroll to element within our scroller
-      mainContent.value!.scrollTo({
-        top: offsetPosition,
+      mainContent.value.scrollTo({
+        top: offset,
         behavior: "smooth",
       });
 
-      // Force check scroll position after navigation with a longer timeout
-      // to account for smooth scroll animation
-      setTimeout(() => {
-        checkScrollPosition();
-      }, 500);
+      // Update URL hash without triggering scroll
+      history.pushState(null, "", `#${sectionId}`);
     }
   });
 }
@@ -95,7 +82,7 @@ function scrollToSection(sectionId: string) {
 // Provide the scroll function to child components
 provide("scrollToSection", scrollToSection);
 
-// Handle hash navigation to prevent white space
+// Handle hash navigation
 function handleHashNavigation() {
   if (window.location.hash) {
     const targetId = window.location.hash.substring(1);
@@ -121,11 +108,13 @@ onMounted(() => {
 
     // Listen to hash changes
     window.addEventListener("hashchange", handleHashNavigation);
+    window.addEventListener("resize", checkScrollPosition, { passive: true });
   });
 });
 
 onUnmounted(() => {
   window.removeEventListener("hashchange", handleHashNavigation);
+  window.removeEventListener("resize", checkScrollPosition);
 });
 
 // Watch for content changes that might affect scroll height
@@ -136,22 +125,23 @@ watch(
   }
 );
 
+// Use translations for page metadata
+const { t } = useI18n();
+
 useHead({
-  title: "Tom Rogiers - Portfolio | Full Stack Developer at ExziTech",
+  title: t("software.pageTitle"),
   meta: [
     {
       name: "description",
-      content:
-        "Portfolio of Tom Rogiers - Full Stack Developer at ExziTech specializing in Vue.js, Nuxt, and TypeScript",
+      content: t("software.pageDescription"),
     },
     {
       property: "og:title",
-      content: "Tom Rogiers - Portfolio | Full Stack Developer at ExziTech",
+      content: t("software.ogTitle"),
     },
     {
       property: "og:description",
-      content:
-        "Portfolio of Tom Rogiers - Full Stack Developer at ExziTech specializing in Vue.js, Nuxt, and TypeScript",
+      content: t("software.ogDescription"),
     },
   ],
 });
@@ -165,6 +155,4 @@ useHead({
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
-
-/* Remove the styles that weren't working */
 </style>

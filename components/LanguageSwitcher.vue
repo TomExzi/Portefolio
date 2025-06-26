@@ -4,36 +4,13 @@ import { languages } from "~/config/portfolio.config";
 // Use i18n directly at the top level of setup
 const { locale } = useI18n();
 const currentLocale = computed(() => locale.value);
-const route = useRoute();
 
-function switchLanguage(langCode: string, langPath: string) {
-  // Update the i18n locale
-  locale.value = langCode;
+// Use centralized language utilities
+const { switchLanguage } = useLanguage();
 
-  // Get the current route path without the language prefix
-  let newPath = route.path;
-
-  // Remove language prefix from current path
-  for (const lang of languages) {
-    if (lang.path !== "/" && newPath.startsWith(lang.path)) {
-      newPath = newPath.substring(lang.path.length) || "/";
-      break;
-    }
-  }
-
-  // Construct the target path
-  let targetPath;
-  if (langPath === "/") {
-    // For default language (EN), use path without prefix
-    targetPath = newPath;
-  } else {
-    // For other languages (FR, NL), add the language prefix
-    targetPath = `${langPath}${newPath === "/" ? "" : newPath}`;
-  }
-
-  // Use window.location.href to ensure a full page reload
-  // This forces all components to remount with the new language
-  window.location.href = targetPath;
+function handleLanguageSwitch(langCode: string) {
+  // Use the centralized function from the composable
+  switchLanguage(langCode);
 }
 </script>
 
@@ -73,7 +50,7 @@ function switchLanguage(langCode: string, langPath: string) {
               v-slot="{ active }"
             >
               <button
-                @click="switchLanguage(lang.code, lang.path)"
+                @click="handleLanguageSwitch(lang.code)"
                 :class="[
                   active ? 'bg-gray-100 dark:bg-gray-700' : '',
                   'flex items-center gap-2 w-full px-4 py-2 text-sm text-gray-700 dark:text-gray-300',

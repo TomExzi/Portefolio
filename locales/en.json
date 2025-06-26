@@ -9,7 +9,9 @@
   "hero": {
     "title": "Building the Future of Tech with AI, Automation, and Scalable Solutions",
     "description": "Passionate Full Stack Developer specializing in performance, SEO, scalable architecture, and AI-driven solutions. I build high-performing, intelligent, and user-friendly digital experiences across web, mobile, and beyond.",
-    "ctaText": "Get in touch"
+    "ctaText": "Get in touch",
+    "getStarted": "Get in touch",
+    "viewAISolutions": "View AI Solutions"
   },
   "ai": {
     "heroTitle": "Empowering Your Business with AI Solutions",
@@ -23,19 +25,23 @@
     "services": [
       {
         "title": "AI Development & Integration",
-        "description": "Custom AI solutions built and integrated into your existing systems, leveraging state-of-the-art machine learning models and neural networks."
+        "description": "Custom AI solutions built and integrated into your existing systems, leveraging state-of-the-art machine learning models and neural networks.",
+        "shortDescription": "Custom AI solutions integrated into your existing systems using advanced ML models."
       },
       {
         "title": "Natural Language Processing",
-        "description": "Implement intelligent chatbots, content generation, and text analysis systems using advanced NLP models and transformers."
+        "description": "Implement intelligent chatbots, content generation, and text analysis systems using advanced NLP models and transformers.",
+        "shortDescription": "Intelligent chatbots and content generation using advanced NLP models."
       },
       {
         "title": "Document AI & Automation",
-        "description": "Automate document processing, extract information, and analyze content using AI-powered OCR and document understanding systems."
+        "description": "Automate document processing, extract information, and analyze content using AI-powered OCR and document understanding systems.",
+        "shortDescription": "Automate document processing and information extraction with AI-powered OCR."
       },
       {
         "title": "Predictive Analytics",
-        "description": "Leverage AI for business intelligence, forecasting, and decision-making through advanced data analysis and machine learning models."
+        "description": "Leverage AI for business intelligence, forecasting, and decision-making through advanced data analysis and machine learning models.",
+        "shortDescription": "AI-powered business intelligence and forecasting for better decision-making."
       }
     ],
     "examples": [
@@ -105,7 +111,7 @@
   },
   "about": {
     "title": "About Me",
-    "skills": "Skills",
+    "skillsTitle": "Skills",
     "skillsTechnologies": "Skills & Technologies",
     "experience": "Experience",
     "position": "Position",
@@ -162,6 +168,18 @@
     "footer": {
       "privacy": "Privacy Policy",
       "terms": "Terms of Service"
+    }
+  },
+  "software": {
+    "pageTitle": "Tom Rogiers - Portfolio | Full Stack Developer at ExziTech",
+    "pageDescription": "Portfolio of Tom Rogiers - Full Stack Developer at ExziTech specializing in Vue.js, Nuxt, and TypeScript",
+    "ogTitle": "Tom Rogiers - Portfolio | Full Stack Developer at ExziTech",
+    "ogDescription": "Portfolio of Tom Rogiers - Full Stack Developer at ExziTech specializing in Vue.js, Nuxt, and TypeScript",
+    "hero": {
+      "title": "Crafting Exceptional Software Solutions",
+      "description": "Cutting-edge enterprise solutions powered by AI and modern technologies, transforming businesses through innovative web applications and scalable software architecture",
+      "getStarted": "Get Started",
+      "viewAISolutions": "View AI Solutions"
     }
   }
 }

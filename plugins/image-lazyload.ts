@@ -6,7 +6,8 @@ export default defineNuxtPlugin({
     const nuxtApp = useNuxtApp();
 
     nuxtApp.hook("app:mounted", () => {
-      if (process.client) {
+      const isClient = typeof window !== "undefined";
+      if (isClient) {
         // Function to load and process images
         const processLazyImages = () => {
           const lazyImages = document.querySelectorAll('img[loading="lazy"]');

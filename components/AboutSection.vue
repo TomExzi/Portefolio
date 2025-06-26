@@ -9,9 +9,12 @@ const bgSvgUrl = "/undraw_dev-productivity_5wps.svg";
 const isVisible = ref(false);
 const sectionRef = ref<HTMLElement | null>(null);
 
+// Check for client-side
+const isClient = typeof window !== "undefined";
+
 onMounted(() => {
-  // Ensure we're on client-side
-  if (process.client) {
+  // Initialize intersection observer only on client
+  if (isClient) {
     nextTick(() => {
       try {
         if (sectionRef.value) {

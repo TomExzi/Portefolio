@@ -9,13 +9,15 @@
   "hero": {
     "title": "Construire l'Avenir avec l'IA, l'Automatisation et des Solutions Évolutives",
     "description": "Développeur Full Stack, spécialisé dans la performance, le SEO, les architectures évolutives et les solutions basées sur l'IA. Je conçois des expériences numériques intelligentes, performantes et intuitives, du web au mobile et bien plus encore.",
-    "ctaText": "Me contacter"
+    "ctaText": "Me contacter",
+    "getStarted": "Me contacter",
+    "viewAISolutions": "Voir les Solutions IA"
   },
   "ai": {
     "heroTitle": "Optimiser Votre Entreprise avec des Solutions d'IA",
     "heroDescription": "Construction de solutions innovantes et évolutives avec des technologies modernes. Spécialisation dans l'intégration d'IA, le développement web et les logiciels d'entreprise.",
     "getStarted": "Commencer",
-    "viewSoftwareEngineering": "Voir Ingénierie Logicielle",
+    "viewSoftwareEngineering": "Voir Développement Logiciel",
     "servicesTitle": "Services d'IA",
     "servicesDescription": "Solutions professionnelles d'IA adaptées aux besoins des entreprises modernes",
     "automationTitle": "Exemples d'Automatisation IA",
@@ -23,19 +25,23 @@
     "services": [
       {
         "title": "Développement & Intégration d'IA",
-        "description": "Solutions d'IA personnalisées construites et intégrées dans vos systèmes existants, exploitant des modèles de machine learning et des réseaux neuronaux de pointe."
+        "description": "Solutions d'IA personnalisées construites et intégrées dans vos systèmes existants, exploitant des modèles de machine learning et des réseaux neuronaux de pointe.",
+        "shortDescription": "Solutions d'IA personnalisées intégrées dans vos systèmes avec des modèles ML avancés."
       },
       {
         "title": "Traitement du Langage Naturel",
-        "description": "Implémentation de chatbots intelligents, génération de contenu et systèmes d'analyse de texte utilisant des modèles NLP avancés et des transformers."
+        "description": "Implémentation de chatbots intelligents, génération de contenu et systèmes d'analyse de texte utilisant des modèles NLP avancés et des transformers.",
+        "shortDescription": "Chatbots intelligents et génération de contenu avec des modèles NLP avancés."
       },
       {
         "title": "IA Documentaire & Automatisation",
-        "description": "Automatisation du traitement des documents, extraction d'informations et analyse de contenu à l'aide de systèmes OCR et de compréhension de documents alimentés par l'IA."
+        "description": "Automatisation du traitement des documents, extraction d'informations et analyse de contenu à l'aide de systèmes OCR et de compréhension de documents alimentés par l'IA.",
+        "shortDescription": "Automatisation du traitement de documents et extraction d'informations avec OCR IA."
       },
       {
         "title": "Analyse Prédictive",
-        "description": "Exploitation de l'IA pour l'intelligence d'affaires, les prévisions et la prise de décision grâce à l'analyse avancée des données et aux modèles de machine learning."
+        "description": "Exploitation de l'IA pour l'intelligence d'affaires, les prévisions et la prise de décision grâce à l'analyse avancée des données et aux modèles de machine learning.",
+        "shortDescription": "Intelligence d'affaires et prévisions alimentées par l'IA pour de meilleures décisions."
       }
     ],
     "examples": [
@@ -104,26 +110,26 @@
     }
   },
   "about": {
-    "title": "À propos de moi",
-    "skills": "Compétences",
+    "title": "À Propos de Moi",
+    "skillsTitle": "Compétences",
     "skillsTechnologies": "Compétences & Technologies",
     "experience": "Expérience",
     "position": "Poste",
     "period": "Période",
-    "specializeIn": "Je me spécialise dans la création d'applications web réactives et performantes avec des frameworks modernes et les meilleures pratiques pour l'accessibilité et le référencement.",
+    "specializeIn": "Je me spécialise dans la construction d'applications web réactives et performantes avec des frameworks modernes et les meilleures pratiques pour l'accessibilité et le SEO.",
     "experiences": [
       {
         "company": "Moody's",
-        "position": "Développeur Logiciel Full Stack",
+        "position": "Ingénieur Logiciel Full Stack",
         "period": "2022 - 2025",
         "description": [
-          "Développé et maintenu une application web pour l'automatisation de l'infrastructure, simplifiant les flux de travail DevOps.",
+          "Développé et maintenu une application web pour l'automatisation d'infrastructure, rationalisant les workflows DevOps.",
           "Conçu et construit le backend, assurant une intégration transparente avec les services d'infrastructure.",
-          "Transition de DevOps vers l'ingénierie Frontend, exploitant les connaissances backend et infrastructure pour le développement full-stack.",
-          "Optimisé les performances du système et amélioré les processus d'automatisation pour une meilleure évolutivité.",
+          "Transitionné de DevOps vers l'Ingénierie Frontend, exploitant les connaissances backend et infrastructure pour le développement full-stack.",
+          "Optimisé les performances système et amélioré les processus d'automatisation pour une meilleure évolutivité.",
           "Travaillé avec des frameworks frontend modernes pour créer des applications dynamiques et réactives.",
           "Collaboré avec des équipes interfonctionnelles pour implémenter de nouvelles fonctionnalités et améliorer les systèmes existants.",
-          "Développé et mis en œuvre des stratégies de récupération, assurant un temps d'arrêt minimal et l'intégrité des données."
+          "Développé et implémenté des stratégies de récupération, assurant un temps d'arrêt minimal et l'intégrité des données."
         ]
       }
     ],
@@ -138,8 +144,8 @@
       "MongoDB & PostgreSQL",
       "AWS",
       "CI/CD & DevOps",
-      "Optimisation des performances",
-      "Référencement & Accessibilité",
+      "Optimisation des Performances",
+      "SEO & Accessibilité",
       "Retool",
       "N8N"
     ]
@@ -162,6 +168,18 @@
     "footer": {
       "privacy": "Politique de Confidentialité",
       "terms": "Conditions d'Utilisation"
+    }
+  },
+  "software": {
+    "pageTitle": "Tom Rogiers - Portfolio | Développeur Full Stack chez ExziTech",
+    "pageDescription": "Portfolio de Tom Rogiers - Développeur Full Stack chez ExziTech, spécialisé dans Vue.js, Nuxt et TypeScript",
+    "ogTitle": "Tom Rogiers - Portfolio | Développeur Full Stack chez ExziTech",
+    "ogDescription": "Portfolio de Tom Rogiers - Développeur Full Stack chez ExziTech, spécialisé dans Vue.js, Nuxt et TypeScript",
+    "hero": {
+      "title": "Création de Solutions Logicielles Exceptionnelles",
+      "description": "Solutions d'entreprise de pointe alimentées par l'IA et les technologies modernes, transformant les entreprises grâce à des applications web innovantes et une architecture logicielle évolutive",
+      "getStarted": "Commencer",
+      "viewAISolutions": "Voir les Solutions IA"
     }
   }
 }

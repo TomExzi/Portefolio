@@ -16,7 +16,7 @@ const termsContent = `
 
 ## Introduction
 
-These Terms of Service ("Terms") govern your access to and use of the services provided by ExziTech ("we", "us", or "our") through our website [Your Website URL] (the "Site"). By using our Site and Services, you agree to these Terms.
+These Terms of Service ("Terms") govern your access to and use of the services provided by ExziTech ("we", "us", or "our") through our website https://exzitech.com (the "Site"). By using our Site and Services, you agree to these Terms.
 
 ## Services
 
@@ -31,7 +31,30 @@ You agree to:
 
 ## Payment Terms
 
-[Include your payment terms, e.g., payment methods, due dates, late fees, etc.]
+1. **Payment Methods**
+   - We accept payments via bank transfer, credit card, and PayPal
+   - All prices are in EUR unless otherwise specified
+   - Invoices will be sent electronically to the email address provided
+
+2. **Payment Schedule**
+   - A 50% deposit is required to commence work on any project
+   - The remaining 50% is due upon project completion
+   - For ongoing services, payment is due monthly in advance
+
+3. **Late Payments**
+   - Payments are considered late if not received within 14 days of the invoice date
+   - A late fee of 2% per month will be charged on overdue amounts
+   - We reserve the right to suspend services until payment is received
+
+4. **Refunds**
+   - Custom development work is non-refundable once work has commenced
+   - Deposits are non-refundable
+   - Any refunds for other services will be evaluated on a case-by-case basis
+
+5. **Additional Costs**
+   - Any work beyond the agreed scope will be billed at our standard hourly rate
+   - Third-party services or licenses required for the project will be billed separately
+   - Additional revisions beyond those specified in the contract will incur extra charges
 
 ## Intellectual Property
 
@@ -53,7 +76,7 @@ These Terms shall be governed by and construed in accordance with the laws of Be
 
 If you have any questions about these Terms, please contact us at:
 
-- Email: tom.rogiers@gmail.com
+- Email: Tom@exzitech.com
 
 `;
 

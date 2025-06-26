@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
+// Remove vue-i18n import - using custom useI18n composable
 
 interface Service {
   icon: string;
   title: string;
   description: string;
+  shortDescription?: string;
   color?: string;
 }
 
@@ -14,7 +15,7 @@ const props = defineProps<{
 
 const { t } = useI18n();
 
-// Use translated services
+// Use translated services with shorter mobile descriptions
 const defaultServices = computed(() => [
   {
     icon: "heroicons:cpu-chip",
@@ -22,6 +23,10 @@ const defaultServices = computed(() => [
     description: t(
       "ai.services[0].description",
       "Custom AI solutions built and integrated into your existing systems, leveraging state-of-the-art machine learning models and neural networks."
+    ),
+    shortDescription: t(
+      "ai.services[0].shortDescription",
+      "Custom AI solutions integrated into your existing systems using advanced ML models."
     ),
     color: "blue",
   },
@@ -32,6 +37,10 @@ const defaultServices = computed(() => [
       "ai.services[1].description",
       "Implement intelligent chatbots, content generation, and text analysis systems using advanced NLP models and transformers."
     ),
+    shortDescription: t(
+      "ai.services[1].shortDescription",
+      "Intelligent chatbots and content generation using advanced NLP models."
+    ),
     color: "purple",
   },
   {
@@ -41,6 +50,10 @@ const defaultServices = computed(() => [
       "ai.services[2].description",
       "Automate document processing, extract information, and analyze content using AI-powered OCR and document understanding systems."
     ),
+    shortDescription: t(
+      "ai.services[2].shortDescription",
+      "Automate document processing and information extraction with AI-powered OCR."
+    ),
     color: "indigo",
   },
   {
@@ -49,6 +62,10 @@ const defaultServices = computed(() => [
     description: t(
       "ai.services[3].description",
       "Leverage AI for business intelligence, forecasting, and decision-making through advanced data analysis and machine learning models."
+    ),
+    shortDescription: t(
+      "ai.services[3].shortDescription",
+      "AI-powered business intelligence and forecasting for better decision-making."
     ),
     color: "cyan",
   },
@@ -91,59 +108,89 @@ onMounted(() => {
 </script>
 
 <template>
-  <div ref="servicesSection" class="w-full" aria-labelledby="services-heading">
-    <div class="flex items-center gap-3 mb-8">
-      <div
-        class="p-2 rounded-lg bg-blue-500/20 dark:bg-blue-500/20 flex items-center justify-center"
-      >
-        <Icon
-          name="heroicons:cpu-chip"
-          class="w-6 h-6 text-blue-600 dark:text-blue-400"
-        />
+  <div
+    ref="servicesSection"
+    class="w-full relative py-6 sm:py-8 md:py-16"
+    aria-labelledby="services-heading"
+  >
+    <!-- Remove background image and overlay logic here -->
+    <div class="px-3 sm:px-4 md:px-8 lg:px-16">
+      <div class="flex items-center gap-2 sm:gap-3 mb-6 sm:mb-8">
+        <div
+          class="p-1.5 sm:p-2 rounded-lg bg-blue-500/20 dark:bg-blue-500/20 flex items-center justify-center"
+        >
+          <Icon
+            name="heroicons:cpu-chip"
+            class="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 dark:text-blue-400"
+          />
+        </div>
+        <h2
+          id="services-heading"
+          class="ai-services-title text-xl sm:text-2xl font-bold"
+          style="
+            color: #000000 !important;
+            --tw-text-opacity: 1;
+            color: rgb(0 0 0 / var(--tw-text-opacity)) !important;
+          "
+        >
+          <span style="color: #000000 !important">{{
+            t("ai.servicesTitle", "AI Services")
+          }}</span>
+        </h2>
       </div>
-      <h2
-        id="services-heading"
-        class="text-2xl font-bold text-slate-800 dark:text-white"
-      >
-        {{ t("ai.servicesTitle", "AI Services") }}
-      </h2>
-    </div>
 
-    <p class="text-lg text-slate-600 dark:text-gray-300 max-w-2xl mb-12">
-      {{
-        t(
-          "ai.servicesDescription",
-          "Professional AI solutions tailored for modern business needs"
-        )
-      }}
-    </p>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-      <div
-        v-for="(service, index) in servicesList"
-        :key="service.title"
-        class="service-card"
-        :class="
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-        "
-        :style="{ transitionDelay: `${index * 100}ms` }"
+      <p
+        class="text-base sm:text-lg font-medium text-slate-500 dark:text-slate-400 max-w-2xl mb-8 sm:mb-12 leading-relaxed"
       >
-        <div class="flex items-start gap-5">
-          <div
-            class="p-3 rounded-xl flex items-center justify-center service-icon"
-            :class="getIconClass(service.color)"
-          >
-            <Icon :name="service.icon" class="w-6 h-6" aria-hidden="true" />
-          </div>
-          <div>
-            <h3
-              class="text-xl font-semibold text-slate-800 dark:text-white mb-3"
+        {{
+          t(
+            "ai.servicesDescription",
+            "Professional AI solutions tailored for modern business needs"
+          )
+        }}
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
+        <div
+          v-for="(service, index) in servicesList"
+          :key="service.title"
+          class="service-card"
+          :class="
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          "
+          :style="{
+            transitionDelay: `${index * 100}ms`,
+          }"
+        >
+          <div class="flex items-start gap-3 sm:gap-4 md:gap-5">
+            <div
+              class="p-2 sm:p-2.5 md:p-3 rounded-lg sm:rounded-xl flex items-center justify-center service-icon flex-shrink-0"
+              :class="getIconClass(service.color)"
             >
-              {{ service.title }}
-            </h3>
-            <p class="text-slate-700 dark:text-gray-300 leading-relaxed">
-              {{ service.description }}
-            </p>
+              <Icon
+                :name="service.icon"
+                class="w-5 h-5 sm:w-6 sm:h-6"
+                aria-hidden="true"
+              />
+            </div>
+            <div class="min-w-0 flex-1 space-y-2 sm:space-y-3">
+              <h3
+                class="text-lg sm:text-xl font-semibold text-slate-800 dark:text-white leading-tight"
+              >
+                {{ service.title }}
+              </h3>
+              <!-- Show shorter description on mobile, full on larger screens -->
+              <p
+                class="ai-service-text text-sm sm:text-base leading-relaxed sm:hidden"
+              >
+                {{ service.shortDescription || service.description }}
+              </p>
+              <p
+                class="ai-service-text hidden sm:block text-base leading-relaxed"
+              >
+                {{ service.description }}
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -153,13 +200,34 @@ onMounted(() => {
 
 <style scoped>
 .service-card {
-  padding: 1.75rem;
-  border-radius: 1rem;
+  padding: 1.125rem;
+  border-radius: 0.75rem;
   background-color: rgba(255, 255, 255, 0.9);
   transition: all 0.3s ease;
   border: 1px solid rgba(226, 232, 240, 0.8);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05),
     0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+/* Responsive padding for service cards */
+@media (min-width: 640px) {
+  .service-card {
+    padding: 1.375rem;
+    border-radius: 0.875rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .service-card {
+    padding: 1.625rem;
+    border-radius: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .service-card {
+    padding: 1.75rem;
+  }
 }
 
 .dark .service-card {
@@ -171,10 +239,19 @@ onMounted(() => {
 
 .service-card:hover {
   background-color: rgba(255, 255, 255, 1);
-  transform: translateY(-5px);
+  transform: translateY(-3px);
   box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.08),
     0 4px 6px -2px rgba(0, 0, 0, 0.05);
   border-color: rgba(226, 232, 240, 1);
+}
+
+/* Reduce hover effects on mobile for better performance */
+@media (max-width: 767px) {
+  .service-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.06),
+      0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
 }
 
 .dark .service-card:hover {
@@ -187,7 +264,6 @@ onMounted(() => {
 .service-icon {
   transition: all 0.3s ease;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  padding: 1rem;
 }
 
 .dark .service-icon {
@@ -195,7 +271,14 @@ onMounted(() => {
 }
 
 .service-card:hover .service-icon {
-  transform: scale(1.1);
+  transform: scale(1.05);
+}
+
+/* Reduce icon scaling on mobile */
+@media (max-width: 767px) {
+  .service-card:hover .service-icon {
+    transform: scale(1.02);
+  }
 }
 
 /* Reduce motion if user prefers reduced motion */
@@ -205,5 +288,71 @@ onMounted(() => {
     transition-duration: 0.01ms !important;
     transform: none !important;
   }
+}
+
+/* Better text spacing and readability on mobile */
+@media (max-width: 479px) {
+  .service-card {
+    padding: 1rem;
+  }
+
+  .service-card h3 {
+    font-size: 1rem;
+    line-height: 1.3;
+    margin-bottom: 0.5rem;
+  }
+
+  .service-card p {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: rgb(71 85 105);
+  }
+
+  html.dark .ai-service-text {
+    color: white !important;
+  }
+}
+
+/* Improved text contrast and spacing */
+.service-card h3 {
+  word-break: break-word;
+  hyphens: auto;
+}
+
+.service-card p {
+  word-break: break-word;
+  hyphens: auto;
+  max-width: 100%;
+}
+
+/* Remove all old paragraph styling to prevent conflicts */
+
+/* AI Services title - always black with maximum specificity */
+#services-heading,
+.ai-services-title,
+html #services-heading,
+html .ai-services-title,
+html.dark #services-heading,
+html.dark .ai-services-title,
+section #services-heading,
+section .ai-services-title {
+  color: #000000 !important; /* Force pure black in all modes */
+  --tw-text-opacity: 1 !important;
+}
+
+/* Even more aggressive override */
+h2#services-heading {
+  color: #000000 !important;
+}
+
+/* AI Service text using CSS variables from main.css */
+.ai-service-text {
+  color: rgb(
+    var(--color-light-secondary)
+  ); /* Light mode: secondary text color */
+}
+
+html.dark .ai-service-text {
+  color: white !important; /* Dark mode: pure white for readability */
 }
 </style>

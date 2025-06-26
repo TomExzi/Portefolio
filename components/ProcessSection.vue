@@ -27,7 +27,8 @@ const sectionRef = ref<HTMLElement | null>(null);
 const imageLoaded = ref(false);
 
 // Preload the background image
-if (process.client) {
+const isClient = typeof window !== "undefined";
+if (isClient) {
   const imagePreload = new Image();
   imagePreload.src = backgroundImageUrl;
   imagePreload.onload = () => {
@@ -37,7 +38,7 @@ if (process.client) {
 
 onMounted(() => {
   // Ensure we're on client-side
-  if (process.client) {
+  if (isClient) {
     nextTick(() => {
       try {
         if (sectionRef.value) {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
+// Remove vue-i18n import - using custom useI18n composable
 
 interface Example {
   title: string;
@@ -111,15 +111,12 @@ onMounted(() => {
           class="w-6 h-6 text-blue-600 dark:text-blue-400"
         />
       </div>
-      <h2
-        id="examples-heading"
-        class="text-2xl font-bold text-slate-800 dark:text-white"
-      >
+      <h2 id="examples-heading" class="text-2xl font-bold text-slate-800">
         {{ t("ai.automationTitle", "AI Automation Examples") }}
       </h2>
     </div>
 
-    <p class="text-lg text-slate-600 dark:text-gray-300 max-w-2xl mb-12">
+    <p class="text-lg text-slate-500 max-w-2xl mb-12">
       {{
         t(
           "ai.automationDescription",

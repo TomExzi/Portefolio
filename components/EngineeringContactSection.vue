@@ -9,9 +9,12 @@ const isVisible = ref(false);
 // Lazy loading setup - fix by using template ref
 const sectionRef = ref<HTMLElement | null>(null);
 
+// Check for client-side
+const isClient = typeof window !== "undefined";
+
 onMounted(() => {
   // Ensure we're on client-side
-  if (process.client) {
+  if (isClient) {
     nextTick(() => {
       try {
         if (sectionRef.value) {

@@ -9,7 +9,9 @@
   "hero": {
     "title": "De Toekomst Bouwen met AI, Automatisering en Schaalbare Oplossingen",
     "description": "Passievolle Full Stack Developer, gespecialiseerd in prestaties, SEO, schaalbare architecturen en AI-oplossingen. Ik ontwikkel slimme, efficiënte en gebruiksvriendelijke digitale ervaringen voor web, mobiel en meer.",
-    "ctaText": "Neem contact op"
+    "ctaText": "Neem contact op",
+    "getStarted": "Neem contact op",
+    "viewAISolutions": "Bekijk AI-oplossingen"
   },
   "ai": {
     "heroTitle": "Uw Bedrijf Versterken met AI-oplossingen",
@@ -23,19 +25,23 @@
     "services": [
       {
         "title": "AI-ontwikkeling & Integratie",
-        "description": "Aangepaste AI-oplossingen gebouwd en geïntegreerd in uw bestaande systemen, gebruikmakend van state-of-the-art machine learning-modellen en neurale netwerken."
+        "description": "Aangepaste AI-oplossingen gebouwd en geïntegreerd in uw bestaande systemen, gebruikmakend van state-of-the-art machine learning-modellen en neurale netwerken.",
+        "shortDescription": "Aangepaste AI-oplossingen geïntegreerd in uw systemen met geavanceerde ML-modellen."
       },
       {
         "title": "Natuurlijke Taalverwerking",
-        "description": "Implementatie van intelligente chatbots, contentgeneratie en tekstanalysesystemen met behulp van geavanceerde NLP-modellen en transformers."
+        "description": "Implementatie van intelligente chatbots, contentgeneratie en tekstanalysesystemen met behulp van geavanceerde NLP-modellen en transformers.",
+        "shortDescription": "Intelligente chatbots en contentgeneratie met geavanceerde NLP-modellen."
       },
       {
         "title": "Document-AI & Automatisering",
-        "description": "Automatiseer documentverwerking, informatie-extractie en contentanalyse met AI-gestuurde OCR en document-begripssystemen."
+        "description": "Automatiseer documentverwerking, informatie-extractie en contentanalyse met AI-gestuurde OCR en document-begripssystemen.",
+        "shortDescription": "Automatiseer documentverwerking en informatie-extractie met AI-gestuurde OCR."
       },
       {
         "title": "Voorspellende Analyse",
-        "description": "Benut AI voor business intelligence, voorspellingen en besluitvorming door geavanceerde data-analyse en machine learning-modellen."
+        "description": "Benut AI voor business intelligence, voorspellingen en besluitvorming door geavanceerde data-analyse en machine learning-modellen.",
+        "shortDescription": "AI-gestuurde business intelligence en voorspellingen voor betere besluitvorming."
       }
     ],
     "examples": [
@@ -104,26 +110,26 @@
     }
   },
   "about": {
-    "title": "Over mij",
-    "skills": "Vaardigheden",
+    "title": "Over Mij",
+    "skillsTitle": "Vaardigheden",
     "skillsTechnologies": "Vaardigheden & Technologieën",
     "experience": "Ervaring",
     "position": "Functie",
     "period": "Periode",
-    "specializeIn": "Ik ben gespecialiseerd in het bouwen van responsieve, hoogwaardige webapplicaties met moderne frameworks en best practices voor toegankelijkheid en SEO.",
+    "specializeIn": "Ik specialiseer me in het bouwen van responsieve, hoogpresterende webapplicaties met moderne frameworks en best practices voor toegankelijkheid en SEO.",
     "experiences": [
       {
         "company": "Moody's",
         "position": "Full Stack Software Engineer",
         "period": "2022 - 2025",
         "description": [
-          "Ontwikkeld en onderhouden van een webapplicatie voor infrastructuurautomatisering, waardoor DevOps-workflows worden gestroomlijnd.",
-          "Backend ontworpen en gebouwd, met naadloze integratie met infrastructuurdiensten.",
-          "Overgestapt van DevOps naar Frontend Engineering, gebruikmakend van zowel backend- als infrastructuurkennis voor full-stack ontwikkeling.",
-          "Systeemprestaties geoptimaliseerd en automatiseringsprocessen verbeterd voor betere schaalbaarheid.",
-          "Gewerkt met moderne frontend-frameworks om dynamische en responsieve applicaties te creëren.",
-          "Samengewerkt met multifunctionele teams om nieuwe functies te implementeren en bestaande systemen te verbeteren.",
-          "Herstelstrategieën ontwikkeld en geïmplementeerd, met minimale uitvaltijd en gegevensintegriteit."
+          "Ontwikkeld en onderhouden van een webapplicatie voor infrastructuur automatisering, het stroomlijnen van DevOps workflows.",
+          "Ontworpen en gebouwd van de backend, zorgend voor naadloze integratie met infrastructuur services.",
+          "Overgang van DevOps naar Frontend Engineering, gebruikmakend van zowel backend als infrastructuur kennis voor full-stack ontwikkeling.",
+          "Geoptimaliseerd systeem prestaties en verbeterde automatisering processen voor betere schaalbaarheid.",
+          "Gewerkt met moderne frontend frameworks om dynamische en responsieve applicaties te creëren.",
+          "Samenwerking met cross-functionele teams om nieuwe features te implementeren en bestaande systemen te verbeteren.",
+          "Ontwikkeld en geïmplementeerd herstelstrategieën, zorgend voor minimale downtime en data integriteit."
         ]
       }
     ],
@@ -138,7 +144,7 @@
       "MongoDB & PostgreSQL",
       "AWS",
       "CI/CD & DevOps",
-      "Prestatie-optimalisatie",
+      "Prestatie Optimalisatie",
       "SEO & Toegankelijkheid",
       "Retool",
       "N8N"
@@ -162,6 +168,18 @@
     "footer": {
       "privacy": "Privacybeleid",
       "terms": "Gebruiksvoorwaarden"
+    }
+  },
+  "software": {
+    "pageTitle": "Tom Rogiers - Portfolio | Full Stack Developer bij ExziTech",
+    "pageDescription": "Portfolio van Tom Rogiers - Full Stack Developer bij ExziTech, gespecialiseerd in Vue.js, Nuxt en TypeScript",
+    "ogTitle": "Tom Rogiers - Portfolio | Full Stack Developer bij ExziTech",
+    "ogDescription": "Portfolio van Tom Rogiers - Full Stack Developer bij ExziTech, gespecialiseerd in Vue.js, Nuxt en TypeScript",
+    "hero": {
+      "title": "Het Maken van Uitzonderlijke Software-oplossingen",
+      "description": "Geavanceerde bedrijfsoplossingen aangedreven door AI en moderne technologieën, die bedrijven transformeren door innovatieve webapplicaties en schaalbare software-architectuur",
+      "getStarted": "Beginnen",
+      "viewAISolutions": "Bekijk AI-oplossingen"
     }
   }
 }

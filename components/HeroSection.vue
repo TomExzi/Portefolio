@@ -1,18 +1,48 @@
 <script setup lang="ts">
 import { inject } from "vue";
+import { useRoute } from "vue-router";
+import { computed } from "vue";
 
 const emit = defineEmits<{
   (e: "scroll-to", section: string): void;
 }>();
 
+// Use i18n for translations
+const { t } = useI18n();
+
 const handleGetStarted = () => {
-  emit("scroll-to", "services");
+  // Clear any previous hash state that might interfere with navigation
+  if (window.location.hash) {
+    history.pushState(null, "", window.location.pathname);
+  }
+
+  // Short delay to ensure the URL change has taken effect
+  setTimeout(() => {
+    emit("scroll-to", "contact");
+  }, 50);
 };
 
 // Check for custom arrow positions from parent page
 const customArrowPositions = inject("customArrowPositions", {
   titleArrowTop: 20, // default value
   descriptionArrowTop: 30, // default value
+});
+
+// Determine which translation context to use based on current route
+const route = useRoute();
+const translationContext = computed(() => {
+  if (route.path.includes("software-engineering")) {
+    return "software.hero";
+  }
+  return "hero"; // Default to main hero translations
+});
+
+// Get the appropriate button text based on context
+const viewAISolutionsText = computed(() => {
+  if (route.path.includes("software-engineering")) {
+    return t("software.hero.viewAISolutions");
+  }
+  return t("ai.viewSoftwareEngineering");
 });
 </script>
 
@@ -26,7 +56,7 @@ const customArrowPositions = inject("customArrowPositions", {
         <h1
           class="text-4xl md:text-5xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-300 hero-title"
         >
-          Crafting Exceptional Software Solutions
+          {{ t(`${translationContext}.title`) }}
         </h1>
         <div class="title-arrow-container">
           <client-only>
@@ -56,9 +86,7 @@ const customArrowPositions = inject("customArrowPositions", {
         <p
           class="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto hero-description"
         >
-          Cutting-edge enterprise solutions powered by AI and modern
-          technologies, transforming businesses through innovative web
-          applications and scalable software architecture
+          {{ t(`${translationContext}.description`) }}
         </p>
         <div class="description-arrow-container">
           <client-only>
@@ -88,14 +116,14 @@ const customArrowPositions = inject("customArrowPositions", {
           @click="handleGetStarted"
           class="px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors duration-200 flex items-center gap-2 hero-cta"
         >
-          <span>Get Started</span>
+          <span>{{ t(`${translationContext}.getStarted`) }}</span>
           <Icon name="heroicons:arrow-right" class="w-5 h-5" />
         </button>
         <NuxtLink
-          to="/software-engineering"
+          to="/"
           class="px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors duration-200 flex items-center gap-2 hero-cta"
         >
-          <span>View Software Engineering</span>
+          <span>{{ viewAISolutionsText }}</span>
           <Icon name="heroicons:arrow-right" class="w-5 h-5" />
         </NuxtLink>
       </div>

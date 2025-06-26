@@ -6,6 +6,9 @@ import { ref, onMounted, onUnmounted, inject, watchEffect } from "vue";
 const { locale, t } = useI18n();
 const currentLocale = computed(() => locale.value);
 
+// Use centralized language utilities
+const { switchLanguage } = useLanguage();
+
 // Theme handling
 const colorMode = useColorMode();
 const isDark = computed({
@@ -16,7 +19,6 @@ const isDark = computed({
 });
 
 const isLanguageMenuOpen = ref(false);
-const isMobileMenuOpen = ref(false);
 const isMobileView = ref(false);
 const isProcessingClick = ref(false);
 
@@ -39,32 +41,8 @@ const scrollToSection = inject("scrollToSection") as (
 ) => void;
 
 function selectLanguage(langCode: string, langPath: string) {
-  // Update the i18n locale
-  locale.value = langCode;
-
-  // Get the current route path without the language prefix
-  let newPath = window.location.pathname;
-
-  // Remove language prefix from current path
-  for (const lang of languages) {
-    if (lang.path !== "/" && newPath.startsWith(lang.path)) {
-      newPath = newPath.substring(lang.path.length) || "/";
-      break;
-    }
-  }
-
-  // Construct the target path
-  let targetPath;
-  if (langPath === "/") {
-    // For default language (EN), use path without prefix
-    targetPath = newPath;
-  } else {
-    // For other languages (FR, NL), add the language prefix
-    targetPath = `${langPath}${newPath === "/" ? "" : newPath}`;
-  }
-
-  // Navigate using window.location to ensure complete reload
-  window.location.href = targetPath;
+  // Use the centralized function from the composable
+  switchLanguage(langCode);
   isLanguageMenuOpen.value = false;
 }
 
@@ -74,36 +52,6 @@ function onClickOutside(event: MouseEvent) {
   if (!target.closest(".language-menu") && isLanguageMenuOpen.value) {
     isLanguageMenuOpen.value = false;
   }
-  if (
-    !target.closest(".mobile-menu") &&
-    !target.closest(".menu-toggle") &&
-    isMobileMenuOpen.value
-  ) {
-    isMobileMenuOpen.value = false;
-  }
-}
-
-// Prevent event propagation for menu toggles to avoid unexpected closures
-function handleMenuToggle(event: MouseEvent) {
-  event.stopPropagation();
-  event.preventDefault();
-
-  // Prevent multiple rapid clicks
-  if (isProcessingClick.value) return;
-  isProcessingClick.value = true;
-
-  // Toggle menu state
-  isMobileMenuOpen.value = !isMobileMenuOpen.value;
-
-  // Close language menu if open
-  if (isLanguageMenuOpen.value) {
-    isLanguageMenuOpen.value = false;
-  }
-
-  // Reset click processing flag after a short delay
-  setTimeout(() => {
-    isProcessingClick.value = false;
-  }, 300);
 }
 
 // Stop propagation for language toggle
@@ -118,32 +66,26 @@ function handleLanguageToggle(event: MouseEvent) {
   // Toggle language menu
   isLanguageMenuOpen.value = !isLanguageMenuOpen.value;
 
-  // Close mobile menu if open (on mobile)
-  if (isMobileView.value && isMobileMenuOpen.value) {
-    isMobileMenuOpen.value = false;
-  }
-
   // Reset click processing flag after a short delay
   setTimeout(() => {
     isProcessingClick.value = false;
   }, 300);
 }
 
-function closeMenuOnNavigation() {
-  isMobileMenuOpen.value = false;
-}
-
 // Function to handle smooth scrolling with proper offsets
 function smoothScrollToSection(sectionId: string, event: Event) {
   event.preventDefault();
 
-  // Close mobile menu if it's open
-  if (isMobileMenuOpen.value) {
-    isMobileMenuOpen.value = false;
+  // Clear any previous hash state that might interfere with navigation
+  if (window.location.hash) {
+    history.pushState(null, "", window.location.pathname);
   }
 
-  // Use the injected scroll function from the parent
-  scrollToSection(sectionId);
+  // Use the injected scroll function from the parent after a short delay
+  // to ensure any previous scroll operations have completed
+  setTimeout(() => {
+    scrollToSection(sectionId);
+  }, 50);
 
   // Update URL without causing a scroll
   history.pushState(null, "", `#${sectionId}`);
@@ -162,64 +104,44 @@ onUnmounted(() => {
 
 // Close mobile menu on window resize if it goes to desktop view
 watchEffect(() => {
-  if (!isMobileView.value && isMobileMenuOpen.value) {
-    isMobileMenuOpen.value = false;
+  if (!isMobileView.value && isLanguageMenuOpen.value) {
+    isLanguageMenuOpen.value = false;
   }
 });
 </script>
 
 <template>
   <div>
-    <!-- Backdrop for mobile menu (prevent accidental clicks) -->
-    <div
-      v-if="isMobileMenuOpen"
-      class="fixed inset-0 bg-black/5 backdrop-blur-sm z-[90]"
-      @click="isMobileMenuOpen = false"
-    ></div>
-
     <nav
       class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[95] py-2 px-4 glass-light dark:glass-dark dark:bg-[#1a202c]/95 rounded-full shadow-light-card dark:shadow-dark-card"
     >
       <!-- Mobile Toggle Button (visible on small screens) -->
       <div class="md:hidden flex items-center justify-between">
-        <button
-          @click="handleMenuToggle"
-          class="menu-toggle flex items-center gap-1 px-3 py-2 text-sm rounded-full text-gray-700 dark:text-gray-300 hover:text-blue-600 hover:bg-gray-100 dark:hover:text-blue-400 dark:hover:bg-gray-800/50 transition-colors relative"
-          aria-label="Menu"
-          :class="{
-            'bg-gray-100 dark:bg-gray-800 ring-2 ring-blue-500/50':
-              isMobileMenuOpen,
-          }"
-        >
-          <div class="relative">
-            <Icon
-              v-if="!isMobileMenuOpen"
-              name="heroicons:bars-3"
-              class="w-5 h-5"
-            />
-            <Icon
-              v-else
-              name="heroicons:x-mark"
-              class="w-5 h-5 text-blue-500 dark:text-blue-400"
-            />
-            <span
-              v-if="!isMobileMenuOpen"
-              class="absolute -top-1 -right-1 flex h-2 w-2"
-            >
-              <span
-                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"
-              ></span>
-              <span
-                class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"
-              ></span>
-            </span>
-          </div>
-          <span
-            class="text-xs font-medium"
-            :class="{ 'text-blue-500 dark:text-blue-400': isMobileMenuOpen }"
-            >Menu</span
+        <div class="flex items-center space-x-1">
+          <NuxtLink
+            href="#services"
+            @click.prevent="smoothScrollToSection('services', $event)"
+            class="flex items-center gap-1 px-2 py-2 text-sm rounded-full text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-blue-400 dark:hover:bg-gray-800/50 transition-colors"
           >
-        </button>
+            <Icon name="heroicons:cpu-chip" class="w-4 h-4" />
+          </NuxtLink>
+
+          <NuxtLink
+            href="#about"
+            @click.prevent="smoothScrollToSection('about', $event)"
+            class="flex items-center gap-1 px-2 py-2 text-sm rounded-full text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-blue-400 dark:hover:bg-gray-800/50 transition-colors"
+          >
+            <Icon name="heroicons:user" class="w-4 h-4" />
+          </NuxtLink>
+
+          <NuxtLink
+            href="#contact"
+            @click.prevent="smoothScrollToSection('contact', $event)"
+            class="flex items-center gap-1 px-2 py-2 text-sm rounded-full text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-blue-400 dark:hover:bg-gray-800/50 transition-colors"
+          >
+            <Icon name="heroicons:envelope" class="w-4 h-4" />
+          </NuxtLink>
+        </div>
 
         <!-- Always visible on mobile: theme toggle and current language -->
         <div class="flex items-center space-x-1">
@@ -285,42 +207,6 @@ watchEffect(() => {
               class="w-5 h-5 text-gray-700"
             />
           </button>
-        </div>
-      </div>
-
-      <!-- Mobile Menu (conditionally visible) -->
-      <div
-        v-show="isMobileMenuOpen"
-        class="mobile-menu md:hidden fixed bottom-[4.5rem] left-0 right-0 mx-auto w-[90%] max-w-[95vw] rounded-xl glass-light dark:glass-dark dark:bg-[#1a202c]/95 shadow-light-card dark:shadow-dark-card py-2 z-[100]"
-        @click.stop
-      >
-        <div class="flex flex-col w-full">
-          <NuxtLink
-            href="#services"
-            @click.prevent="smoothScrollToSection('services', $event)"
-            class="px-4 py-4 text-sm text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-blue-400 dark:hover:bg-gray-800/50 transition-colors flex items-center gap-1.5 active:bg-gray-200 dark:active:bg-gray-700"
-          >
-            <Icon name="heroicons:cpu-chip" class="w-4 h-4" />
-            {{ $t("navigation.services") }}
-          </NuxtLink>
-
-          <NuxtLink
-            href="#about"
-            @click.prevent="smoothScrollToSection('about', $event)"
-            class="px-4 py-4 text-sm text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-blue-400 dark:hover:bg-gray-800/50 transition-colors flex items-center gap-1.5 active:bg-gray-200 dark:active:bg-gray-700"
-          >
-            <Icon name="heroicons:user" class="w-4 h-4" />
-            {{ $t("navigation.about") }}
-          </NuxtLink>
-
-          <NuxtLink
-            href="#contact"
-            @click.prevent="smoothScrollToSection('contact', $event)"
-            class="px-4 py-4 text-sm text-gray-700 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-blue-400 dark:hover:bg-gray-800/50 transition-colors flex items-center gap-1.5 active:bg-gray-200 dark:active:bg-gray-700"
-          >
-            <Icon name="heroicons:envelope" class="w-4 h-4" />
-            {{ $t("navigation.contact") }}
-          </NuxtLink>
         </div>
       </div>
 

@@ -121,7 +121,7 @@ export const portfolioConfig = {
     ],
   },
   contact: {
-    email: "Tom.rogiers@gmail.com",
+    email: "Tom@exzitech.com",
     github: "https://github.com/TomExzi",
     linkedin: "https://www.linkedin.com/in/tom-rogiers-290655221/",
   },

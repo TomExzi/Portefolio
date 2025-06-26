@@ -1,27 +1,25 @@
 <script setup lang="ts">
-import SharedNavigation from "~/components/SharedNavigation.vue";
-
 definePageMeta({
-  name: "home",
+  name: "software-engineering-fr",
 });
 
-// SEO optimization using Nuxt's composables with enhanced metadata
+// SEO optimization for French software engineering page
 useHead({
-  title: "Software Engineering & AI Solutions - Tom Rogiers",
+  title: "Ingénierie Logicielle & Développement Web - Tom Rogiers",
   meta: [
     {
       name: "description",
       content:
-        "Expert software engineering and AI solutions by Tom Rogiers. Specializing in AI integration, machine learning, and enterprise software solutions.",
+        "Services d'ingénierie logicielle professionnels avec Vue.js, Nuxt.js, et technologies modernes. Solutions évolutives pour applications web et mobiles.",
     },
     {
       property: "og:title",
-      content: "Software Engineering & AI Solutions - Tom Rogiers",
+      content: "Ingénierie Logicielle & Développement Web - Tom Rogiers",
     },
     {
       property: "og:description",
       content:
-        "Expert AI solutions with custom development, NLP, document automation, and predictive analytics.",
+        "Développement d'applications web modernes et évolutives avec les dernières technologies.",
     },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
@@ -30,9 +28,10 @@ useHead({
     { name: "theme-color", content: "#3b82f6" },
   ],
   link: [
-    { rel: "canonical", href: "https://tomRogiers.com" },
-    { rel: "preconnect", href: "https://fonts.googleapis.com" },
-    { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "" },
+    {
+      rel: "canonical",
+      href: "https://tomRogiers.com/fr/software-engineering",
+    },
   ],
 });
 
@@ -40,9 +39,9 @@ useHead({
 const mainContent = ref<HTMLElement | null>(null);
 const { updateScrollPosition, scrollToSection, showFooter } = useScroll();
 const route = useRoute();
-const timestamp = ref(Date.now()); // Use timestamp for component keys
+const timestamp = ref(Date.now());
 
-// Provide scroll functionality to child components (for NavBar)
+// Provide scroll functionality to child components
 provide("scrollToSection", scrollToSection);
 
 // Watch for changes in scroll height with proper cleanup
@@ -69,7 +68,6 @@ function handleHashNavigation() {
 // Setup scroll monitoring with proper event cleanup
 onMounted(() => {
   if (mainContent.value) {
-    // Update timestamp when mounted to ensure components reload
     timestamp.value = Date.now();
 
     const handleScroll = () => {
@@ -82,15 +80,12 @@ onMounted(() => {
     window.addEventListener("resize", checkScrollHeight, { passive: true });
     window.addEventListener("hashchange", handleHashNavigation);
 
-    // Initial check
     checkScrollHeight();
 
-    // Handle hash navigation if present
     if (window.location.hash) {
       handleHashNavigation();
     }
 
-    // Clean up event listeners properly
     onUnmounted(() => {
       if (mainContent.value) {
         mainContent.value.removeEventListener("scroll", handleScroll);
@@ -122,32 +117,12 @@ onMounted(() => {
               class="text-4xl md:text-5xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-300 hero-title"
             >
               {{
-                $t("ai.heroTitle", "Empowering Your Business with AI Solutions")
+                $t(
+                  "engineering.heroTitle",
+                  "Solutions d'Ingénierie Logicielle Modernes"
+                )
               }}
             </h1>
-            <div class="title-arrow-container">
-              <client-only>
-                <img
-                  src="/arrows/curved-arrow.webp"
-                  alt="Curved arrow"
-                  class="arrow-image title-arrow opacity-0 transition-opacity duration-500"
-                  :class="{ 'opacity-100': true }"
-                  width="180"
-                  height="120"
-                  loading="lazy"
-                  fetchpriority="low"
-                />
-                <template #fallback>
-                  <!-- Fallback during SSR -->
-                  <div class="w-[180px] h-[120px]"></div>
-                </template>
-              </client-only>
-              <span
-                class="arrow-text title-arrow-text opacity-0 transition-opacity duration-500"
-                :class="{ 'opacity-100': true }"
-                >Us</span
-              >
-            </div>
           </div>
 
           <div class="relative">
@@ -156,49 +131,28 @@ onMounted(() => {
             >
               {{
                 $t(
-                  "ai.heroDescription",
-                  "Building scalable, innovative solutions with modern technologies. Specializing in AI integration, web development, and enterprise software."
+                  "engineering.heroDescription",
+                  "Créer des applications web évolutives et performantes avec Vue.js, Nuxt.js et les technologies les plus récentes. Solutions sur mesure pour votre entreprise."
                 )
               }}
             </p>
-            <div class="description-arrow-container">
-              <client-only>
-                <img
-                  src="/arrows/curved-arrow.webp"
-                  alt="Curved arrow"
-                  class="arrow-image description-arrow opacity-0 transition-opacity duration-500"
-                  :class="{ 'opacity-100': true }"
-                  width="180"
-                  height="120"
-                  loading="lazy"
-                  fetchpriority="low"
-                />
-                <template #fallback>
-                  <!-- Fallback during SSR -->
-                  <div class="w-[180px] h-[120px]"></div>
-                </template>
-              </client-only>
-              <span
-                class="arrow-text description-arrow-text opacity-0 transition-opacity duration-500"
-                :class="{ 'opacity-100': true }"
-                >Me</span
-              >
-            </div>
           </div>
           <div class="flex flex-wrap justify-center gap-4 pt-4">
             <button
               @click="scrollToSection('contact')"
               class="px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors duration-200 flex items-center gap-2 hero-cta"
             >
-              <span>{{ $t("ai.getStarted", "Get Started") }}</span>
+              <span>{{
+                $t("engineering.getStarted", "Commencer un Projet")
+              }}</span>
               <Icon name="heroicons:arrow-right" class="w-5 h-5" />
             </button>
             <NuxtLink
-              to="/software-engineering"
-              class="px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors duration-200 flex items-center gap-2 hero-cta"
+              to="/fr#projects"
+              class="px-6 py-3 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium transition-colors duration-200 flex items-center gap-2"
             >
               <span>{{
-                $t("ai.viewSoftwareEngineering", "View Software Engineering")
+                $t("engineering.viewProjects", "Voir les Projets")
               }}</span>
               <Icon name="heroicons:arrow-right" class="w-5 h-5" />
             </NuxtLink>
@@ -206,33 +160,40 @@ onMounted(() => {
         </div>
       </section>
 
-      <!-- Services Section with SectionCard -->
+      <!-- About Section -->
       <SectionCard
-        id="services"
-        type="ai"
-        backgroundImage="/assets/images/4bab9366-e954-4702-921f-f4b0bbf07aa8.png"
+        id="about"
+        type="engineering"
+        backgroundImage="/assets/svg/about-bg-simple.svg"
       >
-        <ServicesSection />
+        <AboutSection />
       </SectionCard>
 
-      <!-- AI Automation Examples with SectionCard -->
+      <!-- Process Section -->
       <SectionCard
-        id="automation"
-        type="ai"
-        backgroundImage="/assets/images/robotic-interaction-abstract.jpg"
+        id="process"
+        type="engineering"
+        backgroundImage="/assets/svg/about-bg-pattern.svg"
       >
-        <AutomationExamples />
+        <ProcessSection />
       </SectionCard>
 
-      <!-- Contact Section - Directly placed without using SectionCard -->
+      <!-- Projects Section -->
+      <section id="projects" class="my-20">
+        <ProjectsSection :key="`projects-${route.path}-${timestamp}`" />
+      </section>
+
+      <!-- Contact Section -->
       <section id="contact" class="my-20">
-        <ContactSection :key="`contact-${route.path}-${timestamp}`" />
+        <EngineeringContactSection
+          :key="`engineering-contact-${route.path}-${timestamp}`"
+        />
       </section>
 
       <!-- Bottom padding for footer -->
       <div class="h-36"></div>
 
-      <!-- Footer (appears when scrolled to bottom) -->
+      <!-- Footer -->
       <div
         class="transition-opacity duration-500 w-full"
         :class="showFooter ? 'opacity-100' : 'opacity-0 pointer-events-none'"
@@ -242,16 +203,6 @@ onMounted(() => {
     </main>
   </div>
 </template>
-
-<style lang="postcss">
-.page-wrapper {
-  @apply relative min-h-screen w-full bg-white dark:bg-[#1a202c];
-}
-
-.loading-placeholder {
-  @apply flex items-center justify-center min-h-[200px];
-}
-</style>
 
 <style scoped>
 /* Hero section styling */
@@ -304,84 +255,6 @@ onMounted(() => {
   transform: translateY(-2px);
 }
 
-/* Add transitions for smoother changes */
-.arrow-image,
-.arrow-text,
-.title-arrow-container,
-.description-arrow-container {
-  transition: all;
-}
-
-/* Arrow styling */
-.arrow-image {
-  width: 180px;
-  height: auto;
-  position: absolute;
-  z-index: 2;
-  filter: none;
-  mix-blend-mode: multiply;
-}
-
-.dark .arrow-image {
-  filter: invert(1);
-  mix-blend-mode: screen;
-}
-
-.arrow-text {
-  position: absolute;
-  font-family: "Permanent Marker", cursive, sans-serif;
-  font-size: 1.8rem;
-  color: #000;
-  z-index: 3;
-  text-shadow: 1px 1px 2px white;
-}
-
-.dark .arrow-text {
-  color: #fff;
-  text-shadow: 1px 1px 2px black;
-}
-
-/* Title arrow positioning */
-.title-arrow-container {
-  position: absolute;
-  width: 180px;
-  height: 120px;
-  top: -15px;
-  left: -170px;
-}
-
-.title-arrow {
-  top: 0;
-  left: 0;
-  transform: rotate(-30deg);
-}
-
-.title-arrow-text {
-  top: 80%;
-  left: 50px;
-}
-
-/* Description arrow positioning */
-.description-arrow-container {
-  position: absolute;
-  width: 180px;
-  height: 120px;
-  top: -10px;
-  right: -160px;
-}
-
-.description-arrow {
-  top: 0;
-  right: 0;
-  transform: scaleX(-1) rotate(-40deg);
-}
-
-.description-arrow-text {
-  top: 85%;
-  right: 60px;
-}
-
-/* Animations */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -398,14 +271,6 @@ onMounted(() => {
   .hero-description,
   .hero-cta {
     animation: none;
-  }
-}
-
-/* Hide arrows on screens under 1200px */
-@media (max-width: 1199px) {
-  .title-arrow-container,
-  .description-arrow-container {
-    display: none;
   }
 }
 

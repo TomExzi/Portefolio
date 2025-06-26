@@ -79,89 +79,85 @@ function fixImagePath(path: string) {
   return fixedPath;
 }
 
-// Load images from the projects folders
+// Load images from the projects folders - Static configuration to avoid import warnings
 onMounted(async () => {
   try {
     console.log("Loading project images...");
 
-    // Use simpler path patterns that match the actual directory structure
-    const dataRemediationFiles = import.meta.glob(
-      "/public/projects/DataRemediation/*.{jpg,jpeg,png,webp}",
-      { eager: true }
+    // Static configuration of project images to avoid import.meta.glob warnings
+    const projectImages = {
+      DataRemediation: ["dr00.png", "DR01.png", "dr02.png", "dr03.png"],
+      InfrastructurePortal: [
+        "InfrastructurePortal008.png",
+        "InfrastructurePortal01.png",
+        "InfrastructurePortal02.png",
+        "InfrastructurePortal03.png",
+        "InfrastructurePortal04.png",
+        "InfrastructurePortal05.png",
+        "InfrastructurePortal06.png",
+        "InfrastructurePortal07.png",
+        "InfrastructurePortal09.png",
+        "InfrastructurePortal10.png",
+        "InfrastructurePortal11.png",
+        "InfrastructurePortal12.png",
+        "InfrastructurePortal13.png",
+        "InfrastructurePortal14.png",
+        "InfrastructurePortal15.png",
+        "InfrastructurePortal16.png",
+        "InfrastructurePortal17.png",
+      ],
+      InformationProvider: [
+        "ip01.png",
+        "ip02.png",
+        "ip03.png",
+        "ip04.png",
+        "ip05.png",
+        "ip06.png",
+      ],
+    };
+
+    // Create project objects from static configuration
+    const dataRemediationProjects = projectImages.DataRemediation.map(
+      (filename, index) => ({
+        id: `data-${index + 1}`,
+        title: "Data Remediation",
+        type: "Project",
+        imageUrl: `/projects/DataRemediation/${filename}`,
+        webpUrl: `/projects/DataRemediation/${filename}`,
+        thumbUrl: `/projects/DataRemediation/${filename}`,
+        category: "DataRemediation" as const,
+        width: 800,
+        height: 600,
+      })
     );
 
-    const infrastructureFiles = import.meta.glob(
-      "/public/projects/InfrastructurePortal/*.{jpg,jpeg,png,webp}",
-      { eager: true }
+    const infrastructureProjects = projectImages.InfrastructurePortal.map(
+      (filename, index) => ({
+        id: `infra-${index + 1}`,
+        title: "Infrastructure Portal",
+        type: "Project",
+        imageUrl: `/projects/InfrastructurePortal/${filename}`,
+        webpUrl: `/projects/InfrastructurePortal/${filename}`,
+        thumbUrl: `/projects/InfrastructurePortal/${filename}`,
+        category: "InfrastructurePortal" as const,
+        width: 800,
+        height: 600,
+      })
     );
 
-    const informationProviderFiles = import.meta.glob(
-      "/public/projects/InformationProvider/*.{jpg,jpeg,png,webp}",
-      { eager: true }
-    );
-
-    // Log for debugging
-    console.log("Data Remediation files:", Object.keys(dataRemediationFiles));
-    console.log("Infrastructure files:", Object.keys(infrastructureFiles));
-    console.log(
-      "Information Provider files:",
-      Object.keys(informationProviderFiles)
-    );
-
-    // Simplify the path handling in project creation with optimized image paths
-    const dataRemediationProjects = Object.keys(dataRemediationFiles).map(
-      (path, index) => {
-        const filename = path.split("/").pop() || "";
-        return {
-          id: `data-${index + 1}`,
-          title: "Data Remediation",
-          type: "Project",
-          imageUrl: `/projects/DataRemediation/${filename}`,
-          // Don't use WebP paths until they're actually generated
-          webpUrl: `/projects/DataRemediation/${filename}`,
-          thumbUrl: `/projects/DataRemediation/${filename}`,
-          category: "DataRemediation" as const,
-          width: 800,
-          height: 600,
-        };
-      }
-    );
-
-    const infrastructureProjects = Object.keys(infrastructureFiles).map(
-      (path, index) => {
-        const filename = path.split("/").pop() || "";
-        return {
-          id: `infra-${index + 1}`,
-          title: "Infrastructure Portal",
-          type: "Project",
-          imageUrl: `/projects/InfrastructurePortal/${filename}`,
-          // Don't use WebP paths until they're actually generated
-          webpUrl: `/projects/InfrastructurePortal/${filename}`,
-          thumbUrl: `/projects/InfrastructurePortal/${filename}`,
-          category: "InfrastructurePortal" as const,
-          width: 800,
-          height: 600,
-        };
-      }
-    );
-
-    const informationProviderProjects = Object.keys(
-      informationProviderFiles
-    ).map((path, index) => {
-      const filename = path.split("/").pop() || "";
-      return {
+    const informationProviderProjects = projectImages.InformationProvider.map(
+      (filename, index) => ({
         id: `info-${index + 1}`,
         title: "Information Provider",
         type: "Project",
         imageUrl: `/projects/InformationProvider/${filename}`,
-        // Don't use WebP paths until they're actually generated
         webpUrl: `/projects/InformationProvider/${filename}`,
         thumbUrl: `/projects/InformationProvider/${filename}`,
         category: "InformationProvider" as const,
         width: 800,
         height: 600,
-      };
-    });
+      })
+    );
 
     allProjects.value = [
       ...dataRemediationProjects,
